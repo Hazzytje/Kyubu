@@ -1,0 +1,93 @@
+# depslib dependency file v1.0
+1379532526 source:/home/h/Development/cpp/Kyubu/blocks.cpp
+	"blocks.h"
+
+1379532532 /home/h/Development/cpp/Kyubu/blocks.h
+	<map>
+
+1379532526 source:/home/h/Development/cpp/Kyubu/camera.cpp
+	"camera.h"
+	"matrix.h"
+	<stdio.h>
+	<GL/glfw3.h>
+	<math.h>
+
+1379532532 /home/h/Development/cpp/Kyubu/camera.h
+	<GL/glew.h>
+
+1379532532 /home/h/Development/cpp/Kyubu/matrix.h
+	"vector3.h"
+
+1379532532 /home/h/Development/cpp/Kyubu/vector3.h
+
+1379532526 source:/home/h/Development/cpp/Kyubu/chunk.cpp
+	<cstdlib>
+	<stdio.h>
+	<vector>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	"blocks.h"
+	"globals.h"
+	"chunk.h"
+
+1379532532 /home/h/Development/cpp/Kyubu/globals.h
+	"camera.h"
+
+1379532532 /home/h/Development/cpp/Kyubu/chunk.h
+	<GL/glfw3.h>
+
+1379533492 source:/home/h/Development/cpp/Kyubu/chunkHandler.cpp
+	<stdio.h>
+	"matrix.h"
+	"globals.h"
+	"hgl.h"
+	"chunkHandler.h"
+	"textureloader.h"
+
+1379532532 /home/h/Development/cpp/Kyubu/hgl.h
+	<GL/glew.h>
+
+1379532532 /home/h/Development/cpp/Kyubu/chunkHandler.h
+	<GL/glfw3.h>
+	<vector>
+	"chunk.h"
+
+1379532532 /home/h/Development/cpp/Kyubu/textureloader.h
+
+1379532526 source:/home/h/Development/cpp/Kyubu/globals.cpp
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<stdio.h>
+	"globals.h"
+
+1379532526 source:/home/h/Development/cpp/Kyubu/hgl.cpp
+	"hgl.h"
+	"hassert.h"
+	<stdio.h>
+
+1379532532 /home/h/Development/cpp/Kyubu/hassert.h
+	<stdio.h>
+
+1379533474 source:/home/h/Development/cpp/Kyubu/main.cpp
+	<GL/glew.h>
+	<stdio.h>
+	<GL/glfw3.h>
+	<math.h>
+	"blocks.h"
+	"chunkHandler.h"
+	"globals.h"
+	"textureloader.h"
+
+1379532526 source:/home/h/Development/cpp/Kyubu/matrix.cpp
+	"matrix.h"
+	<math.h>
+	<stdio.h>
+
+1379532526 source:/home/h/Development/cpp/Kyubu/textureloader.cpp
+	"textureloader.h"
+	<stdio.h>
+
+1379532526 source:/home/h/Development/cpp/Kyubu/vector3.cpp
+	"vector3.h"
+	<math.h>
+

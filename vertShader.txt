@@ -1,0 +1,19 @@
+#version 140
+in vec3 position;
+in vec2 texCoord;
+
+out vec2 Texcoord;
+
+//layout (std140) uniform GlobalMatrices 
+//{
+uniform mat4 proj;
+uniform mat4 model;
+uniform mat4 view;
+//};
+
+void main()
+{
+	vec4 translated = model * vec4(position, 1.0);
+	gl_Position = proj * view * vec4(translated.x, translated.z, translated.y, 1.0);
+	Texcoord = texCoord;
+}
