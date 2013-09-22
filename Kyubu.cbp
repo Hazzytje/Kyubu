@@ -37,7 +37,10 @@
 			<Add library="X11" />
 			<Add library="GLEW" />
 			<Add library="glfw" />
+			<Add library="z" />
 		</Linker>
+		<Unit filename="MercuryString.cpp" />
+		<Unit filename="MercuryString.h" />
 		<Unit filename="blocks.cpp" />
 		<Unit filename="blocks.h" />
 		<Unit filename="camera.cpp" />
@@ -46,6 +49,8 @@
 		<Unit filename="chunk.h" />
 		<Unit filename="chunkHandler.cpp" />
 		<Unit filename="chunkHandler.h" />
+		<Unit filename="ezSockets.cpp" />
+		<Unit filename="ezSockets.h" />
 		<Unit filename="fragShader.txt" />
 		<Unit filename="globals.cpp" />
 		<Unit filename="globals.h" />
@@ -55,6 +60,17 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="matrix.cpp" />
 		<Unit filename="matrix.h" />
+		<Unit filename="networkhandler.cpp" />
+		<Unit filename="networkhandler.h" />
+		<Unit filename="packet.cpp" />
+		<Unit filename="packet.h" />
+		<Unit filename="packets.h" />
+		<Unit filename="player.cpp" />
+		<Unit filename="player.h" />
+		<Unit filename="propertycollection.cpp" />
+		<Unit filename="propertycollection.h" />
+		<Unit filename="propertypair.cpp" />
+		<Unit filename="propertypair.h" />
 		<Unit filename="terrain.bmp" />
 		<Unit filename="textureloader.cpp" />
 		<Unit filename="textureloader.h" />

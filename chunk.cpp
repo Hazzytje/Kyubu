@@ -53,40 +53,12 @@ void AddIndices(unsigned int vertexCount, std::vector<GLuint>& indiceData)
 	indiceData.push_back(vertexCount - 1);
 }
 
-Chunk::Chunk(GLuint shaderProgramHandle)
+void Chunk::RebuildVBOEBO()
 {
-	glGenVertexArrays(1, &vaoHandle);
-	glBindVertexArray(vaoHandle);
-	
-	GLuint vbo, ebo;
-	glGenBuffers(1, &vbo);
-	glGenBuffers(1, &ebo);
-	
-	blockData = new unsigned short[16 * 16 * 256];
-
-	for(int x = 0; x < 16; x++)
-	{
-		for(int y = 0; y < 16; y++)
-		{
-			for(int z = 0; z < 256; z++)
-			{
-				
-				//int blockIndex = INDEX_OF_BLOCK(x, y, z); 
-				//blockData[blockIndex] = 0;
-				//char blockId = std::rand() % 10;
-				//if(blockId < 4)
-				//{
-				//	blockData[INDEX_OF_BLOCK(x, y, z)] = blockId;
-				//}
-				
-				blockData[INDEX_OF_BLOCK(x, y, z)] = 2;
-			}
-		}
-	}
 	
 	auto vertexData = std::vector<float>();
 	auto indiceData = std::vector<GLuint>();
-	
+
 	for(int x = 0; x < 16; x++)
 	{
 		for(int y = 0; y < 16; y++)
@@ -157,10 +129,10 @@ Chunk::Chunk(GLuint shaderProgramHandle)
 				{
 					bottom = true;
 				}
-				
+
 				unsigned short thisBlockId = blockData[INDEX_OF_BLOCK(x, y, z)];
 				Block thisBlock = Blocks::blockRegister.find(thisBlockId)->second;
-				
+
 				if(south)
 				{
 					BACK_LEFT_TOP;
@@ -271,7 +243,7 @@ Chunk::Chunk(GLuint shaderProgramHandle)
 			}
 		}
 	}
-	
+
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(float), &vertexData[0], GL_STATIC_DRAW);
 
@@ -279,17 +251,28 @@ Chunk::Chunk(GLuint shaderProgramHandle)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indiceData.size() * sizeof(GLuint), &indiceData[0], GL_STATIC_DRAW);
 
 	//attribute locations
-	GLint posAttrib = glGetAttribLocation(shaderProgramHandle, "position");
+	GLint posAttrib = glGetAttribLocation(ChunkHandler::shaderProgramHandle, "position");
 	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
 	glEnableVertexAttribArray(posAttrib);
-	
-	GLint texAttrib = glGetAttribLocation(shaderProgramHandle, "texCoord");
+
+	GLint texAttrib = glGetAttribLocation(ChunkHandler::shaderProgramHandle, "texCoord");
 	glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(texAttrib);
 
 	triangleCount = indiceData.size() / 3;
-	
+
 	glBindVertexArray(0);
+}
+
+Chunk::Chunk()
+{
+	glGenVertexArrays(1, &vaoHandle);
+	glBindVertexArray(vaoHandle);
+	
+	glGenBuffers(1, &vbo);
+	glGenBuffers(1, &ebo);
+	
+	//RebuildVBOEBO();
 }
 
 Chunk::~Chunk()
@@ -306,5 +289,5 @@ void Chunk::Render()
 
 void Chunk::Update()
 {
-	
+
 }

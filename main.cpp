@@ -3,10 +3,12 @@
 #include <GL/glfw3.h>
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include "player.h"
 #include "blocks.h"
 #include "chunkHandler.h"
 #include "globals.h"
 #include "textureloader.h"
+#include "networkhandler.h"
 
 void keyCallback(GLFWwindow* window, int key, int action)
 {
@@ -69,10 +71,14 @@ int main(int argc, char* argv[])
 	glfwGetCursorPos(window, &prevMouseX, &prevMouseY);
 	glEnable(GL_DEPTH_TEST);
 
+	NetworkHandler bla;
+
 	while(!glfwWindowShouldClose(window))
 	{
+		chunkhandler.Update();
+		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		float oldX = Globals::camera.GetX(), oldY = Globals::camera.GetY(), oldZ = Globals::camera.GetZ();
 		float speed = 1.0f;
 		//forward/backward motion TODO: move to player class
 		if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -98,6 +104,12 @@ int main(int argc, char* argv[])
 			Globals::camera.AddX(cos(float(Globals::camera.GetYaw() + (M_PI / 180) * 90)) * speed);
 			Globals::camera.AddY(sin(float(Globals::camera.GetYaw() + (M_PI / 180) * 90)) * speed);
 		}
+		Player::positionMutex.lock();
+		Player::x = Globals::camera.GetX() - oldX;
+		Player::y = Globals::camera.GetY() - oldY;
+		Player::z = Globals::camera.GetZ() - oldZ;
+		Player::updatedPos = true;
+		Player::positionMutex.unlock();
 
 		double mouseX, mouseY;
 		glfwGetCursorPos(window, &mouseX, &mouseY);
@@ -115,11 +127,11 @@ int main(int argc, char* argv[])
 		glfwSetCursorPos(window, 1024 / 2, 768 / 2);
 		glfwGetCursorPos(window, &prevMouseX, &prevMouseY);
 
-		Globals::PrintAllGlErrors();
-		printf("at file %s, line %i\n", __FILE__, __LINE__);
+		//Globals::PrintAllGlErrors();
+		//printf("at file %s, line %i\n", __FILE__, __LINE__);
 		chunkhandler.Render();
-		Globals::PrintAllGlErrors();
-		printf("at file %s, line %i\n", __FILE__, __LINE__);
+		//Globals::PrintAllGlErrors();
+		//printf("at file %s, line %i\n", __FILE__, __LINE__);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
