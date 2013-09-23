@@ -4,8 +4,8 @@
 	<File name="MercuryString.h" open="0" top="0" tabpos="0">
 		<Cursor position="2380" topLine="44" />
 	</File>
-	<File name="blocks.cpp" open="1" top="1" tabpos="6">
-		<Cursor position="3558" topLine="63" />
+	<File name="blocks.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="1043" topLine="0" />
 	</File>
 	<File name="camera.cpp" open="0" top="0" tabpos="5">
 		<Cursor position="973" topLine="3" />
@@ -19,11 +19,11 @@
 	<File name="chunk.h" open="0" top="0" tabpos="0">
 		<Cursor position="188" topLine="0" />
 	</File>
-	<File name="chunkHandler.cpp" open="0" top="0" tabpos="3">
-		<Cursor position="584" topLine="5" />
+	<File name="chunkHandler.cpp" open="1" top="1" tabpos="7">
+		<Cursor position="76" topLine="0" />
 	</File>
-	<File name="chunkHandler.h" open="0" top="0" tabpos="4">
-		<Cursor position="382" topLine="0" />
+	<File name="chunkHandler.h" open="1" top="0" tabpos="8">
+		<Cursor position="228" topLine="0" />
 	</File>
 	<File name="ezSockets.cpp" open="0" top="0" tabpos="13">
 		<Cursor position="4919" topLine="213" />
@@ -35,10 +35,10 @@
 		<Cursor position="267" topLine="0" />
 	</File>
 	<File name="main.cpp" open="1" top="0" tabpos="5">
-		<Cursor position="3124" topLine="90" />
+		<Cursor position="3438" topLine="0" />
 	</File>
 	<File name="networkhandler.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="3947" topLine="118" />
+		<Cursor position="3947" topLine="114" />
 	</File>
 	<File name="networkhandler.h" open="1" top="0" tabpos="1">
 		<Cursor position="210" topLine="0" />
