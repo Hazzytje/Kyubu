@@ -1,6 +1,7 @@
 #include <GL/glew.h>
 #include <stdio.h>
 #include <GL/glfw3.h>
+#include <btBulletDynamicsCommon.h>
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "player.h"
@@ -9,6 +10,7 @@
 #include "globals.h"
 #include "textureloader.h"
 #include "networkhandler.h"
+
 
 void keyCallback(GLFWwindow* window, int key, int action)
 {

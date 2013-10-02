@@ -31,6 +31,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-std=c++11" />
+			<Add directory="/usr/local/include/bullet/" />
 		</Compiler>
 		<Linker>
 			<Add library="GL" />
@@ -38,6 +39,10 @@
 			<Add library="GLEW" />
 			<Add library="glfw" />
 			<Add library="z" />
+			<Add library="BulletDynamics" />
+			<Add library="BulletCollision" />
+			<Add library="LinearMath" />
+			<Add library="BulletSoftBody" />
 		</Linker>
 		<Unit filename="MercuryString.cpp" />
 		<Unit filename="MercuryString.h" />
