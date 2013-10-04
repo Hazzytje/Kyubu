@@ -129,11 +129,6 @@ Matrix Matrix::CreatePerspective(float fovy, float aspect, float zNear, float zF
 
 Vector3 Matrix::Translate(float x, float y, float z) const
 {
-	Matrix translationMatrix = IDENTITY_MATRIX;
-	translationMatrix.m14 = x;
-	translationMatrix.m24 = y;
-	translationMatrix.m34 = z;
-
 	Vector3 retVal = Vector3();
 	retVal.x = m11 * x + m12 * y + m13 * z + m14;
 	retVal.y = m21 * x + m22 * y + m23 * z + m24;
