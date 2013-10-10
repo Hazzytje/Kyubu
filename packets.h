@@ -16,6 +16,8 @@ namespace Packets {
 
 	// if PID is 255, then it's the server
 
+	// item is {short id, byte amount, byte meta}
+
 	enum Packets {
 		ServerInfo, // string game version, string hostname, string description, byte curplayers, byte max players, arr_mods[string name, string version]
 		            // before joining a server, it might be nice to show a info dialog., connect to server, send this packet, kill connection.
@@ -33,22 +35,33 @@ namespace Packets {
 		EntityMove, // EID, mx, my, mz
 		EntityTeleport, // EID, x,y,z, p,y,r
 		EntityAngle, // EID, p,y,r
-
+		EntityForce, // EID, x,y,z
+		
+		PlayerInventory, // byte slot, item
+		PlayerInventoryFull, // 51 times item
+		PlayerSelect, // PID, byte slot (0 - 8), client can send this whitout the PID
+		PlayerPlace, // PID, x,y,z, byte side, client can send this whitout the PID
 		PlayerDig, // PID, x,y,z, byte side, client can send this whitout the PID
 		PlayerUse, // PID, x,y,z, byte side, client can send this whitout the PID
 		PlayerJoin, // PID, string name
 		PlayerLeave, // PID, client should send this when he disconnects, it's a better message than "END_OF_STREAM"
 		PlayerKey, // PID, byte key [wasd], bool pressing [true/false], client can send this whitout the PID
 		PlayerRespawn, // client sends this to the server if he needs to respawn.
+		PlayerHurt, // client only send, EID
+		PlayerNoclip, // PID, bool isInNoclip, client can send this whitout the PID
+		PlayerMicrophone, // PID, bool istalking, double heardistance, int channels, int sampleRate, int bitsPerSample, client can send this whitout the PID
+		PlayerMicrophoneData, // PID, int zlib_buffer_len, byte[] zlib_buffer, client can send this whitout the PID
 
 		ModMessage, // string modname, ? data. client can also send this
 
-		ChangeWorld, // string name. When changing world, unload ALL chunks and entities. the server wont inform you as everything's new anyhow.
-		             // this also gets sent at Login, as you're entering a new world.
+		ChangeWorld, // string name, int vision.
+					 // when you get this packet, this means, you're entering a new world, so, delete all chunks, entities, players and stuff.
+					 // to know how much chunks you get sent, it's: (vision * 2 + 1) * (vision * 2 + 1)
+					 // as example: if vision is 2, you'll receive 25 chunks. at all times.
 
-		ChunkLoad, // X, Y, int zlib_buffer_len, byte[] zlib_buffer
+		ChunkLoad, // X, Y, int zlib_buffer_len, byte[] zlib_buffer, the player can also request a chunk by sending x,y. You'll get kicked if you cannot see it tho.
 		ChunkUnload, // X, Y
-
+		
 		BlockChange, // WX, WY, Z, ushort block
 		BlockMeta, // WX, WY, Z, byte meta
 		BlockMultiChange, // start WX, start WY, start z, width, dept, height, per block[ushort block, byte meta]
@@ -66,6 +79,6 @@ namespace Packets {
 		< receive entity list
 		< receive your X,Y,Z, P,Y,R
 		< receive 16x16 chunks
-		. and you start running around and doing shit!
+		# and you start running around and doing shit!
 	*/
 }
