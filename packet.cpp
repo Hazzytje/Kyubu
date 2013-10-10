@@ -85,12 +85,7 @@ byte Packet::ReadByte(){
 }
 
 byte* Packet::ReadBytes(int len){
-	if (!this->CanRead(len)){
-		char output[100];
-		socklen_t leng = 100;
-		int num = getsockopt(this->Sock->sock, 6, SO_ERROR, &output, &leng);
-		return null;
-	}
+	if (!this->CanRead(len)) return null;
 
 	this->InPos += len;
 	return this->InBuffer + (this->InPos - len);

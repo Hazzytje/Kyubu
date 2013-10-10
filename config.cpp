@@ -2,7 +2,7 @@
  
  std::string toLower(std::string str){
 	std::string lower = str;
-    for(int i = 0; i < lower.size(); i++)
+    for(size_t i = 0; i < lower.size(); i++)
     {
         if(isupper(lower[i]))
         {
@@ -58,7 +58,7 @@ void WriteTabs(int len, FILE* h)
  
 void Config::Save(int tabs, FILE* fhandle, ConfigTable* master)
 {
-    for (int i = 0; i < master->Values.size(); i++)
+    for (size_t i = 0; i < master->Values.size(); i++)
     {
         ConfigValuePair* p = master->Values[i];
  
@@ -229,7 +229,7 @@ void Config::Load(FILE* fhandle, ConfigTable* master)
                 break;
             }
  
-            for(int i = 0; i < value.size(); i++)
+            for(size_t i = 0; i < value.size(); i++)
             {
                 if(isupper(value[i]))
                 {
@@ -290,7 +290,7 @@ void Config::AddBool(std::string key, bool value)
  
 void ConfigTable::AddBool(std::string key, bool value)
 {
-    this->Values.push_back(new ConfigValuePair(key, (void*)(value ? 1 : 0), ConfigEntryTypes::Bool));
+    this->Values.push_back(new ConfigValuePair(key, reinterpret_cast<void*>((value ? 1 : 0)), ConfigEntryTypes::Bool));
 }
  
 void Config::AddString(std::string key, std::string value)
@@ -349,7 +349,7 @@ bool ConfigTable::HasValue(std::string key, ConfigEntryTypes::Enum type, int sel
     key = toLower(key);
  
     int curnum = 0;
-    for (int i = 0; i < this->Values.size(); i++)
+    for (size_t i = 0; i < this->Values.size(); i++)
     {
         if (this->Values[i]->Key == key && ++curnum == selectnum)
         {
@@ -370,7 +370,7 @@ std::string ConfigTable::GetString(std::string key, int selectnum)
     key = toLower(key);
  
     int curnum = 0;
-    for (int i = 0; i < this->Values.size(); i++)
+    for (size_t i = 0; i < this->Values.size(); i++)
     {
         if (this->Values[i]->Key == key && this->Values[i]->Type == ConfigEntryTypes::String && ++curnum == selectnum)
         {
@@ -391,7 +391,7 @@ void ConfigTable::SetString(std::string key, std::string value, int selectnum)
     key = toLower(key);
  
     int curnum = 0;
-    for (int i = 0; i < this->Values.size(); i++)
+    for (size_t i = 0; i < this->Values.size(); i++)
     {
         if (this->Values[i]->Key == key && this->Values[i]->Type == ConfigEntryTypes::String && ++curnum == selectnum)
         {
@@ -415,7 +415,7 @@ ConfigValuePair* ConfigTable::GetPair(std::string key, int selectnum)
     key = toLower(key);
  
     int curnum = 0;
-    for (int i = 0; i < this->Values.size(); i++)
+    for (size_t i = 0; i < this->Values.size(); i++)
     {
         if (this->Values[i]->Key == key && ++curnum == selectnum)
         {
@@ -436,7 +436,7 @@ bool ConfigTable::GetBool(std::string key, int selectnum)
     key = toLower(key);
  
     int curnum = 0;
-    for (int i = 0; i < this->Values.size(); i++)
+    for (size_t i = 0; i < this->Values.size(); i++)
     {
         if (this->Values[i]->Key == key && this->Values[i]->Type == ConfigEntryTypes::Bool && ++curnum == selectnum)
         {
@@ -457,17 +457,17 @@ void ConfigTable::SetBool(std::string key, bool value, int selectnum)
     key = toLower(key);
  
     int curnum = 0;
-    for (int i = 0; i < this->Values.size(); i++)
+    for (size_t i = 0; i < this->Values.size(); i++)
     {
         if (this->Values[i]->Key == key && this->Values[i]->Type == ConfigEntryTypes::Bool && ++curnum == selectnum)
         {
             delete this->Values[i];
-            this->Values[i] = new ConfigValuePair(toLower(key), (void*)(value ? 1 : 0), ConfigEntryTypes::Bool);
+            this->Values[i] = new ConfigValuePair(toLower(key), reinterpret_cast<void*>(value ? 1 : 0), ConfigEntryTypes::Bool);
             return;
         }
     }
  
-    this->Values.push_back(new ConfigValuePair(toLower(key), (void*)(value ? 1 : 0), ConfigEntryTypes::Bool));
+    this->Values.push_back(new ConfigValuePair(toLower(key), reinterpret_cast<void*>(value ? 1 : 0), ConfigEntryTypes::Bool));
     return;
 }
  
@@ -481,7 +481,7 @@ double ConfigTable::GetDouble(std::string key, int selectnum)
     key = toLower(key);
  
     int curnum = 0;
-    for (int i = 0; i < this->Values.size(); i++)
+    for (size_t i = 0; i < this->Values.size(); i++)
     {
         if (this->Values[i]->Key == key && this->Values[i]->Type == ConfigEntryTypes::Double && ++curnum == selectnum)
         {
@@ -502,7 +502,7 @@ int ConfigTable::GetInt(std::string key, int selectnum)
     key = toLower(key);
  
     int curnum = 0;
-    for (int i = 0; i < this->Values.size(); i++)
+    for (size_t i = 0; i < this->Values.size(); i++)
     {
         if (this->Values[i]->Key == key && this->Values[i]->Type == ConfigEntryTypes::Int && ++curnum == selectnum)
         {
@@ -525,7 +525,7 @@ void ConfigTable::SetDouble(std::string key, double value, int selectnum)
     *num = value;
  
     int curnum = 0;
-    for (int i = 0; i < this->Values.size(); i++)
+    for (size_t i = 0; i < this->Values.size(); i++)
     {
         if (this->Values[i]->Key == key && this->Values[i]->Type == ConfigEntryTypes::Double && ++curnum == selectnum)
         {
@@ -551,7 +551,7 @@ void ConfigTable::SetInt(std::string key, int value, int selectnum)
     *num = value;
  
     int curnum = 0;
-    for (int i = 0; i < this->Values.size(); i++)
+    for (size_t i = 0; i < this->Values.size(); i++)
     {
         if (this->Values[i]->Key == key && this->Values[i]->Type == ConfigEntryTypes::Int && ++curnum == selectnum)
         {
@@ -575,7 +575,7 @@ ConfigTable* ConfigTable::GetTable(std::string key, int selectnum)
     key = toLower(key);
  
     int curnum = 0;
-    for (int i = 0; i < this->Values.size(); i++)
+    for (size_t i = 0; i < this->Values.size(); i++)
     {
         if (this->Values[i]->Key == key && this->Values[i]->Type == ConfigEntryTypes::Table && ++curnum == selectnum)
         {
@@ -596,7 +596,7 @@ void ConfigTable::SetTable(std::string key, ConfigTable* value, int selectnum)
     key = toLower(key);
  
     int curnum = 0;
-    for (int i = 0; i < this->Values.size(); i++)
+    for (size_t i = 0; i < this->Values.size(); i++)
     {
         if (this->Values[i]->Key == key && this->Values[i]->Type == ConfigEntryTypes::Table && ++curnum == selectnum)
         {

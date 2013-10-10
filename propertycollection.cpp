@@ -24,7 +24,7 @@ void PropertyCollection::AddInt(string key, int value)
 void PropertyCollection::AddBool(string key, bool value)
 {
 	PropertyPair* p = new PropertyPair();
-	p->internalData = (void*)(value ? 1 : 0);
+	p->internalData = reinterpret_cast<void*>(value ? 1 : 0);
 	properties[key] = p;
 }
 
