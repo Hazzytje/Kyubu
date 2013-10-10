@@ -256,6 +256,7 @@ void Packet::WriteString(const char* str){
 }
 
 void Packet::Send(){
+	this->Sock->pWriteData((char*)&this->OutPos, 4);
 	this->Sock->pWriteData((char*)this->OutBuffer, this->OutPos);
 
 	delete this->OutBuffer;

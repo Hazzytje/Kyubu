@@ -68,7 +68,7 @@ void HandleNetwork()
     network.Create();
     network.mode = ezSockets::skGeneral;
     network.bBlocking = true;
-    if(network.Connect("84.107.79.16", 25565))
+    if(network.Connect("home.4o3.nl", 25565))
     {
         Packet p(&network);
         printf("connection OK!\n");
@@ -82,6 +82,8 @@ void HandleNetwork()
         while(true)
         {
         	if (network.CanRead()){
+        		int psize = p->ReadInt();
+        		
 				unsigned char packetType = p.ReadByte();
 				if (!p.Valid)
 				{
