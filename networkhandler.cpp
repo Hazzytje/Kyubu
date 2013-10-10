@@ -62,7 +62,6 @@ PropertyCollection* recursiveReadProperties(Packet& pack)
  
 void HandleNetwork()
 {
-    std::chrono::milliseconds length(50);
     ezSockets network;
  
     network.Create();
