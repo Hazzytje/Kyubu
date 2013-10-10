@@ -4,6 +4,7 @@
 #include "camera.h"
 namespace Globals
 {
+	extern Game gameInstance;
 	extern Camera camera;
 	extern void PrintAllGlErrors();
 }

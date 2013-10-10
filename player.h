@@ -11,6 +11,8 @@ class Player
 		static std::mutex positionMutex;
 		static double x, y, z;
 		static bool updatedPos;
+		static unsigned char playerId;
+		static int entId;
 	private:
 };
 

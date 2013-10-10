@@ -23,6 +23,7 @@ void keyCallback(GLFWwindow* window, int key, int action)
 namespace Globals
 {
 	Camera camera;
+	Game gameInstance;
 }
 
 int main(int argc, char* argv[])

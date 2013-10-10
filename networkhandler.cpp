@@ -82,6 +82,8 @@ void HandleNetwork()
         {
         	if (network.CanRead()){
         		int psize = p.ReadInt();
+        		p.ReadBytes(psize);
+        		p.InPos = 4;
         		
 				unsigned char packetType = p.ReadByte();
 				if (!p.Valid)
@@ -97,23 +99,33 @@ void HandleNetwork()
 				}
 				else if(packetType == Packets::Login)
 				{
-					p.ReadByte();
-					p.ReadInt();
+					byte playerId = p.ReadByte();
+					int entityId = p.ReadInt();
+					
+					Player::playerId = playerId;
+					Player::entId = entityId;
 				}
 				else if(packetType == Packets::EntityCreate)
 				{
-					/*int entityId = */p.ReadInt();
+					int entityId = p.ReadInt();
 					string entityType = p.ReadString();
 					PropertyCollection* kak = recursiveReadProperties(p);
-					printf("kakhealth: %f\n", kak->GetTable("_ROOT_")->GetDouble("health"));
+					printf("health: %f\n", kak->GetTable("_ROOT_")->GetDouble("health"));
 					delete kak;
 				}
 				else if(packetType == Packets::EntityTeleport)
 				{
-					p.ReadInt();
-					p.ReadDouble();
-					p.ReadDouble();
-					p.ReadDouble();
+					int entId = p.ReadInt();
+					double x = p.ReadDouble();
+					double y = p.ReadDouble();
+					double z = p.ReadDouble();
+					
+					if(entId == Player::entId)
+					{
+						Player::x = x;
+						Player::y = y;
+						Player::z = z;
+					}
 				}
 				else if(packetType == Packets::EntityAngle)
 				{
@@ -141,6 +153,7 @@ void HandleNetwork()
 				else if(packetType == Packets::ChangeWorld)
 				{
 					string kakworld = p.ReadString();
+					p.ReadInt();
 					printf("in world %s\n", kakworld.c_str());
 				}
 				else if(packetType == Packets::EntityProperty)
@@ -152,6 +165,20 @@ void HandleNetwork()
 				{
 					p.ReadShort();
 					p.ReadShort();
+				}
+				else if(packetType == Packets::PlayerJoin)
+				{
+					p.ReadByte();
+					p.ReadString();
+				}
+				else if(packetType == Packets::PlayerInventoryFull)
+				{
+					for (int i = 0; i < 51; i++)
+					{
+						p.ReadShort();
+						p.ReadByte();
+						p.ReadByte();
+					}
 				}
 				else
 				{

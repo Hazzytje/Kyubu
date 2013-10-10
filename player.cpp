@@ -13,3 +13,6 @@ Player::~Player()
 std::mutex Player::positionMutex;
 double Player::x, Player::y, Player::z;
 bool Player::updatedPos = false;
+
+unsigned char Player::playerId = 0;
+int Player::entId = 0;

@@ -54,9 +54,13 @@
 		<Unit filename="chunk.h" />
 		<Unit filename="chunkHandler.cpp" />
 		<Unit filename="chunkHandler.h" />
+		<Unit filename="config.cpp" />
+		<Unit filename="config.h" />
 		<Unit filename="ezSockets.cpp" />
 		<Unit filename="ezSockets.h" />
 		<Unit filename="fragShader.txt" />
+		<Unit filename="game.cpp" />
+		<Unit filename="game.h" />
 		<Unit filename="globals.cpp" />
 		<Unit filename="globals.h" />
 		<Unit filename="hassert.h" />
