@@ -82,7 +82,7 @@ void HandleNetwork()
         while(true)
         {
         	if (network.CanRead()){
-        		int psize = p->ReadInt();
+        		int psize = p.ReadInt();
         		
 				unsigned char packetType = p.ReadByte();
 				if (!p.Valid)
