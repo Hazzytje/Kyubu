@@ -1,6 +1,7 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 #include <mutex>
+#include "camera.h"
 
 class Player
 {
@@ -8,12 +9,17 @@ class Player
 		Player();
 		~Player();
 		
-		static std::mutex positionMutex;
-		static double x, y, z;
-		static bool updatedPos;
-		static unsigned char playerId;
-		static int entId;
+		void Update();
+		
+		Camera camera;
+		std::mutex positionMutex;
+		double x, y, z;
+		bool updatedPos;
+		unsigned char playerId;
+		int entId;
+		
 	private:
+		double prevMouseX, prevMouseY;
 };
 
 #endif // __PLAYER_H__

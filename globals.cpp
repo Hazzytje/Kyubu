@@ -15,4 +15,9 @@ namespace Globals
 			error = glGetError();
 		}
 	}
+	Game* gameInstance;
+	Game& getGameInstance()
+	{
+		return *Globals::gameInstance;
+	}
 }

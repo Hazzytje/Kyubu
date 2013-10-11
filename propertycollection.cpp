@@ -1,5 +1,41 @@
 #include "propertycollection.h"
 
+PropertyCollection* recursiveReadProperties(Packet& pack)
+{
+    PropertyCollection* retVal = new PropertyCollection();
+    while(true)
+    {
+        unsigned char valType = pack.ReadByte();
+        if(valType == 0xff) return retVal;
+        string keyName = pack.ReadString();
+ 
+        switch(valType)
+        {
+        case PropertyTypes::Bool:
+            retVal->AddBool(keyName, pack.ReadByte());
+            break;
+        case PropertyTypes::Int:
+            retVal->AddInt(keyName, pack.ReadInt());
+            break;
+        case PropertyTypes::Double:
+            retVal->AddDouble(keyName, pack.ReadDouble());
+            printf("added %s, %f\n", keyName.c_str(), retVal->GetDouble(keyName));
+            break;
+        case PropertyTypes::String:
+            retVal->AddString(keyName, pack.ReadString());
+            break;
+        case PropertyTypes::Table:
+            retVal->AddTable(keyName, recursiveReadProperties(pack));
+            break;
+        default:
+            printf("unknown enum for property type %i\n", valType);
+            break;
+        }
+    }
+ 
+    return retVal;
+}
+
 PropertyCollection::PropertyCollection()
 {
 	//ctor

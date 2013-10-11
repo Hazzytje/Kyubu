@@ -1,0 +1,182 @@
+
+        public Vector3 CheckBox(float mx, float my, float mz) {
+            Vector3 np = this.Pos + new Vector3(mx, my, mz);
+
+            int cfx = (int)Math.Floor(np.X);
+            int cfy = (int)Math.Floor(np.Y);
+            int cfz = (int)Math.Floor(np.Z);
+            int fz = (int)Math.Ceiling(this.BoundingBox.Z);
+            BoundingBox cbox = new BoundingBox(np, np + this.BoundingBox);
+
+            if (mx != 0) {
+                int tx = (int)Math.Ceiling(cfx + mx);
+
+                for (int ay = -1; ay <= 1; ay++) {
+                    for (int az = 0; az < fz; az++) {
+                        short bid = Global.World.GetBlock(tx, cfy + ay, cfz + az);
+                        if (bid == 0 || Global.CollisionDisabledBlocks[bid])
+                            continue;
+
+                        Vector3 bo = new Vector3(tx, cfy + ay, cfz + az);
+                        BoundingBox bb = Global.GetBoundingBox(bid);
+                        bb.Min += bo;
+                        bb.Max += bo;
+
+                        // add 0.01 as Intersects checks == too, which would mean, we'd be stuck D:
+                        bb.Min.X += 0.01f;
+                        bb.Min.Y += 0.01f;
+                        bb.Min.Z += 0.01f;
+
+                        bb.Max.X -= 0.01f;
+                        bb.Max.Y -= 0.01f;
+                        bb.Max.Z -= 0.01f;
+
+                        if (cbox.Intersects(bb)) {
+                            return bo;
+                        }
+                    }
+                }
+
+                return Vector3.Zero;
+            }
+
+            if (my != 0) {
+                int ty = (int)Math.Ceiling(cfy + my);
+
+                for (int ax = -1; ax <= 1; ax++) {
+                    for (int az = 0; az < fz; az++) {
+                        short bid = Global.World.GetBlock(cfx + ax, ty, cfz + az);
+                        if (bid == 0 || Global.CollisionDisabledBlocks[bid])
+                            continue;
+
+                        Vector3 bo = new Vector3(cfx + ax, ty, cfz + az);
+                        BoundingBox bb = Global.GetBoundingBox(bid);
+                        bb.Min += bo;
+                        bb.Max += bo;
+
+                        // add 0.01 as Intersects checks == too, which would mean, we'd be stuck D:
+                        bb.Min.X += 0.01f;
+                        bb.Min.Y += 0.01f;
+                        bb.Min.Z += 0.01f;
+
+                        bb.Max.X -= 0.01f;
+                        bb.Max.Y -= 0.01f;
+                        bb.Max.Z -= 0.01f;
+
+                        bool retcol = false;
+                        if ((cbox.Max.X >= bb.Min.X) && (cbox.Min.X <= bb.Max.X)) {
+                            if ((cbox.Max.Y < bb.Min.Y) || (cbox.Min.Y > bb.Max.Y)) {
+                                retcol = false;
+                            }
+
+                            retcol = (cbox.Max.Z >= bb.Min.Z) && (cbox.Min.Z <= bb.Max.Z);
+                        }
+
+                        retcol = false;
+
+                        if (cbox.Intersects(bb)) {
+                            return bo;
+                        }
+                    }
+                }
+
+                return Vector3.Zero;
+            }
+
+            if (mz != 0) {
+                int tz = (int)Math.Ceiling(cfz + mz);
+                if (mz > 0)
+                    tz += 1;
+
+                for (int ax = -1; ax <= 1; ax++) {
+                    for (int ay = -1; ay <= 1; ay++) {
+                        short bid = Global.World.GetBlock(cfx + ax, cfy + ay, tz);
+                        if (bid == 0 || Global.CollisionDisabledBlocks[bid])
+                            continue;
+
+                        Vector3 bo = new Vector3(cfx + ax, cfy + ay, tz);
+                        BoundingBox bb = Global.GetBoundingBox(bid);
+                        bb.Min += bo;
+                        bb.Max += bo;
+
+                        // add 0.01 as Intersects checks == too, which would mean, we'd be stuck D:
+                        bb.Min.X += 0.01f;
+                        bb.Min.Y += 0.01f;
+                        bb.Min.Z += 0.01f;
+
+                        bb.Max.X -= 0.01f;
+                        bb.Max.Y -= 0.01f;
+                        bb.Max.Z -= 0.01f;
+
+                        if (cbox.Intersects(bb)) {
+                            return bo;
+                        }
+                    }
+                }
+
+                return Vector3.Zero;
+            }
+
+            return Vector3.Zero;
+        }
+
+        public void DoForceAndCollisionCheck() {
+            this.Force.Z -= 0.02f;
+
+            // first do X
+           if (this.Force.X != 0) {
+                Vector3 rx = this.CheckBox(this.Force.X, 0, 0);
+                if (rx != Vector3.Zero) {
+                    this.Force.X = 0;
+                }
+            }
+
+            // then Y
+            if (this.Force.Y != 0) {
+                Vector3 ry = this.CheckBox(0, this.Force.Y, 0);
+                if (ry != Vector3.Zero) {
+                    this.Force.Y = 0;
+                }
+            }
+
+            // And Z!
+            // this is gravity, so we'll have to do this a bit risky.
+            float left = this.Force.Z;
+            while (left != 0) {
+                float curdo = left > 0 ? (left < 1 ? left : 1) : (left < -1 ? -1 : left);
+
+                Vector3 rz = this.CheckBox(0, 0, curdo);
+                if (rz != Vector3.Zero) {
+                    BoundingBox bb = Global.GetBoundingBox(Global.World.GetBlock(rz.X, rz.Y, rz.Z));
+                    bb.Min += rz;
+                    bb.Max += rz;
+
+                    if (this.Force.Z > 0) this.Pos.Z = bb.Min.Z - this.BoundingBox.Z;
+                    else this.Pos.Z = bb.Max.Z;
+
+                    this.Force.Z = 0;
+                    break;
+                }
+
+                left -= curdo; //right...
+            }
+
+            this.Pos += this.Force;
+
+            if (this.CheckBox(0, 0, -0.1f) != Vector3.Zero) {
+                this.Force.X *= 0.9f;
+                this.Force.Y *= 0.9f;
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        

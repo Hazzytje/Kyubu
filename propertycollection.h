@@ -2,9 +2,13 @@
 #define __PROPERTYCOLLECTION_H__
 #include <string>
 #include <map>
+#include "packet.h"
 
 class PropertyPair;
 #include "propertypair.h"
+
+PropertyCollection* recursiveReadProperties(Packet& pack);
+
 
 class PropertyCollection
 {

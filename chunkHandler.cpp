@@ -95,7 +95,7 @@ ChunkHandler::ChunkHandler()
     const float* projMatrix = proj.ToFloatArray();
 
     glUniformMatrix4fv(projMatrixLocation, 1, GL_FALSE, projMatrix);
-    
+    /*
     for(int x = 0; x < 1; x++)
     {
         for(int y = 0; y < 1; y++)
@@ -108,7 +108,7 @@ ChunkHandler::ChunkHandler()
             ChunkList.push_back(testChunk);
         }
     }
-
+*/
     glUseProgram(0);
 }
 
@@ -130,7 +130,7 @@ void ChunkHandler::Render()
     glBindTexture(GL_TEXTURE_2D, textureHandle);
     //Globals::PrintAllGlErrors();
     //printf("at file %s, line %i\n", __FILE__, __LINE__);
-    Globals::camera.InsertViewMatrix(viewMatrixLocation);
+    Globals::getGameInstance().getPlayer().camera.InsertViewMatrix(viewMatrixLocation);
     //Globals::PrintAllGlErrors();
     //printf("at file %s, line %i\n", __FILE__, __LINE__);
 for(auto chunk : ChunkList)
