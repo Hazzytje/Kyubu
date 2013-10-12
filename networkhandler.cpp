@@ -34,14 +34,14 @@ void HandleNetwork()
     network.Create();
     network.mode = ezSockets::skGeneral;
     network.bBlocking = true;
-    if(network.Connect("home.4o3.nl", 25565))
+    if(network.Connect("DPH", 25565))
     {
         Packet p(&network);
         printf("connection OK!\n");
  
         p.WriteByte(Packets::Login);
         p.WriteString("0.0.2");
-        p.WriteString("Nigger");
+        p.WriteString("dinges");
         p.WriteInt(0);
         p.Send();
  

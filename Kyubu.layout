@@ -4,8 +4,11 @@
 	<File name="MercuryString.h" open="0" top="0" tabpos="0">
 		<Cursor position="2380" topLine="44" />
 	</File>
-	<File name="blocks.cpp" open="0" top="0" tabpos="6">
-		<Cursor position="1043" topLine="0" />
+	<File name="blocks.cpp" open="1" top="0" tabpos="9">
+		<Cursor position="1083" topLine="0" />
+	</File>
+	<File name="blocks.h" open="1" top="0" tabpos="8">
+		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="camera.cpp" open="0" top="0" tabpos="5">
 		<Cursor position="973" topLine="3" />
@@ -13,23 +16,23 @@
 	<File name="camera.h" open="0" top="0" tabpos="0">
 		<Cursor position="439" topLine="0" />
 	</File>
-	<File name="chunk.cpp" open="0" top="0" tabpos="2">
-		<Cursor position="8685" topLine="241" />
+	<File name="chunk.cpp" open="0" top="0" tabpos="8">
+		<Cursor position="8749" topLine="241" />
 	</File>
 	<File name="chunk.h" open="0" top="0" tabpos="0">
 		<Cursor position="188" topLine="0" />
 	</File>
 	<File name="chunkHandler.cpp" open="0" top="0" tabpos="7">
-		<Cursor position="852" topLine="0" />
+		<Cursor position="2549" topLine="66" />
 	</File>
 	<File name="chunkHandler.h" open="0" top="0" tabpos="8">
 		<Cursor position="228" topLine="0" />
 	</File>
-	<File name="config.cpp" open="1" top="0" tabpos="4">
-		<Cursor position="11193" topLine="438" />
+	<File name="config.cpp" open="0" top="0" tabpos="15">
+		<Cursor position="253" topLine="0" />
 	</File>
-	<File name="config.h" open="1" top="0" tabpos="3">
-		<Cursor position="1691" topLine="42" />
+	<File name="config.h" open="0" top="0" tabpos="16">
+		<Cursor position="78" topLine="0" />
 	</File>
 	<File name="ezSockets.cpp" open="0" top="0" tabpos="13">
 		<Cursor position="4919" topLine="213" />
@@ -37,49 +40,58 @@
 	<File name="ezSockets.h" open="0" top="0" tabpos="12">
 		<Cursor position="3558" topLine="136" />
 	</File>
-	<File name="globals.cpp" open="1" top="0" tabpos="10">
-		<Cursor position="264" topLine="0" />
+	<File name="game.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="927" topLine="0" />
 	</File>
-	<File name="globals.h" open="1" top="0" tabpos="11">
-		<Cursor position="130" topLine="0" />
+	<File name="game.h" open="1" top="0" tabpos="2">
+		<Cursor position="111" topLine="0" />
+	</File>
+	<File name="globals.cpp" open="0" top="0" tabpos="14">
+		<Cursor position="104" topLine="0" />
+	</File>
+	<File name="globals.h" open="0" top="0" tabpos="11">
+		<Cursor position="129" topLine="0" />
 	</File>
 	<File name="main.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="469" topLine="0" />
+		<Cursor position="487" topLine="0" />
 	</File>
-	<File name="networkhandler.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="2202" topLine="71" />
+	<File name="networkhandler.cpp" open="1" top="0" tabpos="7">
+		<Cursor position="863" topLine="0" />
 	</File>
 	<File name="networkhandler.h" open="0" top="0" tabpos="1">
 		<Cursor position="242" topLine="0" />
 	</File>
 	<File name="packet.cpp" open="0" top="0" tabpos="11">
-		<Cursor position="1769" topLine="51" />
+		<Cursor position="1065" topLine="0" />
 	</File>
-	<File name="packet.h" open="0" top="0" tabpos="10">
-		<Cursor position="305" topLine="0" />
+	<File name="packet.h" open="1" top="0" tabpos="6">
+		<Cursor position="178" topLine="10" />
 	</File>
-	<File name="packets.h" open="1" top="0" tabpos="5">
-		<Cursor position="3011" topLine="18" />
+	<File name="packets.h" open="1" top="1" tabpos="10">
+		<Cursor position="1709" topLine="6" />
 	</File>
-	<File name="player.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="231" topLine="0" />
+	<File name="player.cpp" open="1" top="0" tabpos="5">
+		<Cursor position="211" topLine="0" />
 	</File>
-	<File name="player.h" open="1" top="0" tabpos="7">
-		<Cursor position="287" topLine="0" />
+	<File name="player.h" open="1" top="0" tabpos="4">
+		<Cursor position="288" topLine="0" />
 	</File>
 	<File name="propertycollection.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="538" topLine="0" />
+		<Cursor position="33" topLine="0" />
 	</File>
-	<File name="propertycollection.h" open="0" top="0" tabpos="0">
-		<Cursor position="271" topLine="0" />
+	<File name="propertycollection.h" open="0" top="0" tabpos="11">
+		<Cursor position="118" topLine="0" />
 	</File>
-	<File name="propertypair.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="733" topLine="3" />
+	<File name="propertypair.cpp" open="0" top="0" tabpos="9">
+		<Cursor position="140" topLine="0" />
 	</File>
-	<File name="propertypair.h" open="0" top="0" tabpos="0">
-		<Cursor position="478" topLine="0" />
+	<File name="propertypair.h" open="0" top="0" tabpos="10">
+		<Cursor position="123" topLine="0" />
 	</File>
-	<File name="textureloader.cpp" open="0" top="0" tabpos="0">
+	<File name="textureloader.cpp" open="0" top="0" tabpos="12">
 		<Cursor position="689" topLine="6" />
+	</File>
+	<File name="vector3.cpp" open="0" top="0" tabpos="13">
+		<Cursor position="0" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>
