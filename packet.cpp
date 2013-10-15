@@ -1,6 +1,5 @@
 #include <string.h>
 #include "packet.h"
-#include <errno.h>
 
 Packet::Packet(){
 	this->Valid = false;
