@@ -11,6 +11,7 @@
 #include "packet.h"
 #include "propertycollection.h"
 #include "chunkHandler.h"
+#include "config.h"
 
 #define CHUNK_LAYER (16 * 16)
 #define CHUNK_TOTALSIZE (CHUNK_LAYER * 256)
@@ -34,7 +35,10 @@ void HandleNetwork()
     network.Create();
     network.mode = ezSockets::skGeneral;
     network.bBlocking = true;
-    if(network.Connect("DPH", 25565))
+    
+    Config bla("default.cfg");
+    
+    if(network.Connect(bla.GetString("ip").c_str(), 25565))
     {
         Packet p(&network);
         printf("connection OK!\n");
