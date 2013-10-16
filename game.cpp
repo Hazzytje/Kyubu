@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string.h>
 #include "packet.h"
-#include "packets.h"
+#include "enums.h"
 #include "globals.h"
 #include "propertycollection.h"
 
