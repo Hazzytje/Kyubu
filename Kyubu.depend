@@ -35,7 +35,7 @@
 	"camera.h"
 	"game.h"
 
-1379856542 /home/h/Development/cpp/Kyubu/chunk.h
+1381947359 /home/h/Development/cpp/Kyubu/chunk.h
 	<GL/glfw3.h>
 	"chunkHandler.h"
 
@@ -76,11 +76,10 @@
 1379532532 /home/h/Development/cpp/Kyubu/hassert.h
 	<stdio.h>
 
-1381670643 source:/home/h/Development/cpp/Kyubu/main.cpp
+1381948653 source:/home/h/Development/cpp/Kyubu/main.cpp
 	<GL/glew.h>
 	<stdio.h>
 	<GL/glfw3.h>
-	<btBulletDynamicsCommon.h>
 	<math.h>
 	"player.h"
 	"blocks.h"
@@ -98,7 +97,7 @@
 	"textureloader.h"
 	<stdio.h>
 
-1379535334 source:/home/h/Development/cpp/Kyubu/vector3.cpp
+1381933234 source:/home/h/Development/cpp/Kyubu/vector3.cpp
 	"vector3.h"
 	<math.h>
 
@@ -112,7 +111,7 @@
 1379856542 /home/h/Development/cpp/Kyubu/MercuryString.h
 	"StdString.h"
 
-1381871720 source:/home/h/Development/cpp/Kyubu/networkhandler.cpp
+1381947385 source:/home/h/Development/cpp/Kyubu/networkhandler.cpp
 	"networkhandler.h"
 	<string>
 	<string.h>
@@ -121,7 +120,7 @@
 	"globals.h"
 	"chunk.h"
 	"ezSockets.h"
-	"packets.h"
+	"enums.h"
 	"player.h"
 	"packet.h"
 	"propertycollection.h"
@@ -176,11 +175,12 @@
 1379856542 source:/home/h/Development/cpp/Kyubu/propertypair.cpp
 	"propertypair.h"
 
-1381670643 /home/h/Development/cpp/Kyubu/player.h
+1381954197 /home/h/Development/cpp/Kyubu/player.h
 	<mutex>
 	"camera.h"
+	"entity.h"
 
-1381926303 source:/home/h/Development/cpp/Kyubu/player.cpp
+1381954305 source:/home/h/Development/cpp/Kyubu/player.cpp
 	"player.h"
 	<GL/glfw3.h>
 	"globals.h"
@@ -718,14 +718,28 @@
 	"player.h"
 	"propertycollection.h"
 
-1381670643 source:/home/h/Development/cpp/Kyubu/game.cpp
+1381954267 source:/home/h/Development/cpp/Kyubu/game.cpp
 	"game.h"
 	<iostream>
 	<string.h>
 	"packet.h"
-	"packets.h"
+	"enums.h"
 	"globals.h"
 	"propertycollection.h"
 
 1381926021 /home/h/Development/cpp/Kyubu/enums.h
+
+1381953830 source:/home/h/Development/cpp/Kyubu/entity.cpp
+	"entity.h"
+
+1381954246 /home/h/Development/cpp/Kyubu/entity.h
+	<GL/glew.h>
+	"vector3.h"
+	"boundingbox.h"
+
+1381953859 source:/home/h/Development/cpp/Kyubu/boundingbox.cpp
+	"boundingbox.h"
+
+1381953843 /home/h/Development/cpp/Kyubu/boundingbox.h
+	"vector3.h"
 

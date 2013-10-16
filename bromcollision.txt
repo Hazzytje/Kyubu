@@ -1,24 +1,24 @@
 
         public Vector3 CheckBox(float mx, float my, float mz) {
-            Vector3 np = this.Pos + new Vector3(mx, my, mz);
+            Vector3 np = this.Pos + new Vector3(mx, my, mz); // new pos
 
-            int cfx = (int)Math.Floor(np.X);
+            int cfx = (int)Math.Floor(np.X); // current floored X
             int cfy = (int)Math.Floor(np.Y);
             int cfz = (int)Math.Floor(np.Z);
-            int fz = (int)Math.Ceiling(this.BoundingBox.Z);
-            BoundingBox cbox = new BoundingBox(np, np + this.BoundingBox);
+            int fz = (int)Math.Ceiling(this.BoundingBox.Z); // floored Z
+            BoundingBox cbox = new BoundingBox(np, np + this.BoundingBox); // current box
 
             if (mx != 0) {
                 int tx = (int)Math.Ceiling(cfx + mx);
 
-                for (int ay = -1; ay <= 1; ay++) {
+                for (int ay = -1; ay <= 1; ay++) { // add Y/Z
                     for (int az = 0; az < fz; az++) {
-                        short bid = Global.World.GetBlock(tx, cfy + ay, cfz + az);
+                        short bid = Global.World.GetBlock(tx, cfy + ay, cfz + az); // block id
                         if (bid == 0 || Global.CollisionDisabledBlocks[bid])
                             continue;
 
-                        Vector3 bo = new Vector3(tx, cfy + ay, cfz + az);
-                        BoundingBox bb = Global.GetBoundingBox(bid);
+                        Vector3 bo = new Vector3(tx, cfy + ay, cfz + az); // block offset
+                        BoundingBox bb = Global.GetBoundingBox(bid); // bounding box
                         bb.Min += bo;
                         bb.Max += bo;
 
@@ -62,18 +62,7 @@
                         bb.Max.X -= 0.01f;
                         bb.Max.Y -= 0.01f;
                         bb.Max.Z -= 0.01f;
-
-                        bool retcol = false;
-                        if ((cbox.Max.X >= bb.Min.X) && (cbox.Min.X <= bb.Max.X)) {
-                            if ((cbox.Max.Y < bb.Min.Y) || (cbox.Min.Y > bb.Max.Y)) {
-                                retcol = false;
-                            }
-
-                            retcol = (cbox.Max.Z >= bb.Min.Z) && (cbox.Min.Z <= bb.Max.Z);
-                        }
-
-                        retcol = false;
-
+			
                         if (cbox.Intersects(bb)) {
                             return bo;
                         }
@@ -125,7 +114,7 @@
 
             // first do X
            if (this.Force.X != 0) {
-                Vector3 rx = this.CheckBox(this.Force.X, 0, 0);
+                Vector3 rx = this.CheckBox(this.Force.X, 0, 0); // return X
                 if (rx != Vector3.Zero) {
                     this.Force.X = 0;
                 }
@@ -143,7 +132,7 @@
             // this is gravity, so we'll have to do this a bit risky.
             float left = this.Force.Z;
             while (left != 0) {
-                float curdo = left > 0 ? (left < 1 ? left : 1) : (left < -1 ? -1 : left);
+                float curdo = left > 0 ? (left < 1 ? left : 1) : (left < -1 ? -1 : left); // lol jij boos?
 
                 Vector3 rz = this.CheckBox(0, 0, curdo);
                 if (rz != Vector3.Zero) {
