@@ -53,7 +53,7 @@
 1379535298 /home/h/Development/cpp/Kyubu/hgl.h
 	<GL/glew.h>
 
-1379856542 /home/h/Development/cpp/Kyubu/chunkHandler.h
+1381957472 /home/h/Development/cpp/Kyubu/chunkHandler.h
 	<GL/glfw3.h>
 	<vector>
 	<queue>
@@ -111,20 +111,13 @@
 1379856542 /home/h/Development/cpp/Kyubu/MercuryString.h
 	"StdString.h"
 
-1381947385 source:/home/h/Development/cpp/Kyubu/networkhandler.cpp
+1381955151 source:/home/h/Development/cpp/Kyubu/networkhandler.cpp
 	"networkhandler.h"
-	<string>
 	<string.h>
-	<cstdio>
-	<utility>
 	"globals.h"
-	"chunk.h"
 	"ezSockets.h"
-	"enums.h"
-	"player.h"
 	"packet.h"
-	"propertycollection.h"
-	"chunkHandler.h"
+	"enums.h"
 	"config.h"
 
 1379856542 /home/h/Development/cpp/Kyubu/networkhandler.h
@@ -727,12 +720,12 @@
 	"globals.h"
 	"propertycollection.h"
 
-1381926021 /home/h/Development/cpp/Kyubu/enums.h
+1381956553 /home/h/Development/cpp/Kyubu/enums.h
 
 1381953830 source:/home/h/Development/cpp/Kyubu/entity.cpp
 	"entity.h"
 
-1381954246 /home/h/Development/cpp/Kyubu/entity.h
+1381958023 /home/h/Development/cpp/Kyubu/entity.h
 	<GL/glew.h>
 	"vector3.h"
 	"boundingbox.h"

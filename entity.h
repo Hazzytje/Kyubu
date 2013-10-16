@@ -15,6 +15,7 @@ class Entity
 		int entityId;
 	protected:
 		Vector3 pos;
+		Vector3 vel;
 		BoundingBox bbox;
 	private:
 		GLuint vao;

@@ -59,9 +59,11 @@ void Player::Update()
 
 	glfwSetCursorPos(window, 1024 / 2, 768 / 2);
 	glfwGetCursorPos(window, &prevMouseX, &prevMouseY);
+	
+	Entity::Update();
 }
 
 void Player::Draw()
 {
-	
+	Entity::Draw();
 }

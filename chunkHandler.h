@@ -22,6 +22,8 @@ public:
     ~ChunkHandler();
 	void Update();
     void Render();
+    ushort GetBlockAt(int x, int y, int z);
+    
 	static GLuint shaderProgramHandle;
 	
 //private:

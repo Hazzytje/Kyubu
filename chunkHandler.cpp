@@ -146,3 +146,24 @@ for(auto chunk : ChunkList)
     glBindVertexArray(0);
     glUseProgram(0);
 }
+
+ushort GetBlockAt(int x, int y, int z)
+{
+	if(z < 0 || z > 256)
+	{
+		return 0;
+	}
+	int neededChunkX = x - x % 16;
+	int neededChunkY = y - y % 16;
+	for(auto chunk : ChunkList)
+	{
+		if(chunk->chunkX == neededChunkX && chunk->chunkY == neededChunkY)
+		{
+			return chunk->blockData[z * 256 + y * 16 + x];
+		}
+	}
+}
+
+
+
+
