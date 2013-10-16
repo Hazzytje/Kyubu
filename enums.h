@@ -150,9 +150,31 @@ namespace Packets {
 		BlockMeta, // WX, WY, Z, byte meta
 		BlockMultiChange, // start WX, start WY, start z, width, dept, height, per block[ushort block, byte meta]
 
-		ServerTextures, // short w, short h, byte[] zlib_buffer
-						// the zlib buffer will be the raw pixel data, RGBA format
-						
+		
+		ServerData, // block texture {int w, int h, byte[] zlib_buffer}
+					// view texture {int w, int h, byte[] zlib_buffer}
+					// block texture coordiates byte[] zlib_buffer
+					// block settings byte[] zlib_buffer
+					// item recipes byte[] zlib_buffer
+
+					// one setting is a short, with bit flags
+					//{
+						// 0: contains alpha, for seperate draw calls
+						// 1: Ignore collisions
+						// 2: Useble block
+						// 3: can override, example: water to be ignored if you place a block, so we can "override" it
+						// 4: instant destroy
+						// 5: wont drop on destroy
+						// 6: is sprite, sapling, tallgrass, sugercane, etc.
+						// 7: custom collision/render box 
+						// 8: unused
+						// 9 - 13: light level
+						// 14 - 15: block destroy type, pickaxe 00, axe 01, shovel 10, sword 11
+					//}
+
+					// one texture coordinate is 6 times 4 floats, StartX, StartY, EndX, EndY. Top, Down, Left, Right, Front, Back
+					// one recipe is: Short craftID, byte craftCount, 9 shorts ID's needed, 9 bytes counts needed.
+					
 		Kick = 0xFF // string reason
 	};
 
