@@ -150,6 +150,9 @@ namespace Packets {
 		BlockMeta, // WX, WY, Z, byte meta
 		BlockMultiChange, // start WX, start WY, start z, width, dept, height, per block[ushort block, byte meta]
 
+		ServerTextures, // short w, short h, byte[] zlib_buffer
+						// the zlib buffer will be the raw pixel data, RGBA format
+						
 		Kick = 0xFF // string reason
 	};
 

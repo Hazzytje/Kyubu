@@ -6,13 +6,6 @@
 
 std::map<unsigned short, Block> Blocks::blockRegister = std::map<unsigned short, Block>();
 
-namespace BlockTypes {
-	enum Enum {
-		Air, Stone, Grass, Dirt, Bedrock, Water, Lava, Sand, Gravel, GoldOre, IronOre, CoalOre, DiamondOre, Wood, Leaves, LazuliOre, SandStone, Snow, Ice, Cactus, Tree, Clay, Obsidian, Green_SugarCane, Green_Grass, Green_DeadBush, Green_FlowerYellow, Green_FlowerRed, RedstoneOre
-		//   got    got    got   got      got    got   got   got     got      got      got      got         got   got     needtex    needtex    got   got  got     got   got   got       got              needtex      needtex         got                 got              got
-	};
-}
-
 void Blocks::initBlocks()
 {
 	Block stone;
