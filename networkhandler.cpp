@@ -6,7 +6,7 @@
 #include "globals.h"
 #include "chunk.h"
 #include "ezSockets.h"
-#include "packets.h"
+#include "enums.h"
 #include "player.h"
 #include "packet.h"
 #include "propertycollection.h"
