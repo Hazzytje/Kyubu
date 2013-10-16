@@ -2,21 +2,19 @@
 #define __PLAYER_H__
 #include <mutex>
 #include "camera.h"
+#include "entity.h"
 
-class Player
+class Player : public Entity
 {
 	public:
 		Player();
 		~Player();
 		
 		void Update();
+		void Draw();
 		
 		Camera camera;
-		std::mutex positionMutex;
-		double x, y, z;
-		bool updatedPos;
 		unsigned char playerId;
-		int entId;
 		
 	private:
 		double prevMouseX, prevMouseY;

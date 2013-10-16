@@ -4,7 +4,7 @@
 #include <math.h>
 
 Player::Player()
-:x(0), y(0), z(0),updatedPos(0), playerId(0), entId(0)
+:playerId(0)
 {
 	
 }
@@ -18,7 +18,6 @@ void Player::Update()
 {	
 	GLFWwindow* window = Globals::getGameInstance().window;
 	
-	float oldX = camera.GetX(), oldY = camera.GetY(), oldZ = camera.GetZ();
 	float speed = 1.0f;
 	//forward/backward motion TODO: move to player class
 	if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -44,13 +43,7 @@ void Player::Update()
 		camera.AddX(cos(float(camera.GetYaw() + (M_PI / 180) * 90)) * speed);
 		camera.AddY(sin(float(camera.GetYaw() + (M_PI / 180) * 90)) * speed);
 	}
-	Player::positionMutex.lock();
-	Player::x = camera.GetX() - oldX;
-	Player::y = camera.GetY() - oldY;
-	Player::z = camera.GetZ() - oldZ;
-	Player::updatedPos = true;
-	Player::positionMutex.unlock();
-
+	
 	double mouseX, mouseY;
 	glfwGetCursorPos(window, &mouseX, &mouseY);
 	double mouseDeltaX = mouseX - prevMouseX;
@@ -66,4 +59,9 @@ void Player::Update()
 
 	glfwSetCursorPos(window, 1024 / 2, 768 / 2);
 	glfwGetCursorPos(window, &prevMouseX, &prevMouseY);
+}
+
+void Player::Draw()
+{
+	
 }

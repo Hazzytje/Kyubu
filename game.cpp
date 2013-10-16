@@ -54,11 +54,11 @@ void Game::Update()
 			int entityId = p.ReadInt();
 			
 			localPlayer.playerId = playerId;
-			localPlayer.entId = entityId;
+			localPlayer.entityId = entityId;
 			
-			localPlayer.camera.SetX(entityPropertyList[localPlayer.entId]->GetDouble("x"));
-			localPlayer.camera.SetY(entityPropertyList[localPlayer.entId]->GetDouble("y"));
-			localPlayer.camera.SetZ(entityPropertyList[localPlayer.entId]->GetDouble("z"));
+			localPlayer.camera.SetX(entityPropertyList[localPlayer.entityId]->GetDouble("x"));
+			localPlayer.camera.SetY(entityPropertyList[localPlayer.entityId]->GetDouble("y"));
+			localPlayer.camera.SetZ(entityPropertyList[localPlayer.entityId]->GetDouble("z"));
 		}
 		else if(packetType == Packets::EntityCreate)
 		{
