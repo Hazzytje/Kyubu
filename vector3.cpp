@@ -1,6 +1,8 @@
 #include "vector3.h"
 #include <math.h>
 
+const Vector3 Vector3::Zero = Vector3();
+
 Vector3::Vector3()
 {
 	x = 0.0f;
@@ -74,6 +76,54 @@ Vector3 Vector3::operator/ (const Vector3& other) const
 Vector3 Vector3::operator/ (const float& scale) const
 {
 	return Vector3(x / scale, y / scale, z / scale);
+}
+
+Vector3& Vector3::operator-= (const Vector3& other)
+{
+	x = x - other.x;
+	y = y - other.y;
+	z = z - other.z;
+	return *this;
+}
+
+Vector3& Vector3::operator+= (const Vector3& other)
+{
+	x = x + other.x;
+	y = y + other.y;
+	z = z + other.z;
+	return *this;
+}
+
+Vector3& Vector3::operator*= (const Vector3& other)
+{
+	x = x * other.x;
+	y = y * other.y;
+	z = z * other.z;
+	return *this;
+}
+
+Vector3& Vector3::operator*= (const float& other)
+{
+	x = x + other;
+	y = y + other;
+	z = z + other;
+	return *this;
+}
+
+Vector3& Vector3::operator/= (const Vector3& other)
+{
+	x = x / other.x;
+	y = y / other.y;
+	z = z / other.z;
+	return *this;
+}
+
+Vector3& Vector3::operator/= (const float& other)
+{
+	x = x / other;
+	y = y / other;
+	z = z / other;
+	return *this;
 }
 
 bool Vector3::operator== (const Vector3& other) const 
