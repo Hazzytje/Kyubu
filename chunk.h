@@ -19,7 +19,6 @@ public:
 	short chunkX;
 	short chunkY;
 //private:
-	GLuint shaderProgramHandle;
 	GLuint vbo, ebo;
 	GLuint vaoHandle;
 	int triangleCount;
