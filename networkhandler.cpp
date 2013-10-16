@@ -1,16 +1,9 @@
 #include "networkhandler.h"
-#include <string>
 #include <string.h>
-#include <cstdio>
-#include <utility>
 #include "globals.h"
-#include "chunk.h"
 #include "ezSockets.h"
-#include "enums.h"
-#include "player.h"
 #include "packet.h"
-#include "propertycollection.h"
-#include "chunkHandler.h"
+#include "enums.h"
 #include "config.h"
 
 #define CHUNK_LAYER (16 * 16)
