@@ -4,7 +4,7 @@
 #include <math.h>
 
 Player::Player()
-:entId(0), playerId(0), updatedPos(0), x(0), y(0), z(0)
+:x(0), y(0), z(0),updatedPos(0), playerId(0), entId(0)
 {
 	
 }

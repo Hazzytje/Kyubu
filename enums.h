@@ -5,7 +5,7 @@ namespace Biomes {
 	};
 }
 
-namespace Blocks {
+namespace BlockTypes {
 	enum Enum {
 		Air, // always zero, it is sad asian.
 

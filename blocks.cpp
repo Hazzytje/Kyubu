@@ -1,4 +1,5 @@
 #include "blocks.h"
+#include "enums.h"
 #define SETTEXTUREAT(var, x, y) (var[0] = x    , var[1] = y,     \
                                  var[2] = x + 1, var[3] = y,     \
 								 var[4] = x + 1, var[5] = y + 1, \
@@ -62,14 +63,14 @@ void Blocks::initBlocks()
 	SETTEXTUREAT(water.westTexCoords, 15, 15);
 	blockRegister[BlockTypes::Lava] = lava;
 	
-	Block tree;
-	SETTEXTUREAT(tree.topTexCoords, 5, 1);
-	SETTEXTUREAT(tree.bottomTexCoords, 5, 1);
-	SETTEXTUREAT(tree.northTexCoords, 4, 1);
-	SETTEXTUREAT(tree.eastTexCoords, 4, 1);
-	SETTEXTUREAT(tree.southTexCoords, 4, 1);
-	SETTEXTUREAT(tree.westTexCoords, 4, 1);
-	blockRegister[BlockTypes::Tree] = tree;
+	Block wood;
+	SETTEXTUREAT(wood.topTexCoords, 5, 1);
+	SETTEXTUREAT(wood.bottomTexCoords, 5, 1);
+	SETTEXTUREAT(wood.northTexCoords, 4, 1);
+	SETTEXTUREAT(wood.eastTexCoords, 4, 1);
+	SETTEXTUREAT(wood.southTexCoords, 4, 1);
+	SETTEXTUREAT(wood.westTexCoords, 4, 1);
+	blockRegister[BlockTypes::Wood] = wood;
 	
 	Block leaves;
 	SETTEXTUREAT(leaves.topTexCoords, 5, 3);
@@ -80,14 +81,14 @@ void Blocks::initBlocks()
 	SETTEXTUREAT(leaves.westTexCoords, 5, 3);
 	blockRegister[BlockTypes::Leaves] = leaves;
 	
-	Block wood;
-	SETTEXTUREAT(wood.topTexCoords, 4, 0);
-	SETTEXTUREAT(wood.bottomTexCoords, 4, 0);
-	SETTEXTUREAT(wood.northTexCoords, 4, 0);
-	SETTEXTUREAT(wood.eastTexCoords, 4, 0);
-	SETTEXTUREAT(wood.southTexCoords, 4, 0);
-	SETTEXTUREAT(wood.westTexCoords, 4, 0);
-	blockRegister[BlockTypes::Wood] = wood;
+	Block planks;
+	SETTEXTUREAT(planks.topTexCoords, 4, 0);
+	SETTEXTUREAT(planks.bottomTexCoords, 4, 0);
+	SETTEXTUREAT(planks.northTexCoords, 4, 0);
+	SETTEXTUREAT(planks.eastTexCoords, 4, 0);
+	SETTEXTUREAT(planks.southTexCoords, 4, 0);
+	SETTEXTUREAT(planks.westTexCoords, 4, 0);
+	blockRegister[BlockTypes::Planks] = planks;
 	
 	Block diamondOre;
 	SETTEXTUREAT(diamondOre.topTexCoords, 2, 3);
@@ -204,7 +205,7 @@ void Blocks::initBlocks()
 	SETTEXTUREAT(sugarCane.eastTexCoords, 9, 4);
 	SETTEXTUREAT(sugarCane.southTexCoords, 9, 4);
 	SETTEXTUREAT(sugarCane.westTexCoords, 9, 4);
-	blockRegister[BlockTypes::Green_SugarCane] = sugarCane;
+	blockRegister[BlockTypes::SugarCane] = sugarCane;
 	
 	Block flower;
 	SETTEXTUREAT(flower.topTexCoords, 13, 0);
@@ -213,7 +214,7 @@ void Blocks::initBlocks()
 	SETTEXTUREAT(flower.eastTexCoords, 13, 0);
 	SETTEXTUREAT(flower.southTexCoords, 13, 0);
 	SETTEXTUREAT(flower.westTexCoords, 13, 0);
-	blockRegister[BlockTypes::Green_FlowerYellow] = flower;
+	blockRegister[BlockTypes::FlowerYellow] = flower;
 	
 	Block rose;
 	SETTEXTUREAT(rose.topTexCoords, 12, 0);
@@ -222,7 +223,7 @@ void Blocks::initBlocks()
 	SETTEXTUREAT(rose.eastTexCoords, 12, 0);
 	SETTEXTUREAT(rose.southTexCoords, 12, 0);
 	SETTEXTUREAT(rose.westTexCoords, 12, 0);
-	blockRegister[BlockTypes::Green_FlowerRed] = rose;
+	blockRegister[BlockTypes::FlowerRed] = rose;
 	
 	
 }

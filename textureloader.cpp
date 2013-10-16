@@ -4,7 +4,7 @@
 
 Loadedimage::Loadedimage(const char* fileName)
 {
-	FILE* file = fopen(fileName, "r");
+	FILE* file = fopen(fileName, "rb");
 	if(file == NULL)
 	{
 		printf("Error while opening file %s\n", fileName);
