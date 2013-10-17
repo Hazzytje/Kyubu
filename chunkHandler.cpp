@@ -119,20 +119,10 @@ ChunkHandler::~ChunkHandler()
 
 void ChunkHandler::Render()
 {
-    //Globals::PrintAllGlErrors();
-    //printf("at file %s, line %i\n", __FILE__, __LINE__);
     glUseProgram(shaderProgramHandle);
-    //Globals::PrintAllGlErrors();
-    //printf("at file %s, line %i\n", __FILE__, __LINE__);
     glActiveTexture(GL_TEXTURE0);
-    //Globals::PrintAllGlErrors();
-    //printf("at file %s, line %i\n", __FILE__, __LINE__);
     glBindTexture(GL_TEXTURE_2D, textureHandle);
-    //Globals::PrintAllGlErrors();
-    //printf("at file %s, line %i\n", __FILE__, __LINE__);
     Globals::getGameInstance().getPlayer().camera.InsertViewMatrix(viewMatrixLocation);
-    //Globals::PrintAllGlErrors();
-    //printf("at file %s, line %i\n", __FILE__, __LINE__);
 for(auto chunk : ChunkList)
     {
         Matrix modelMatrix = Matrix::CreateTranslation(chunk->chunkX * 16, chunk->chunkY * 16, 0);
@@ -142,7 +132,6 @@ for(auto chunk : ChunkList)
         chunk->Render();
     }
     Globals::PrintAllGlErrors();
-    //printf("at file %s, line %i\n", __FILE__, __LINE__);
     glBindVertexArray(0);
     glUseProgram(0);
 }

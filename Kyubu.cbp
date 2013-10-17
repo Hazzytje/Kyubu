@@ -39,15 +39,13 @@
 			<Add library="GLEW" />
 			<Add library="glfw" />
 			<Add library="z" />
-			<Add library="BulletDynamics" />
-			<Add library="BulletCollision" />
-			<Add library="LinearMath" />
-			<Add library="BulletSoftBody" />
 		</Linker>
 		<Unit filename="MercuryString.cpp" />
 		<Unit filename="MercuryString.h" />
 		<Unit filename="blocks.cpp" />
 		<Unit filename="blocks.h" />
+		<Unit filename="boundingbox.cpp" />
+		<Unit filename="boundingbox.h" />
 		<Unit filename="camera.cpp" />
 		<Unit filename="camera.h" />
 		<Unit filename="chunk.cpp" />
@@ -56,6 +54,9 @@
 		<Unit filename="chunkHandler.h" />
 		<Unit filename="config.cpp" />
 		<Unit filename="config.h" />
+		<Unit filename="entity.cpp" />
+		<Unit filename="entity.h" />
+		<Unit filename="enums.h" />
 		<Unit filename="ezSockets.cpp" />
 		<Unit filename="ezSockets.h" />
 		<Unit filename="fragShader.txt" />
@@ -73,7 +74,6 @@
 		<Unit filename="networkhandler.h" />
 		<Unit filename="packet.cpp" />
 		<Unit filename="packet.h" />
-		<Unit filename="packets.h" />
 		<Unit filename="player.cpp" />
 		<Unit filename="player.h" />
 		<Unit filename="propertycollection.cpp" />
