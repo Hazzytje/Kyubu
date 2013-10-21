@@ -6,7 +6,7 @@
 Player::Player()
 :playerId(0)
 {
-	
+	bbox = BoundingBox();
 }
 
 Player::~Player()
@@ -65,5 +65,5 @@ void Player::Update()
 
 void Player::Draw()
 {
-	Entity::Draw();
+	
 }
