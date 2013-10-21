@@ -21,6 +21,10 @@ class Entity
 		GLuint vao;
 		GLuint vbo, ebo;
 		int triangleCount;
+		
+		void MoveX(float distance);
+		void MoveY(float distance);
+		void MoveZ(float distance);
 };
 
 #endif

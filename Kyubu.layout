@@ -11,10 +11,10 @@
 		<Cursor position="336" topLine="0" />
 	</File>
 	<File name="boundingbox.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="298" topLine="0" />
+		<Cursor position="260" topLine="0" />
 	</File>
-	<File name="boundingbox.h" open="0" top="0" tabpos="0">
-		<Cursor position="152" topLine="0" />
+	<File name="boundingbox.h" open="1" top="0" tabpos="8">
+		<Cursor position="132" topLine="0" />
 	</File>
 	<File name="camera.cpp" open="0" top="0" tabpos="5">
 		<Cursor position="1192" topLine="3" />
@@ -28,23 +28,23 @@
 	<File name="chunk.h" open="0" top="0" tabpos="0">
 		<Cursor position="331" topLine="0" />
 	</File>
-	<File name="chunkHandler.cpp" open="1" top="1" tabpos="6">
-		<Cursor position="4896" topLine="117" />
+	<File name="chunkHandler.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="4553" topLine="106" />
 	</File>
 	<File name="chunkHandler.h" open="0" top="0" tabpos="8">
 		<Cursor position="377" topLine="0" />
 	</File>
 	<File name="config.cpp" open="0" top="0" tabpos="11">
-		<Cursor position="163" topLine="0" />
+		<Cursor position="112" topLine="0" />
 	</File>
 	<File name="config.h" open="0" top="0" tabpos="10">
-		<Cursor position="142" topLine="0" />
+		<Cursor position="736" topLine="0" />
 	</File>
-	<File name="entity.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="122" topLine="0" />
+	<File name="entity.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="462" topLine="0" />
 	</File>
 	<File name="entity.h" open="1" top="0" tabpos="2">
-		<Cursor position="277" topLine="0" />
+		<Cursor position="437" topLine="0" />
 	</File>
 	<File name="enums.h" open="1" top="0" tabpos="4">
 		<Cursor position="7059" topLine="139" />
@@ -83,10 +83,10 @@
 		<Cursor position="178" topLine="10" />
 	</File>
 	<File name="player.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="1730" topLine="16" />
+		<Cursor position="136" topLine="0" />
 	</File>
-	<File name="player.h" open="0" top="0" tabpos="8">
-		<Cursor position="245" topLine="0" />
+	<File name="player.h" open="1" top="0" tabpos="7">
+		<Cursor position="130" topLine="0" />
 	</File>
 	<File name="propertycollection.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="33" topLine="0" />
