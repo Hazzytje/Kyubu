@@ -136,7 +136,7 @@ for(auto chunk : ChunkList)
     glUseProgram(0);
 }
 
-ushort GetBlockAt(int x, int y, int z)
+ushort ChunkHandler::GetBlockAt(int x, int y, int z)
 {
 	if(z < 0 || z > 256)
 	{
@@ -151,6 +151,7 @@ ushort GetBlockAt(int x, int y, int z)
 			return chunk->blockData[z * 256 + y * 16 + x];
 		}
 	}
+	return 0;
 }
 
 
