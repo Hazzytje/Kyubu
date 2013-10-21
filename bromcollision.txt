@@ -1,159 +1,127 @@
+void Entity::DoPhyiscsLogic(){
+	if (this->Force.X != 0 && this->CheckCollisionX(this->Force.X) != 0) this->Force.X = 0;
+	if (this->Force.Y != 0 && this->CheckCollisionY(this->Force.Y) != 0) this->Force.Y = 0;
 
-        public Vector3 CheckBox(float mx, float my, float mz) {
-            Vector3 np = this.Pos + new Vector3(mx, my, mz); // new pos
+	// I AM BELOW THE LAW
+	this->Force.Z -= 0.02;
 
-            int cfx = (int)Math.Floor(np.X); // current floored X
-            int cfy = (int)Math.Floor(np.Y);
-            int cfz = (int)Math.Floor(np.Z);
-            int fz = (int)Math.Ceiling(this.BoundingBox.Z); // floored Z
-            BoundingBox cbox = new BoundingBox(np, np + this.BoundingBox); // current box
+	double left = this->Force.Z;
+	while (left != 0) {
+		double curdo = left > 0 ? (left < 1 ? left : 1) : (left < -1 ? -1 : left);
 
-            if (mx != 0) {
-                int tx = (int)Math.Ceiling(cfx + mx);
+		Vector hitpos = this->CheckCollisionZ(curdo);
+		if (hitpos != 0) {
+			CollisionBox bb = BlockData::GetCollisionBox(this->World->GetBlock(hitpos));
+			bb += hitpos;
 
-                for (int ay = -1; ay <= 1; ay++) { // add Y/Z
-                    for (int az = 0; az < fz; az++) {
-                        short bid = Global.World.GetBlock(tx, cfy + ay, cfz + az); // block id
-                        if (bid == 0 || Global.CollisionDisabledBlocks[bid])
-                            continue;
+			if (this->Force.Z > 0) this->Location.Z = bb.Min.Z - this->BoundingBox.Z;
+			else this->Location.Z = bb.Max.Z;
 
-                        Vector3 bo = new Vector3(tx, cfy + ay, cfz + az); // block offset
-                        BoundingBox bb = Global.GetBoundingBox(bid); // bounding box
-                        bb.Min += bo;
-                        bb.Max += bo;
+			this->Force.Z = 0;
+			break;
+		}
 
-                        // add 0.01 as Intersects checks == too, which would mean, we'd be stuck D:
-                        bb.Min.X += 0.01f;
-                        bb.Min.Y += 0.01f;
-                        bb.Min.Z += 0.01f;
+		left -= curdo;
+	}
 
-                        bb.Max.X -= 0.01f;
-                        bb.Max.Y -= 0.01f;
-                        bb.Max.Z -= 0.01f;
+	this->Location += this->Force;
+	if (this->CheckCollisionZ(-0.1f) != 0) {
+		this->Force.X *= 0.9f;
+		this->Force.Y *= 0.9f;
+	}
+}
 
-                        if (cbox.Intersects(bb)) {
-                            return bo;
-                        }
-                    }
-                }
+Vector Entity::CheckCollisionX(double m){
+	Vector np = this->Location;
+	np.X += m;
 
-                return Vector3.Zero;
-            }
+	int cfx = (int)np.X;
+	int cfy = (int)np.Y;
+	int cfz = (int)np.Z;
+	int fz = (int)ceil(this->BoundingBox.Z);
+	CollisionBox cbox = CollisionBox(np, np + this->BoundingBox);
 
-            if (my != 0) {
-                int ty = (int)Math.Ceiling(cfy + my);
+	int tx = (int)ceil(cfx + m);
 
-                for (int ax = -1; ax <= 1; ax++) {
-                    for (int az = 0; az < fz; az++) {
-                        short bid = Global.World.GetBlock(cfx + ax, ty, cfz + az);
-                        if (bid == 0 || Global.CollisionDisabledBlocks[bid])
-                            continue;
+	for (int ay = -1; ay <= 1; ay++) {
+		for (int az = 0; az < fz; az++) {
+			short bid = this->World->GetBlockNoLoad(tx, cfy + ay, cfz + az);
+			if (bid == 0 || !BlockData::GetHasCollision(bid))
+				continue;
 
-                        Vector3 bo = new Vector3(cfx + ax, ty, cfz + az);
-                        BoundingBox bb = Global.GetBoundingBox(bid);
-                        bb.Min += bo;
-                        bb.Max += bo;
+			Vector bo = Vector(tx, cfy + ay, cfz + az);
+			CollisionBox bb = BlockData::GetCollisionBox(bid);
+			bb += bo;
 
-                        // add 0.01 as Intersects checks == too, which would mean, we'd be stuck D:
-                        bb.Min.X += 0.01f;
-                        bb.Min.Y += 0.01f;
-                        bb.Min.Z += 0.01f;
+			if (cbox.Intersects(bb)) {
+				return bo;
+			}
+		}
+	}
 
-                        bb.Max.X -= 0.01f;
-                        bb.Max.Y -= 0.01f;
-                        bb.Max.Z -= 0.01f;
-			
-                        if (cbox.Intersects(bb)) {
-                            return bo;
-                        }
-                    }
-                }
+	return Vector();
+}
 
-                return Vector3.Zero;
-            }
+Vector Entity::CheckCollisionY(double m){
+	Vector np = this->Location;
+	np.Y += m;
 
-            if (mz != 0) {
-                int tz = (int)Math.Ceiling(cfz + mz);
-                if (mz > 0)
-                    tz += 1;
+	int cfx = (int)np.X;
+	int cfy = (int)np.Y;
+	int cfz = (int)np.Z;
+	int fz = (int)ceil(this->BoundingBox.Z);
+	CollisionBox cbox = CollisionBox(np, np + this->BoundingBox);
 
-                for (int ax = -1; ax <= 1; ax++) {
-                    for (int ay = -1; ay <= 1; ay++) {
-                        short bid = Global.World.GetBlock(cfx + ax, cfy + ay, tz);
-                        if (bid == 0 || Global.CollisionDisabledBlocks[bid])
-                            continue;
+	int ty = (int)ceil(cfy + m);
 
-                        Vector3 bo = new Vector3(cfx + ax, cfy + ay, tz);
-                        BoundingBox bb = Global.GetBoundingBox(bid);
-                        bb.Min += bo;
-                        bb.Max += bo;
+	for (int ax = -1; ax <= 1; ax++) {
+		for (int az = 0; az < fz; az++) {
+			short bid = this->World->GetBlockNoLoad(cfx + ax, ty, cfz + az);
+			if (bid == 0 || !BlockData::GetHasCollision(bid))
+				continue;
 
-                        // add 0.01 as Intersects checks == too, which would mean, we'd be stuck D:
-                        bb.Min.X += 0.01f;
-                        bb.Min.Y += 0.01f;
-                        bb.Min.Z += 0.01f;
+			Vector bo = Vector(cfx + ax, ty, cfz + az);
+			CollisionBox bb = BlockData::GetCollisionBox(bid);
+			bb += bo;
 
-                        bb.Max.X -= 0.01f;
-                        bb.Max.Y -= 0.01f;
-                        bb.Max.Z -= 0.01f;
+			if (cbox.Intersects(bb)) {
+				return bo;
+			}
+		}
+	}
 
-                        if (cbox.Intersects(bb)) {
-                            return bo;
-                        }
-                    }
-                }
+	return Vector();
+}
 
-                return Vector3.Zero;
-            }
+Vector Entity::CheckCollisionZ(double m){
+	Vector np = this->Location;
+	np.Z += m;
 
-            return Vector3.Zero;
-        }
+	int cfx = (int)np.X;
+	int cfy = (int)np.Y;
+	int cfz = (int)np.Z;
+	int fz = (int)ceil(this->BoundingBox.Z);
+	CollisionBox cbox = CollisionBox(np, np + this->BoundingBox);
 
-        public void DoForceAndCollisionCheck() {
-            this.Force.Z -= 0.02f;
+	int tz = (int)ceil(cfz + m);
+	if (m > 0)
+		tz += 1;
 
-            // first do X
-           if (this.Force.X != 0) {
-                Vector3 rx = this.CheckBox(this.Force.X, 0, 0); // return X
-                if (rx != Vector3.Zero) {
-                    this.Force.X = 0;
-                }
-            }
+	for (int ax = -1; ax <= 1; ax++) {
+		for (int ay = -1; ay <= 1; ay++) {
+			short bid = this->World->GetBlockNoLoad(cfx + ax, cfy + ay, tz);
+			if (bid == 0 || !BlockData::GetHasCollision(bid))
+				continue;
 
-            // then Y
-            if (this.Force.Y != 0) {
-                Vector3 ry = this.CheckBox(0, this.Force.Y, 0);
-                if (ry != Vector3.Zero) {
-                    this.Force.Y = 0;
-                }
-            }
+			Vector bo = Vector(cfx + ax, cfy + ay, tz);
+			CollisionBox bb = BlockData::GetCollisionBox(bid);
+			bb += bo;
 
-            // And Z!
-            // this is gravity, so we'll have to do this a bit risky.
-            float left = this.Force.Z;
-            while (left != 0) {
-                float curdo = left > 0 ? (left < 1 ? left : 1) : (left < -1 ? -1 : left); // lol jij boos?
+			if (cbox.Intersects(bb)) {
+				return bo;
+			}
+		}
+	}
 
-                Vector3 rz = this.CheckBox(0, 0, curdo);
-                if (rz != Vector3.Zero) {
-                    BoundingBox bb = Global.GetBoundingBox(Global.World.GetBlock(rz.X, rz.Y, rz.Z));
-                    bb.Min += rz;
-                    bb.Max += rz;
-
-                    if (this.Force.Z > 0) this.Pos.Z = bb.Min.Z - this.BoundingBox.Z;
-                    else this.Pos.Z = bb.Max.Z;
-
-                    this.Force.Z = 0;
-                    break;
-                }
-
-                left -= curdo; //right...
-            }
-
-            this.Pos += this.Force;
-
-            if (this.CheckBox(0, 0, -0.1f) != Vector3.Zero) {
-                this.Force.X *= 0.9f;
-                this.Force.Y *= 0.9f;
-            }
-        }
+	return Vector();
+}
