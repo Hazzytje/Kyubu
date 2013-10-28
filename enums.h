@@ -5,7 +5,7 @@ namespace Biomes {
 	};
 }
 
-namespace Blocks {
+namespace BlockTypes {
 	enum Enum {
 		Air, // always zero, it is sad asian.
 
@@ -40,7 +40,7 @@ namespace Items {
 	enum Enum {		
 		// -- Items --
 		// Even more fun and annoying!
-		Minecart = Blocks::BLOCKS_END, Igniter, Bow, Bucket,
+		Minecart = BlockTypes::BLOCKS_END, Igniter, Bow, Bucket,
 
 		// Food
 		Apple, RawBeef, RawChicken, CookedBeef, CookedChicken, Cake,
