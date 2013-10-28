@@ -38,7 +38,7 @@ void HandleNetwork()
  
         p.WriteByte(Packets::Login);
         p.WriteString("0.0.2");
-        p.WriteString("dinges");
+        p.WriteString("hazzytje");
         p.WriteInt(0);
         p.Send();
  
