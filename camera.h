@@ -21,9 +21,13 @@ public:
 	void SetY(float y);
 	void SetZ(float z);
 	
+	void SetPos(float x, float y, float z);
+	
 	void AddX(float x);
 	void AddY(float y);
 	void AddZ(float z);
+	
+	void AddPos(float x, float y, float z);
 	
 	float GetPitch();
 	float GetYaw();

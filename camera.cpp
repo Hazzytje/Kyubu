@@ -36,9 +36,13 @@ void Camera::SetX(float xx) { x = xx; UpdateLookat(); }
 void Camera::SetY(float yy) { y = yy; UpdateLookat(); }
 void Camera::SetZ(float zz) { z =  zz; UpdateLookat(); }
 
+void Camera::SetPos(float xx, float yy, float zz) { x = xx; y = yy; z = zz; UpdateLookat(); }
+
 void Camera::AddX(float xx) { x += xx; UpdateLookat(); }
 void Camera::AddY(float yy) { y += yy; UpdateLookat(); }
 void Camera::AddZ(float zz) { z +=  zz; UpdateLookat(); }
+
+void Camera::AddPos(float xx, float yy, float zz) { x += xx; y += yy; z += zz; UpdateLookat(); }
 
 float Camera::GetPitch() { return pitch; }
 float Camera::GetYaw() { return yaw; }
