@@ -32,7 +32,7 @@ namespace Blocks {
 		Rail, TNT, Spawner, Door, Door_TOP, Redstone, NoteBlock, Piston, StickyPiston, PresurePlate, Jukebox, Lever, Button, Dispenser, Dropper, Hopper,
 		Tube, PowerCable, SolarPanel, BatBox, Fence, Sign,
 		
-		BLOCKS_END // mark end index to resume at items, ik krijg aids als ik BLocks::Stick type okay?
+		BLOCKS_END // mark end index to resume at items
 	};
 }
 
