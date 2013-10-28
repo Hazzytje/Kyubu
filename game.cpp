@@ -41,7 +41,7 @@ void Game::Update()
 		
 		unsigned char packetType = p.ReadByte();
 			
-		printf("Received packet 0x%02X (%d)\n", packetType, packetType);
+		//printf("Received packet 0x%02X (%d)\n", packetType, packetType);
 
 		if(packetType == Packets::Kick)
 		{
@@ -56,9 +56,9 @@ void Game::Update()
 			localPlayer.playerId = playerId;
 			localPlayer.entityId = entityId;
 			
-			localPlayer.camera.SetX(entityPropertyList[localPlayer.entityId]->GetDouble("x"));
-			localPlayer.camera.SetY(entityPropertyList[localPlayer.entityId]->GetDouble("y"));
-			localPlayer.camera.SetZ(entityPropertyList[localPlayer.entityId]->GetDouble("z"));
+			localPlayer.pos.x = entityPropertyList[localPlayer.entityId]->GetDouble("x");
+			localPlayer.pos.y = entityPropertyList[localPlayer.entityId]->GetDouble("y");
+			localPlayer.pos.z = entityPropertyList[localPlayer.entityId]->GetDouble("z");
 		}
 		else if(packetType == Packets::EntityCreate)
 		{

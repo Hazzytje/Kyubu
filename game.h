@@ -25,11 +25,12 @@ class Game
 		
 		Player& getPlayer();
 		GLFWwindow* window;
-	protected:
-	private:
+		
 		ChunkHandler chunkHandler;
 		NetworkHandler networkHandler;
 		Player localPlayer;
+	protected:
+	private:
 		
 };
 
