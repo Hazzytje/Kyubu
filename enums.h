@@ -1,11 +1,11 @@
 
 namespace Biomes {
 	enum Enum {
-		Ice, Winter, Casual, Swamp, Desert, Mountains, Vulcano
+		Winter, Casual, Swamp, Desert, Mountains, Vulcano
 	};
 }
 
-namespace BlockTypes {
+namespace Blocks {
 	enum Enum {
 		Air, // always zero, it is sad asian.
 
@@ -29,12 +29,18 @@ namespace BlockTypes {
 		GoldOre, IronOre, CoalOre, DiamondOre, LazuliOre, RedstoneOre, 
 
 		// Fun and annoying
-		Rail, TNT, Spawner, Door, Redstone, NoteBlock, Piston, StickyPiston, PresurePlate, Jukebox, Lever, Button, Dispenser, Dropper, Hopper,
-		Tube, PowerCable, SolarPanel, BatBox, Fence, 
+		Rail, TNT, Spawner, Door, Door_TOP, Redstone, NoteBlock, Piston, StickyPiston, PresurePlate, Jukebox, Lever, Button, Dispenser, Dropper, Hopper,
+		Tube, PowerCable, SolarPanel, BatBox, Fence, Sign,
 		
+		BLOCKS_END // mark end index to resume at items, ik krijg aids als ik BLocks::Stick type okay?
+	};
+}
+
+namespace Items {
+	enum Enum {		
 		// -- Items --
 		// Even more fun and annoying!
-		Minecart, Sign, Igniter, Bow, Bucket,
+		Minecart = Blocks::BLOCKS_END, Igniter, Bow, Bucket,
 
 		// Food
 		Apple, RawBeef, RawChicken, CookedBeef, CookedChicken, Cake,
@@ -89,20 +95,15 @@ namespace Packets {
 		            // before joining a server, it might be nice to show a info dialog., connect to server, send this packet, kill connection.
 					// this works on TCP and UDP, UDP preferred tho :v
 
-		Login, // string name, arr_mods[string name, string version]
-			   // server responds with a kick, or the asigned PID, and EID, once you've recieved the first EntityTeleport for your asigned EID, you're fully joined.
 
-		Ping, // long timestamp, this gets sent by the server, client needs to respond with the timestamp that the server sends (latency check)
-		ChatMessage, // PID, string msg. Client only sends msg.
-
-		// everything here is server sent only, unless stated.
+        // everything here is server sent only, unless stated.
+        EntityMove, // EID, mx, my, mz, client can send this whitout the EID
+        EntityForce, // EID, x,y,z
+        EntityAngle, // EID, p,y,r
 		EntityCreate, // EID, string type, property_object
 		EntityRemove, // EID
-		EntityProperty, // EID, property_object
-		EntityMove, // EID, mx, my, mz
-		EntityTeleport, // EID, x,y,z, p,y,r
-		EntityAngle, // EID, p,y,r
-		EntityForce, // EID, x,y,z
+        EntityProperty, // EID, property_object
+        EntityTeleport, // EID, x,y,z, p,y,r, client can send this whitout the EID
 		
 		PlayerInventory, // byte slot, item
 		PlayerInventoryFull, // 62 times item
@@ -116,16 +117,17 @@ namespace Packets {
 							// 60 currently dragging with mouse
 							// 61 crafted slot
 
-		PlayerSelect, // PID, byte slot (0 - 8), client can send this whitout the PID
-		PlayerPlace, // PID, x,y,z, byte side, client can send this whitout the PID
 		PlayerDig, // PID, x,y,z, byte side, client can send this whitout the PID
-		PlayerUse, // PID, x,y,z, byte side, client can send this whitout the PID
-		PlayerJoin, // PID, string name
-		PlayerLeave, // PID, client should send this when he disconnects, it's a better message than "END_OF_STREAM"
-		PlayerKey, // PID, byte key [wasd], bool pressing [true/false], client can send this whitout the PID
-		PlayerRespawn, // client sends this to the server if he needs to respawn.
-		PlayerHurt, // client only send, EID
+		PlayerUse, // client only: EID
+        PlayerKey, // PID, byte key [wasd], bool pressing [true/false], client can send this whitout the PID
+        PlayerHurt, // client only send, EID
+        PlayerJoin, // PID, string name
+        PlayerPlace, // PID, x,y,z, byte side, client can send this whitout the PID
+        PlayerLeave, // PID, client should send this when he disconnects, it's a better message than "END_OF_STREAM"
+        PlayerSelect, // PID, byte slot (0 - 8), client can send this whitout the PID
+        PlayerRespawn, // client sends this to the server if he needs to respawn.
 		PlayerNoclip, // PID, bool isInNoclip, client can send this whitout the PID
+		PlayerUseBlock, // client only: x,y,z, byte side
 		PlayerMicrophone, // PID, bool istalking, double heardistance, int channels, int sampleRate, int bitsPerSample, client can send this whitout the PID
 		PlayerMicrophoneData, // PID, int zlib_buffer_len, byte[] zlib_buffer, client can send this whitout the PID
 
@@ -136,7 +138,10 @@ namespace Packets {
 							// else the server will kick your ass if you do any actions in the window.
 							// for the inventory, just send  0,0,0 as blockdata and 0 as side
 
-		ModMessage, // string modname, ? data. client can also send this
+        Ping, // long timestamp, this gets sent by the server, client needs to respond with the timestamp that the server sends (latency check)
+        Login, // CLIENT: string name, arr_mods[string name, string version], SERVER: PID, EID
+        ModMessage, // string modname, ? data. client can also send this
+        ChatMessage, // PID, string msg. Client only sends msg.
 
 		ChangeWorld, // string name, int vision.
 					 // when you get this packet, this means, you're entering a new world, so, delete all chunks, entities, players and stuff.
@@ -145,17 +150,21 @@ namespace Packets {
 
 		ChunkLoad, // X, Y, int zlib_buffer_len, byte[] zlib_buffer, the player can also request a chunk by sending x,y. You'll get kicked if you cannot see it tho.
 		ChunkUnload, // X, Y
-		
-		BlockChange, // WX, WY, Z, ushort block
-		BlockMeta, // WX, WY, Z, byte meta
-		BlockMultiChange, // start WX, start WY, start z, width, dept, height, per block[ushort block, byte meta]
 
-		
-		ServerData, // block texture {int w, int h, byte[] zlib_buffer}
+        BlockMeta, // WX, WY, Z, byte meta
+        BlockChange, // WX, WY, Z, ushort block
+        BlockMultiChange, // start WX, start WY, start z, width, dept, height, per block[ushort block, byte meta]
+
+        ServerData, 
 					// view texture {int w, int h, byte[] zlib_buffer}
+					// view texture coordiates byte[] zlib_buffer
+					// block texture {int w, int h, byte[] zlib_buffer}
 					// block texture coordiates byte[] zlib_buffer
 					// block settings byte[] zlib_buffer
+					// block boxes byte[] zlib_buffer
 					// item recipes byte[] zlib_buffer
+					// int count of block textures
+					// int count of view textures
 
 					// one setting is a short, with bit flags
 					//{
@@ -163,18 +172,21 @@ namespace Packets {
 						// 1: Ignore collisions
 						// 2: Useble block
 						// 3: can override, example: water to be ignored if you place a block, so we can "override" it
-						// 4: instant destroy
-						// 5: wont drop on destroy
-						// 6: is sprite, sapling, tallgrass, sugercane, etc.
-						// 7: custom collision/render box 
+						// 4: instant DOOM DEATH AND DESTRUCTION HUE HUE HUE HUE
+						// 5: wont drop on DOOM DEATH AND DESTRUCTION HUE HUE HUE HUE
+						// 6: is sprite, sappling, tallgrass, sugercane, etc.
+						// 7: custom collision/render box
 						// 8: unused
 						// 9 - 13: light level
 						// 14 - 15: block destroy type, pickaxe 00, axe 01, shovel 10, sword 11
 					//}
-
-					// one texture coordinate is 6 times 4 floats, StartX, StartY, EndX, EndY. Top, Down, Left, Right, Front, Back
-					// one recipe is: Short craftID, byte craftCount, 9 shorts ID's needed, 9 bytes counts needed.
 					
+					// one BLOCK texture coordinate is 6 times 4 floats, StartX, StartY, EndX, EndY
+					// one VIEW texture coordinate is 2 times a short, X and Y.
+					// one block box is 6 floats, min[x,y,z], max[x,y,z]
+					// one recipe is: Short craftID, byte craftCount, 9 shorts ID's needed, 9 bytes counts needed.
+
+        Debug, // for testing shiz
 		Kick = 0xFF // string reason
 	};
 
