@@ -22,7 +22,7 @@ BoundingBox::~BoundingBox()
 	
 }
 
-bool BoundingBox::Contains(const BoundingBox& box)
+bool BoundingBox::Intersects(const BoundingBox& box) const
 {
 	return this->Max.x > box.Min.x && 
 	       this->Min.x < box.Max.x && 

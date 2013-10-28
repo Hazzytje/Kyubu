@@ -13,7 +13,7 @@ class BoundingBox
 		BoundingBox(const Vector3& min, const Vector3& max);
 		~BoundingBox();
 		
-		bool Contains(const BoundingBox& other);
+		bool Intersects(const BoundingBox& other) const;
 	protected:
 	private:
 };
