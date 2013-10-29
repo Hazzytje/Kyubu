@@ -156,6 +156,7 @@ namespace Packets {
         BlockMultiChange, // start WX, start WY, start z, width, dept, height, per block[ushort block, byte meta]
 
         ServerData, 
+					// 2 ints, width/height of things per texture
 					// int count of view items in texture
 					// view texture {int w, int h, byte[] zlib_buffer}
 					// view texture coordiates byte[] zlib_buffer
@@ -183,7 +184,7 @@ namespace Packets {
 					//}
 					
 					// one BLOCK texture coordinate is 6 times 4 floats, StartX, StartY, EndX, EndY
-					// in what order :/ top down left right front back
+					// in order: top down left right front back
 					// one VIEW texture coordinate is 2 times a short, X and Y.
 					// one block box is 6 floats, min[x,y,z], max[x,y,z]
 					// one recipe is: Short craftID, byte craftCount, 9 shorts ID's needed, 9 bytes counts needed.

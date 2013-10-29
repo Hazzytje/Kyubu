@@ -6,6 +6,5 @@ uniform sampler2D tex;
 
 void main(){
 //	outColor = vec4( sin(gl_FragCoord.x / 200.0), sin(gl_FragCoord.y / 200.0), 1.0, 1.0 );
-	outColor = texture(tex, Texcoord / 16.0);
-//	outColor = vec4(1.0, 0.0, 0.0, 1.0);
+	outColor = texture(tex, Texcoord);
 }

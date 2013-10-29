@@ -1,23 +1,11 @@
 #ifndef __BLOCKS_H__
 #define __BLOCKS_H__
 
-#include <map>
+#include "limits.h"
 
-struct Block
+namespace BlockTexCoords
 {
-	float topTexCoords[8];
-	float bottomTexCoords[8];
-	float northTexCoords[8];
-	float eastTexCoords[8];
-	float southTexCoords[8];
-	float westTexCoords[8];
-};
-
-class Blocks
-{
-	public:
-	static void initBlocks();
-	static std::map<unsigned short, Block> blockRegister;
-};
+	extern float blockTexCoordArray[SHRT_MAX * 6 * 4];
+}
 
 #endif

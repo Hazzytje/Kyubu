@@ -21,7 +21,6 @@ void keyCallback(GLFWwindow* window, int key, int action)
 
 int main(int argc, char* argv[])
 {
-	Blocks::initBlocks();
 	if(glfwInit() != GL_TRUE)
 	{
 		printf("glfwInit failed!\n");

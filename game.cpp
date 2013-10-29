@@ -4,6 +4,8 @@
 #include <zlib.h>
 #include <GL/glew.h>
 #include <GL/glfw3.h>
+#include <limits.h>
+#include "blocks.h"
 #include "packet.h"
 #include "enums.h"
 #include "globals.h"
@@ -219,6 +221,9 @@ void Game::Update()
 		}
 		else if (packetType == Packets::ServerData)
 		{
+			int textureWidth = p.ReadInt();
+			int textureHeight = p.ReadInt();
+			
 			int itemCount = p.ReadInt();
 			int itemTextureWidth = p.ReadInt();
 			int itemTextureHeight = p.ReadInt();
@@ -248,15 +253,23 @@ void Game::Update()
 			int recipeZlibBufferSize = p.ReadInt();
 			byte* recipesCompressed = p.ReadBytes(recipeZlibBufferSize);
 			
-			uLongf outsize = blockTextureWidth * blockTextureHeight * 4;
-			byte texture[blockTextureWidth * blockTextureHeight * 4];
+			//Get the texture sheet and upload it
+			uLongf blockTextureOutsize = blockTextureWidth * blockTextureHeight * 4;
+			byte texture[blockTextureOutsize];
 			
-			uncompress(texture, &outsize, blockTextureCompressed, blockTextureZlibBufferSize);
+			uncompress(texture, &blockTextureOutsize, blockTextureCompressed, blockTextureZlibBufferSize);
 			
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, chunkHandler.textureHandle);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, blockTextureWidth, blockTextureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture);
 			
+			//stuff the block texture coords into the array in namespace BlockTexCoords
+			uLongf blockCoordOutsize = SHRT_MAX * 6 * 4 * sizeof(float);
+			
+			byte blockCoordBuffer[blockCoordOutsize];
+			uncompress(blockCoordBuffer, &blockCoordOutsize, blockCoordCompressed, blockCoordZlibBufferSize);
+			
+			memcpy(BlockTexCoords::blockTexCoordArray, blockCoordBuffer, blockCoordOutsize);
 			
 		}
 		else

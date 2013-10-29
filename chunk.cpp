@@ -133,76 +133,76 @@ void Chunk::RebuildVBOEBO()
 				}
 
 				unsigned short thisBlockId = blockData[INDEX_OF_BLOCK(x, y, z)];
-				Block thisBlock = Blocks::blockRegister.find(thisBlockId)->second;
+				float* thisBlock = BlockTexCoords::blockTexCoordArray + thisBlockId * 6 * 4;
 
-				if(south)
+				if(south) // back
 				{
 					BACK_LEFT_TOP;
-					vertexData.push_back(thisBlock.southTexCoords[0]);
-					vertexData.push_back(thisBlock.southTexCoords[1]);
+					vertexData.push_back(thisBlock[0 + 5 * 4]);
+					vertexData.push_back(thisBlock[1 + 5 * 4]);
 					FRONT_LEFT_TOP;
-					vertexData.push_back(thisBlock.southTexCoords[2]);
-					vertexData.push_back(thisBlock.southTexCoords[3]);
+					vertexData.push_back(thisBlock[2 + 5 * 4] + thisBlock[0 + 5 * 4]);
+					vertexData.push_back(thisBlock[1 + 5 * 4]);
 					FRONT_LEFT_BOTTOM;
-					vertexData.push_back(thisBlock.southTexCoords[4]);
-					vertexData.push_back(thisBlock.southTexCoords[5]);
+					vertexData.push_back(thisBlock[2 + 5 * 4] + thisBlock[0 + 5 * 4]);
+					vertexData.push_back(thisBlock[3 + 5 * 4] + thisBlock[1 + 5 * 4]);
 					BACK_LEFT_BOTTOM;
-					vertexData.push_back(thisBlock.southTexCoords[6]);
-					vertexData.push_back(thisBlock.southTexCoords[7]);
+					vertexData.push_back(thisBlock[0 + 5 * 4]);
+					vertexData.push_back(thisBlock[3 + 5 * 4] + thisBlock[1 + 5 * 4]);
 					unsigned int vertexCount = vertexData.size() / 5;
 					AddIndices(vertexCount, indiceData);
 				}
 
-				if(north)
+				if(north) // front
 				{
 					FRONT_RIGHT_TOP;
-					vertexData.push_back(thisBlock.northTexCoords[0]);
-					vertexData.push_back(thisBlock.northTexCoords[1]);
-					BACK_RIGHT_TOP;
-					vertexData.push_back(thisBlock.northTexCoords[2]);
-					vertexData.push_back(thisBlock.northTexCoords[3]);
+					vertexData.push_back(thisBlock[0 + 4 * 4]);
+					vertexData.push_back(thisBlock[1 + 4 * 4]);
+					BACK_RIGHT_TOP
+					vertexData.push_back(thisBlock[2 + 4 * 4] + thisBlock[0 + 4 * 4]);
+					vertexData.push_back(thisBlock[1 + 4 * 4]);
 					BACK_RIGHT_BOTTOM;
-					vertexData.push_back(thisBlock.northTexCoords[4]);
-					vertexData.push_back(thisBlock.northTexCoords[5]);
+					vertexData.push_back(thisBlock[2 + 4 * 4] + thisBlock[0 + 4 * 4]);
+					vertexData.push_back(thisBlock[3 + 4 * 4] + thisBlock[1 + 4 * 4]);
 					FRONT_RIGHT_BOTTOM;
-					vertexData.push_back(thisBlock.northTexCoords[6]);
-					vertexData.push_back(thisBlock.northTexCoords[7]);
+					vertexData.push_back(thisBlock[0 + 4 * 4]);
+					vertexData.push_back(thisBlock[3 + 4 * 4] + thisBlock[1 + 4 * 4]);
 					unsigned int vertexCount = vertexData.size() / 5;
 					AddIndices(vertexCount, indiceData);
 				}
 
-				if(east)
+				if(east) // right
 				{
 					FRONT_LEFT_TOP;
-					vertexData.push_back(thisBlock.eastTexCoords[0]);
-					vertexData.push_back(thisBlock.eastTexCoords[1]);
+					vertexData.push_back(thisBlock[0 + 3 * 4]);
+					vertexData.push_back(thisBlock[1 + 3 * 4]);
 					FRONT_RIGHT_TOP;
-					vertexData.push_back(thisBlock.eastTexCoords[2]);
-					vertexData.push_back(thisBlock.eastTexCoords[3]);
+					vertexData.push_back(thisBlock[2 + 3 * 4] + thisBlock[0 + 3 * 4]);
+					vertexData.push_back(thisBlock[1 + 3 * 4]);
 					FRONT_RIGHT_BOTTOM;
-					vertexData.push_back(thisBlock.eastTexCoords[4]);
-					vertexData.push_back(thisBlock.eastTexCoords[5]);
+					vertexData.push_back(thisBlock[2 + 3 * 4] + thisBlock[0 + 3 * 4]);
+					vertexData.push_back(thisBlock[3 + 3 * 4] + thisBlock[1 + 3 * 4]);
 					FRONT_LEFT_BOTTOM;
-					vertexData.push_back(thisBlock.eastTexCoords[6]);
-					vertexData.push_back(thisBlock.eastTexCoords[7]);
+					vertexData.push_back(thisBlock[0 + 3 * 4]);
+					vertexData.push_back(thisBlock[3 + 3 * 4] + thisBlock[1 + 3 * 4]);
 					unsigned int vertexCount = vertexData.size() / 5;
 					AddIndices(vertexCount, indiceData);
 				}
 
-				if(west)
+				if(west) // left
 				{
 					BACK_RIGHT_TOP;
-					vertexData.push_back(thisBlock.westTexCoords[0]);
-					vertexData.push_back(thisBlock.westTexCoords[1]);
+					vertexData.push_back(thisBlock[0 + 2 * 4]);
+					vertexData.push_back(thisBlock[1 + 2 * 4]);
 					BACK_LEFT_TOP;
-					vertexData.push_back(thisBlock.westTexCoords[2]);
-					vertexData.push_back(thisBlock.westTexCoords[3]);
+					vertexData.push_back(thisBlock[2 + 2 * 4] + thisBlock[0 + 2 * 4]);
+					vertexData.push_back(thisBlock[1 + 2 * 4]);
 					BACK_LEFT_BOTTOM;
-					vertexData.push_back(thisBlock.westTexCoords[4]);
-					vertexData.push_back(thisBlock.westTexCoords[5]);
+					vertexData.push_back(thisBlock[2 + 2 * 4] + thisBlock[0 + 2 * 4]);
+					vertexData.push_back(thisBlock[3 + 2 * 4] + thisBlock[1 + 2 * 4]);
 					BACK_RIGHT_BOTTOM;
-					vertexData.push_back(thisBlock.westTexCoords[6]);
-					vertexData.push_back(thisBlock.westTexCoords[7]);
+					vertexData.push_back(thisBlock[0 + 2 * 4]);
+					vertexData.push_back(thisBlock[3 + 2 * 4] + thisBlock[1 + 2 * 4]);
 					unsigned int vertexCount = vertexData.size() / 5;
 					AddIndices(vertexCount, indiceData);
 				}
@@ -210,35 +210,35 @@ void Chunk::RebuildVBOEBO()
 				if(top)
 				{
 					BACK_LEFT_TOP;
-					vertexData.push_back(thisBlock.topTexCoords[0]);
-					vertexData.push_back(thisBlock.topTexCoords[1]);
+					vertexData.push_back(thisBlock[0]);
+					vertexData.push_back(thisBlock[1]);
 					BACK_RIGHT_TOP;
-					vertexData.push_back(thisBlock.topTexCoords[2]);
-					vertexData.push_back(thisBlock.topTexCoords[3]);
+					vertexData.push_back(thisBlock[2] + thisBlock[0]);
+					vertexData.push_back(thisBlock[1]);
 					FRONT_RIGHT_TOP;
-					vertexData.push_back(thisBlock.topTexCoords[4]);
-					vertexData.push_back(thisBlock.topTexCoords[5]);
+					vertexData.push_back(thisBlock[2] + thisBlock[0]);
+					vertexData.push_back(thisBlock[3] + thisBlock[1]);
 					FRONT_LEFT_TOP;
-					vertexData.push_back(thisBlock.topTexCoords[6]);
-					vertexData.push_back(thisBlock.topTexCoords[7]);
+					vertexData.push_back(thisBlock[0]);
+					vertexData.push_back(thisBlock[3] + thisBlock[1]);
 					unsigned int vertexCount = vertexData.size() / 5;
 					AddIndices(vertexCount, indiceData);
 				}
 
-				if(bottom)
+				if(bottom) // down
 				{
 					FRONT_LEFT_BOTTOM;
-					vertexData.push_back(thisBlock.bottomTexCoords[0]);
-					vertexData.push_back(thisBlock.bottomTexCoords[1]);
+					vertexData.push_back(thisBlock[0 + 1 * 4]);
+					vertexData.push_back(thisBlock[1 + 1 * 4]);
 					FRONT_RIGHT_BOTTOM;
-					vertexData.push_back(thisBlock.bottomTexCoords[2]);
-					vertexData.push_back(thisBlock.bottomTexCoords[3]);
+					vertexData.push_back(thisBlock[2 + 1 * 4] + thisBlock[0 + 1 * 4]);
+					vertexData.push_back(thisBlock[1 + 1 * 4]);
 					BACK_RIGHT_BOTTOM;
-					vertexData.push_back(thisBlock.bottomTexCoords[4]);
-					vertexData.push_back(thisBlock.bottomTexCoords[5]);
+					vertexData.push_back(thisBlock[2 + 1 * 4] + thisBlock[0 + 1 * 4]);
+					vertexData.push_back(thisBlock[3 + 1 * 4] + thisBlock[1 + 1 * 4]);
 					BACK_LEFT_BOTTOM;
-					vertexData.push_back(thisBlock.bottomTexCoords[6]);
-					vertexData.push_back(thisBlock.bottomTexCoords[7]);
+					vertexData.push_back(thisBlock[0 + 1 * 4]);
+					vertexData.push_back(thisBlock[3 + 1 * 4] + thisBlock[1 + 1 * 4]);
 					unsigned int vertexCount = vertexData.size() / 5;
 					AddIndices(vertexCount, indiceData);
 				}
