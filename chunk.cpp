@@ -57,7 +57,9 @@ void Chunk::RebuildVBOEBO()
 {
 	
 	auto vertexData = std::vector<float>();
+	vertexData.reserve(50000);
 	auto indiceData = std::vector<GLuint>();
+	indiceData.reserve(10000);
 
 	for(int x = 0; x < 16; x++)
 	{
