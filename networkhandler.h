@@ -2,14 +2,19 @@
 #define __NETWORKHANDLER_H__
 #include <thread>
 
+class Packet;
+
 class NetworkHandler
 {
 	public:
 		std::thread networker;
 		NetworkHandler();
 		~NetworkHandler();
+		bool endThread;
+		bool readyToWrite;
+		Packet* packet;
 	private:
 };
-void HandleNetwork();
+void HandleNetwork(NetworkHandler& handler);
 
-#endif // __NETWORKHANDLER_H__
+#endif

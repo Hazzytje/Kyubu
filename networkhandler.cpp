@@ -1,4 +1,5 @@
 #include "networkhandler.h"
+#include <chrono>
 #include <string.h>
 #include "globals.h"
 #include "ezSockets.h"
@@ -10,19 +11,20 @@
 #define CHUNK_TOTALSIZE (CHUNK_LAYER * 256)
 
 NetworkHandler::NetworkHandler()
+:endThread(false), readyToWrite(false)
 {
-    networker = std::thread(HandleNetwork);
+    networker = std::thread(HandleNetwork, std::ref(*this));
 }
  
 NetworkHandler::~NetworkHandler()
 {
-    networker.detach();
+	endThread = true;
+    networker.join();
 }
- 
 
- 
-void HandleNetwork()
+void HandleNetwork(NetworkHandler& hh)
 {
+	NetworkHandler& handler = hh;
     ezSockets network;
  
     network.Create();
@@ -41,9 +43,13 @@ void HandleNetwork()
         p.WriteString("hazzytje");
         p.WriteInt(0);
         p.Send();
- 
-        while(true)
+        
+        handler.packet = &p;
+		handler.readyToWrite = true;
+		
+        while(!handler.endThread)
         {
+        	Globals::getGameInstance().kakMutex.lock();
         	if (network.CanRead()){
         		int psize = p.ReadInt();
         	 	unsigned char* packetBuffer = p.ReadBytes(psize);
@@ -57,6 +63,13 @@ void HandleNetwork()
         		
         		Globals::getGameInstance().incomingPacketMutex.unlock();
         	}
+			
+			
+        	Globals::getGameInstance().kakMutex.unlock();
+			
+			
+        	std::this_thread::sleep_for(std::chrono::milliseconds(5));
+
         }
     }
 }
