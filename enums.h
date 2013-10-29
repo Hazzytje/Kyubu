@@ -103,7 +103,7 @@ namespace Packets {
 		EntityCreate, // EID, string type, property_object
 		EntityRemove, // EID
         EntityProperty, // EID, property_object
-        EntityTeleport, // EID, x,y,z, p,y,r, client can send this whitout the EID
+        EntityTeleport, // EID, x,y,z, client can send this whitout the EID
 		
 		PlayerInventory, // byte slot, item
 		PlayerInventoryFull, // 62 times item
@@ -156,15 +156,16 @@ namespace Packets {
         BlockMultiChange, // start WX, start WY, start z, width, dept, height, per block[ushort block, byte meta]
 
         ServerData, 
+					// int count of view items in texture
 					// view texture {int w, int h, byte[] zlib_buffer}
 					// view texture coordiates byte[] zlib_buffer
+					// int count of blocks in texture
 					// block texture {int w, int h, byte[] zlib_buffer}
 					// block texture coordiates byte[] zlib_buffer
 					// block settings byte[] zlib_buffer
 					// block boxes byte[] zlib_buffer
+					// item recipe count int
 					// item recipes byte[] zlib_buffer
-					// int count of block textures
-					// int count of view textures
 
 					// one setting is a short, with bit flags
 					//{
@@ -172,8 +173,8 @@ namespace Packets {
 						// 1: Ignore collisions
 						// 2: Useble block
 						// 3: can override, example: water to be ignored if you place a block, so we can "override" it
-						// 4: instant DOOM DEATH AND DESTRUCTION HUE HUE HUE HUE
-						// 5: wont drop on DOOM DEATH AND DESTRUCTION HUE HUE HUE HUE
+						// 4: instant destroy
+						// 5: wont drop on destroy
 						// 6: is sprite, sappling, tallgrass, sugercane, etc.
 						// 7: custom collision/render box
 						// 8: unused
@@ -182,6 +183,7 @@ namespace Packets {
 					//}
 					
 					// one BLOCK texture coordinate is 6 times 4 floats, StartX, StartY, EndX, EndY
+					// in what order :/ top down left right front back
 					// one VIEW texture coordinate is 2 times a short, X and Y.
 					// one block box is 6 floats, min[x,y,z], max[x,y,z]
 					// one recipe is: Short craftID, byte craftCount, 9 shorts ID's needed, 9 bytes counts needed.
