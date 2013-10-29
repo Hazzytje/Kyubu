@@ -123,14 +123,14 @@ void ChunkHandler::Render()
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureHandle);
     Globals::getGameInstance().getPlayer().camera.InsertViewMatrix(viewMatrixLocation);
-for(auto chunk : ChunkList)
-    {
-        Matrix modelMatrix = Matrix::CreateTranslation(chunk->chunkX * 16, chunk->chunkY * 16, 0);
-//		modelMatrix.DebugPrint();
+	for(auto chunk : ChunkList)
+		{
+			Matrix modelMatrix = Matrix::CreateTranslation(chunk->chunkX * 16, chunk->chunkY * 16, 0);
+	//		modelMatrix.DebugPrint();
 
-        glUniformMatrix4fv(modelMatrixLocation, 1, GL_TRUE, modelMatrix.ToFloatArray());
-        chunk->Render();
-    }
+			glUniformMatrix4fv(modelMatrixLocation, 1, GL_TRUE, modelMatrix.ToFloatArray());
+			chunk->Render();
+		}
     Globals::PrintAllGlErrors();
     glBindVertexArray(0);
     glUseProgram(0);
@@ -142,18 +142,26 @@ ushort ChunkHandler::GetBlockAt(int x, int y, int z)
 	{
 		return 0;
 	}
-	int neededChunkX = x - x % 16;
-	int neededChunkY = y - y % 16;
+	int neededChunkX = x / 16;
+	int neededChunkY = y / 16;
 	for(auto chunk : ChunkList)
 	{
 		if(chunk->chunkX == neededChunkX && chunk->chunkY == neededChunkY)
 		{
-			return chunk->blockData[z * 256 + y * 16 + x];
+			return chunk->blockData[z * 256 + (y % 16) * 16 + (x % 16)];
 		}
 	}
 	return 0;
 }
 
-
-
-
+bool ChunkHandler::IsChunkLoadedAt(short x, short y)
+{
+	for(auto chunk : ChunkList)
+	{
+		if(chunk->chunkX == x && chunk->chunkY == y)
+		{
+			return true;
+		}
+	}
+	return false;
+}

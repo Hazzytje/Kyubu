@@ -23,6 +23,7 @@ public:
 	void Update();
     void Render();
     ushort GetBlockAt(int x, int y, int z);
+    bool IsChunkLoadedAt(short chunkX, short chunkY);
     
 	static GLuint shaderProgramHandle;
 	
