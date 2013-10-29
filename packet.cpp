@@ -250,6 +250,11 @@ void Packet::WriteString(const char* str){
 }
 
 void Packet::Send(){
+	if (this->OutPos == 0){
+		printf("Why am i being sent?");
+		return;
+	}
+	
 	this->Sock->pWriteData((char*)&this->OutPos, 4);
 	this->Sock->pWriteData((char*)this->OutBuffer, this->OutPos);
 
