@@ -1,13 +1,16 @@
 #include "game.h"
 #include <iostream>
 #include <string.h>
+#include <zlib.h>
+#include <GL/glew.h>
+#include <GL/glfw3.h>
 #include "packet.h"
 #include "enums.h"
 #include "globals.h"
 #include "propertycollection.h"
 
 Game::Game(GLFWwindow* window)
-:window(window)
+:window(window), loggedIn(false)
 {
 	
 }
@@ -30,7 +33,87 @@ Player& Game::getPlayer()
 
 void Game::Update()
 {
+	Vector3 oldPos = localPlayer.pos;
 	localPlayer.Update();
+	if(networkHandler.readyToWrite && loggedIn)
+	{
+		kakMutex.lock();
+		
+		Packet& packetSender = *networkHandler.packet;
+		packetSender.WriteByte(Packets::EntityTeleport);
+		packetSender.WriteDouble(localPlayer.pos.x);
+		packetSender.WriteDouble(localPlayer.pos.y);
+		packetSender.WriteDouble(localPlayer.pos.z);
+		packetSender.Send();
+		
+		packetSender.WriteByte(Packets::EntityAngle);
+		packetSender.WriteDouble(localPlayer.camera.GetPitch());
+		packetSender.WriteDouble(localPlayer.camera.GetYaw());
+		packetSender.WriteDouble(0.0f);
+		packetSender.Send();
+		
+		if(glfwGetKey(window, GLFW_KEY_W))
+		{
+			packetSender.WriteByte(Packets::PlayerKey);
+			packetSender.WriteByte(GLFW_KEY_W);
+			packetSender.WriteByte(true);
+			packetSender.Send();
+		}
+		else
+		{
+			packetSender.WriteByte(Packets::PlayerKey);
+			packetSender.WriteByte(GLFW_KEY_W);
+			packetSender.WriteByte(false);
+			packetSender.Send();
+		}
+		
+		if(glfwGetKey(window, GLFW_KEY_A))
+		{
+			packetSender.WriteByte(Packets::PlayerKey);
+			packetSender.WriteByte(GLFW_KEY_A);
+			packetSender.WriteByte(true);
+			packetSender.Send();
+		}
+		else
+		{
+			packetSender.WriteByte(Packets::PlayerKey);
+			packetSender.WriteByte(GLFW_KEY_A);
+			packetSender.WriteByte(false);
+			packetSender.Send();
+		}
+		
+		if(glfwGetKey(window, GLFW_KEY_S))
+		{
+			packetSender.WriteByte(Packets::PlayerKey);
+			packetSender.WriteByte(GLFW_KEY_S);
+			packetSender.WriteByte(true);
+			packetSender.Send();
+		}
+		else
+		{
+			packetSender.WriteByte(Packets::PlayerKey);
+			packetSender.WriteByte(GLFW_KEY_S);
+			packetSender.WriteByte(false);
+			packetSender.Send();
+		}
+		
+		if(glfwGetKey(window, GLFW_KEY_D))
+		{
+			packetSender.WriteByte(Packets::PlayerKey);
+			packetSender.WriteByte(GLFW_KEY_D);
+			packetSender.WriteByte(true);
+			packetSender.Send();
+		}
+		else
+		{
+			packetSender.WriteByte(Packets::PlayerKey);
+			packetSender.WriteByte(GLFW_KEY_D);
+			packetSender.WriteByte(false);
+			packetSender.Send();
+		}
+		
+		kakMutex.unlock();
+	}
 	chunkHandler.Update();
 	
 	if(incomingPacketBuffer.size() != 0)
@@ -59,6 +142,8 @@ void Game::Update()
 			localPlayer.pos.x = entityPropertyList[localPlayer.entityId]->GetDouble("x");
 			localPlayer.pos.y = entityPropertyList[localPlayer.entityId]->GetDouble("y");
 			localPlayer.pos.z = entityPropertyList[localPlayer.entityId]->GetDouble("z");
+			
+			loggedIn = true;
 		}
 		else if(packetType == Packets::EntityCreate)
 		{
@@ -131,6 +216,48 @@ void Game::Update()
 				p.ReadByte();
 				p.ReadByte();
 			}
+		}
+		else if (packetType == Packets::ServerData)
+		{
+			int itemCount = p.ReadInt();
+			int itemTextureWidth = p.ReadInt();
+			int itemTextureHeight = p.ReadInt();
+			
+			int itemTextureZlibBufferSize = p.ReadInt();
+			byte* itemTextureCompressed = p.ReadBytes(itemTextureZlibBufferSize);
+			int itemCoordZlibBufferSize = p.ReadInt();
+			byte* itemCoordCompressed = p.ReadBytes(itemCoordZlibBufferSize);
+			
+			int blockCount = p.ReadInt();
+			int blockTextureWidth = p.ReadInt();
+			int blockTextureHeight = p.ReadInt();
+			
+			int blockTextureZlibBufferSize = p.ReadInt();
+			byte* blockTextureCompressed = p.ReadBytes(blockTextureZlibBufferSize);
+			int blockCoordZlibBufferSize = p.ReadInt();
+			byte* blockCoordCompressed = p.ReadBytes(blockCoordZlibBufferSize);
+			
+			int blockSettingsZlibBufferSize = p.ReadInt();
+			byte* blockSettingsCompressed = p.ReadBytes(blockSettingsZlibBufferSize);
+			
+			int blockBoxZlibBufferSize = p.ReadInt();
+			byte* blockBoxCompressed = p.ReadBytes(blockBoxZlibBufferSize);
+			
+			int recipeCount = p.ReadInt();
+			
+			int recipeZlibBufferSize = p.ReadInt();
+			byte* recipesCompressed = p.ReadBytes(recipeZlibBufferSize);
+			
+			uLongf outsize = blockTextureWidth * blockTextureHeight * 4;
+			byte texture[blockTextureWidth * blockTextureHeight * 4];
+			
+			uncompress(texture, &outsize, blockTextureCompressed, blockTextureZlibBufferSize);
+			
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, chunkHandler.textureHandle);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, blockTextureWidth, blockTextureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture);
+			
+			
 		}
 		else
 		{

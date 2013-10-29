@@ -15,6 +15,8 @@ class Game
 		Game(GLFWwindow* windowPtr);
 		~Game();
 		
+		std::mutex kakMutex;
+		
 		std::mutex incomingPacketMutex;
 		std::queue<std::pair<int, unsigned char*>> incomingPacketBuffer;
 		
@@ -29,6 +31,8 @@ class Game
 		ChunkHandler chunkHandler;
 		NetworkHandler networkHandler;
 		Player localPlayer;
+		
+		bool loggedIn;
 	protected:
 	private:
 		
