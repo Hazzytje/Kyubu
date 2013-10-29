@@ -35,7 +35,6 @@ public:
 	void SetPitch(float pitch);
 	void SetYaw(float yaw);
 
-	void Move(int x, int y, int z);
 	void ApplyProjMatrix();
 
 	void InsertViewMatrix(GLint location);

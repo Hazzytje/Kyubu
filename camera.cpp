@@ -50,14 +50,6 @@ float Camera::GetYaw() { return yaw; }
 void Camera::SetPitch(float pp) { pitch = pp; UpdateLookat(); }
 void Camera::SetYaw(float yy) { yaw = yy; UpdateLookat(); }
 
-void Camera::Move(int xx, int yy, int zz)
-{
-	x += xx;
-	y += yy;
-	z += zz;
-	UpdateLookat();
-}
-
 void Camera::InsertViewMatrix(GLint location)
 {
 	Matrix lookAt = Matrix::CreateLookAt(Vector3(x, z, y), Vector3(lookx, lookz, looky), Vector3(0.0, 1.0, 0.0));
