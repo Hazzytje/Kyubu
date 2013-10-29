@@ -13,8 +13,8 @@ class Entity
 		virtual void Update();
 		virtual void Draw() = 0;
 		int entityId;
-	protected:
 		Vector3 pos;
+	protected:
 		Vector3 vel;
 		BoundingBox bbox;
 	private:

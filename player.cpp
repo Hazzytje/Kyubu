@@ -18,30 +18,30 @@ void Player::Update()
 {	
 	GLFWwindow* window = Globals::getGameInstance().window;
 	
-	Vector3 motion(0);
+	float speed = 0.1f;
+	this->vel.x = 0;
+	this->vel.y = 0;
 	
-	float speed = 1.0f;
-	//forward/backward motion TODO: move to player class
 	if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
-		motion += Vector3(
-			sin(camera.GetPitch()) * cos(camera.GetYaw()) * speed,
-			sin(camera.GetPitch()) * sin(camera.GetYaw()) * speed,
-			cos(camera.GetPitch()) * speed
+		this->vel += Vector3(
+			cos(camera.GetYaw()) * speed,
+			sin(camera.GetYaw()) * speed,
+			0//cos(camera.GetPitch()) * speed
 		);
 	}
 	if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 	{
-		motion += Vector3(
-			-sin(camera.GetPitch()) * cos(camera.GetYaw()) * speed,
-			-sin(camera.GetPitch()) * sin(camera.GetYaw()) * speed,
-			-cos(camera.GetPitch()) * speed
+		this->vel += Vector3(
+			-cos(camera.GetYaw()) * speed,
+			-sin(camera.GetYaw()) * speed,
+			0//-cos(camera.GetPitch()) * speed
 		);
 	}
 	//left/right motion
 	if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		motion += Vector3(
+		this->vel += Vector3(
 			cos(float(camera.GetYaw() + (M_PI / 180) * -90)) * speed,
 			sin(float(camera.GetYaw() + (M_PI / 180) * -90)) * speed,
 			0
@@ -49,11 +49,16 @@ void Player::Update()
 	}
 	if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		motion += Vector3(
+		this->vel += Vector3(
 			cos(float(camera.GetYaw() + (M_PI / 180) * 90)) * speed,
 			sin(float(camera.GetYaw() + (M_PI / 180) * 90)) * speed,
 			0
 		);
+	}
+	
+	if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+	{
+		this->vel.z = 0.25f;
 	}
 	
 	double mouseX, mouseY;
@@ -72,11 +77,9 @@ void Player::Update()
 	glfwSetCursorPos(window, 1024 / 2, 768 / 2);
 	glfwGetCursorPos(window, &prevMouseX, &prevMouseY);
 	
-	this->vel = motion;
-	
 	Entity::Update();
 	
-	camera.SetPos(this->pos.x, this->pos.y, this->pos.z);
+	camera.SetPos(this->pos.x, this->pos.y, this->pos.z + 1.7f);
 }
 
 void Player::Draw()
