@@ -148,8 +148,10 @@ namespace Packets {
 					 // to know how much chunks you get sent, it's: (vision * 2 + 1) * (vision * 2 + 1)
 					 // as example: if vision is 2, you'll receive 25 chunks. at all times.
 
-		ChunkLoad, // X, Y, int zlib_buffer_len, byte[] zlib_buffer, the player can also request a chunk by sending x,y. You'll get kicked if you cannot see it tho.
+		ChunkLoad, // X, Y, int zlib_buffer_len, byte[] zlib_buffer, array of {byte x, byte y, byte z, property_object}
+		           //the player can also request a chunk by sending x,y. You'll get kicked if you cannot see it tho.
 		ChunkUnload, // X, Y
+		ChunkTileData, //block X, Y, Z, property_object
 
         BlockMeta, // WX, WY, Z, byte meta
         BlockChange, // WX, WY, Z, ushort block
