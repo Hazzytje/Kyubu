@@ -1,6 +1,7 @@
 #include "blocks.h"
-
-namespace BlockTexCoords
+ 
+namespace BlockInfo
 {
-	float blockTexCoordArray[SHRT_MAX * 6 * 4];
+	float texCoordArray[SHRT_MAX * 6 * 4];
+	short blockSettings[SHRT_MAX];
 }

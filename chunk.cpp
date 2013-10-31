@@ -69,7 +69,8 @@ void Chunk::RebuildVBOEBO()
 			{
 				if (blockData[INDEX_OF_BLOCK(x, y, z)] == 0)
 					continue;
-
+				
+				unsigned short thisBlockId = blockData[INDEX_OF_BLOCK(x, y, z)];
 
 				//booleans for storing what sides of the block will be rendered
 				bool north = false, east = false, south = false, west = false, top = false, bottom = false;
@@ -77,9 +78,16 @@ void Chunk::RebuildVBOEBO()
 				if(x != 0)
 				{
 					unsigned short southBlockType = blockData[INDEX_OF_BLOCK(x - 1, y, z)];
-					if(southBlockType == 0)
+					if(BlockInfo::GetHasAlpha(thisBlockId))
 					{
-						south = true;
+						south = thisBlockId != southBlockType || BlockInfo::GetHasCustomCollision(thisBlockId);
+					}
+					else
+					{
+						if(southBlockType == 0 || BlockInfo::GetHasAlpha(southBlockType))
+						{
+							south = true;
+						}
 					}
 				} // TODO: else check other chunks
 				else { south = true; }
@@ -87,9 +95,16 @@ void Chunk::RebuildVBOEBO()
 				if(x != 15)
 				{
 					unsigned short northBlockType = blockData[INDEX_OF_BLOCK(x + 1, y, z)];
-					if(northBlockType == 0)
+					if(BlockInfo::GetHasAlpha(thisBlockId))
 					{
-						north = true;
+						north = thisBlockId != northBlockType || BlockInfo::GetHasCustomCollision(thisBlockId);
+					}
+					else
+					{
+						if(northBlockType == 0 || BlockInfo::GetHasAlpha(northBlockType))
+						{
+							north = true;
+						}
 					}
 				}
 				else { north = true; }
@@ -97,9 +112,16 @@ void Chunk::RebuildVBOEBO()
 				if(y != 15)
 				{
 					unsigned short westBlockType = blockData[INDEX_OF_BLOCK(x, y + 1, z)];
-					if(westBlockType == 0)
+					if(BlockInfo::GetHasAlpha(thisBlockId))
 					{
-						west = true;
+						west = thisBlockId != westBlockType || BlockInfo::GetHasCustomCollision(thisBlockId);
+					}
+					else
+					{
+						if(westBlockType == 0 || BlockInfo::GetHasAlpha(westBlockType))
+						{
+							west = true;
+						}
 					}
 				}
 				else { west = true; }
@@ -107,9 +129,16 @@ void Chunk::RebuildVBOEBO()
 				if(y != 0)
 				{
 					unsigned short eastBlockType = blockData[INDEX_OF_BLOCK(x, y - 1, z)];
-					if(eastBlockType == 0)
+					if(BlockInfo::GetHasAlpha(thisBlockId))
 					{
-						east = true;
+						east = thisBlockId != eastBlockType || BlockInfo::GetHasCustomCollision(thisBlockId);
+					}
+					else
+					{
+						if(eastBlockType == 0 || BlockInfo::GetHasAlpha(eastBlockType))
+						{
+							east = true;
+						}
 					}
 				}
 				else { east = true; }
@@ -117,23 +146,38 @@ void Chunk::RebuildVBOEBO()
 				if(z != 255)
 				{
 					unsigned short topBlockType = blockData[INDEX_OF_BLOCK(x, y, z + 1)];
-					if(topBlockType == 0)
+					if(BlockInfo::GetHasAlpha(thisBlockId))
 					{
-						top = true;
+						top = thisBlockId != topBlockType || BlockInfo::GetHasCustomCollision(thisBlockId);
+					}
+					else
+					{
+						if(topBlockType == 0 || BlockInfo::GetHasAlpha(topBlockType))
+						{
+							top = true;
+						}
 					}
 				}
-				else
-				{
-					top = true;
-				}
+				else { top = true; }
 				//bottom side of block
-				if(z == 0 || blockData[INDEX_OF_BLOCK(x, y, z - 1)] == 0)
+				if(z != 0)
 				{
-					bottom = true;
+					unsigned short botBlockType = blockData[INDEX_OF_BLOCK(x, y, z - 1)];
+					if(BlockInfo::GetHasAlpha(thisBlockId))
+					{
+						bottom = thisBlockId != botBlockType || BlockInfo::GetHasCustomCollision(thisBlockId);
+					}
+					else
+					{
+						if(botBlockType == 0 || BlockInfo::GetHasAlpha(botBlockType))
+						{
+							bottom = true;
+						}
+					}
 				}
+				else {bottom = true;}
 
-				unsigned short thisBlockId = blockData[INDEX_OF_BLOCK(x, y, z)];
-				float* thisBlock = BlockTexCoords::blockTexCoordArray + thisBlockId * 6 * 4;
+				float* thisBlock = BlockInfo::texCoordArray + thisBlockId * 6 * 4;
 
 				if(south) // back
 				{

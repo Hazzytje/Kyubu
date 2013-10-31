@@ -245,6 +245,9 @@ void Game::Update()
 			int blockSettingsZlibBufferSize = p.ReadInt();
 			byte* blockSettingsCompressed = p.ReadBytes(blockSettingsZlibBufferSize);
 			
+			uLongf blockSettingsOutsize = SHRT_MAX * sizeof(short);
+			uncompress(reinterpret_cast<byte*>(BlockInfo::blockSettings), &blockSettingsOutsize, blockSettingsCompressed, blockSettingsZlibBufferSize);
+			
 			int blockBoxZlibBufferSize = p.ReadInt();
 			byte* blockBoxCompressed = p.ReadBytes(blockBoxZlibBufferSize);
 			
@@ -266,11 +269,7 @@ void Game::Update()
 			//stuff the block texture coords into the array in namespace BlockTexCoords
 			uLongf blockCoordOutsize = SHRT_MAX * 6 * 4 * sizeof(float);
 			
-			byte blockCoordBuffer[blockCoordOutsize];
-			uncompress(blockCoordBuffer, &blockCoordOutsize, blockCoordCompressed, blockCoordZlibBufferSize);
-			
-			memcpy(BlockTexCoords::blockTexCoordArray, blockCoordBuffer, blockCoordOutsize);
-			
+			uncompress(reinterpret_cast<byte*>(BlockInfo::texCoordArray), &blockCoordOutsize, blockCoordCompressed, blockCoordZlibBufferSize);
 		}
 		else
 		{
