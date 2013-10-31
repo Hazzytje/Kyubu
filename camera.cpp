@@ -23,9 +23,6 @@ Camera::Camera()
 	pitch = float(M_PI_2);
 	yaw = float(M_PI_2 + M_PI);
 	UpdateLookat();
-
-	nearClippingPlane = 1.0f;
-	farClippingPlane = 100.0f;
 }
 
 float Camera::GetX() const { return x; }
