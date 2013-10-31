@@ -3,9 +3,35 @@
 
 #include "limits.h"
 
-namespace BlockTexCoords
+namespace BlockInfo
 {
-	extern float blockTexCoordArray[SHRT_MAX * 6 * 4];
+	extern float texCoordArray[SHRT_MAX * 6 * 4];
+	extern short blockSettings[SHRT_MAX];
+	
+	inline bool GetHasAlpha(short blockId)
+	{
+		return blockSettings[blockId] & 1;
+	}
+	 
+	inline bool GetHasCollision(short blockId)
+	{
+		return (blockSettings[blockId] & (1 << 1)) == 0;
+	}
+	 
+	inline bool GetUseable(short blockId)
+	{
+		return (blockSettings[blockId] & (1 << 2)) != 0;
+	}
+	 
+	inline bool GetDropOnDestroy(short blockId)
+	{
+		return (blockSettings[blockId] & (1 << 5)) == 0;
+	}
+	 
+	inline bool GetHasCustomCollision(short blockId)
+	{
+		return (blockSettings[blockId] & (1 << 7)) != 0;
+	}
 }
 
 #endif
