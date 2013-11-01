@@ -26,7 +26,7 @@ namespace BlockTypes {
 		Cactus, FlowerRed, FlowerYellow, DeadBush, TallGrass, SugarCane, Sapling,
 
 		// Ores
-		GoldOre, IronOre, CoalOre, DiamondOre, LazuliOre, RedstoneOre, TinOre, CopperOre, LeadOre, SilverOre, UraniumOre
+		GoldOre, IronOre, CoalOre, DiamondOre, LazuliOre, RedstoneOre, TinOre, CopperOre, LeadOre, SilverOre, UraniumOre,
 
 		// Fun and annoying
 		Rail, TNT, Spawner, Door, Door_TOP, Redstone, NoteBlock, Piston, StickyPiston, PresurePlate, Jukebox, Lever, Button, Dispenser, Dropper, Hopper,
@@ -72,12 +72,6 @@ namespace Items {
 	};
 }
 
-namespace PlayerWindow {
-	enum Enum {
-		Inventory, Chest, CraftingGrid
-	};
-}
-
 namespace Packets {
 	// PID = playerID, byte
 	// EID = EntID, Uint
@@ -96,9 +90,14 @@ namespace Packets {
 
 	// if PID is 255, then it's the server
 
-	// item is {short id, byte amount, byte meta}
+	// item is {short id, byte amount, byte meta, property_object}
 
 	// WindowType is an enum, {Inventory, Chest, CraftingGrid}
+	
+	// metadata for blocks is the following:
+	// bit 0 = redpower y/n
+	// bit 1-3 = direction of block
+	
 
 	enum Packets {
 		ServerInfo, // string game version, string hostname, string description, byte curplayers, byte max players, arr_mods[string name, string version]
