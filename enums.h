@@ -26,11 +26,15 @@ namespace BlockTypes {
 		Cactus, FlowerRed, FlowerYellow, DeadBush, TallGrass, SugarCane, Sapling,
 
 		// Ores
-		GoldOre, IronOre, CoalOre, DiamondOre, LazuliOre, RedstoneOre, 
+		GoldOre, IronOre, CoalOre, DiamondOre, LazuliOre, RedstoneOre, TinOre, CopperOre, LeadOre, SilverOre, UraniumOre
 
 		// Fun and annoying
 		Rail, TNT, Spawner, Door, Door_TOP, Redstone, NoteBlock, Piston, StickyPiston, PresurePlate, Jukebox, Lever, Button, Dispenser, Dropper, Hopper,
-		Tube, PowerCable, SolarPanel, BatBox, Fence, Sign,
+		Tube, Fence, Sign,
+		
+		// power shiz
+		ElectricFurnace, Macerator, Compressor, ForceFieldGenerator, ForceField, ChargingBench,
+		TeslaCoil, Teleporter, SolarPanel, BatBox, PowerCable, 
 		
 		BLOCKS_END // mark end index to resume at items
 	};
@@ -46,7 +50,9 @@ namespace Items {
 		Apple, RawBeef, RawChicken, CookedBeef, CookedChicken, Cake,
 
 		// crafting
-		Coal, Iron, Gold, Diamond, Stick, Battery, 
+		Lazuli, Coal, Iron, Tin, Copper, Gold, Diamond, Stick, Battery, Rubber,
+		TinWire, GoldWire, CopperWire, TinInsulatedWire, GoldInsulatedWire, CopperInsulatedWire,
+		CoalDust, IronDust, TinDust, CopperDust, GoldDust,
 
 		// tools
 		Pickaxe_Wood = 0xFF, Pickaxe_Stone, Pickaxe_Iron, Pickaxe_Gold, Pickaxe_Diamond,
@@ -59,6 +65,10 @@ namespace Items {
 		Armor_Iron_Feet, Armor_Iron_Legs, Armor_Iron_Body, Armor_Iron_Head,
 		Armor_Gold_Feet, Armor_Gold_Legs, Armor_Gold_Body, Armor_Gold_Head,
 		Armor_Diamond_Feet, Armor_Diamond_Legs, Armor_Diamond_Body, Armor_Diamond_Head,
+		
+		//more power shiz
+		Wrench, TeleportationCore, TeleportationModifier,
+		
 	};
 }
 
