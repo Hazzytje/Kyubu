@@ -124,13 +124,12 @@ void ChunkHandler::Render()
     glBindTexture(GL_TEXTURE_2D, textureHandle);
     Globals::getGameInstance().getPlayer().camera.InsertViewMatrix(viewMatrixLocation);
 	for(auto chunk : ChunkList)
-		{
-			Matrix modelMatrix = Matrix::CreateTranslation(chunk->chunkX * 16, chunk->chunkY * 16, 0);
-	//		modelMatrix.DebugPrint();
+	{
+		Matrix modelMatrix = Matrix::CreateTranslation(chunk->chunkX * 16, chunk->chunkY * 16, 0);
 
-			glUniformMatrix4fv(modelMatrixLocation, 1, GL_TRUE, modelMatrix.ToFloatArray());
-			chunk->Render();
-		}
+		glUniformMatrix4fv(modelMatrixLocation, 1, GL_TRUE, modelMatrix.ToFloatArray());
+		chunk->Render();
+	}
     Globals::PrintAllGlErrors();
     glBindVertexArray(0);
     glUseProgram(0);
