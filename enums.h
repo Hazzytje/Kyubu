@@ -133,7 +133,7 @@ namespace Packets {
 
 		PlayerWindowClick,  // byte slotid, bool leftmouse, bool shift
 		PlayerCloseWindow,  // if this gets send, close the menu. you should also send this
-		PlayerOpenWindow,   // WindowType, block xyz, byte side
+		PlayerOpenWindow,   // short block id, block xyz, byte side (0 is inventory)
 							// when aimed at a crafting bench, you send this, the server will respond telling you the same thing, then open it
 							// else the server will kick your ass if you do any actions in the window.
 							// for the inventory, just send  0,0,0 as blockdata and 0 as side
