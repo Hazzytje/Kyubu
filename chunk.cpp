@@ -3,44 +3,56 @@
 #include <vector>
 #include <GL/glew.h>
 #include <GL/glfw3.h>
+#include <cassert>
 #include "blocks.h"
 #include "globals.h"
 #include "chunk.h"
+#include "enums.h"
 
 #define INDEX_OF_BLOCK(x, y, z) (((z) * 256) + ((y) * 16) + (x))
 
-#define FRONT_LEFT_TOP 	   vertexData.push_back(x);     \
-                           vertexData.push_back(y);     \
-                           vertexData.push_back(z + 1);
+#define FRONT_LEFT_TOP 	   AddFrontLeftTopVertice  (vertexData, x, y, z);
+#define FRONT_LEFT_BOTTOM  AddFrontLeftBotVertice  (vertexData, x, y, z);
+#define FRONT_RIGHT_TOP    AddFrontRightTopVertice (vertexData, x, y, z);
+#define FRONT_RIGHT_BOTTOM AddFrontRightBotVertice (vertexData, x, y, z);
+#define BACK_LEFT_TOP      AddBackLeftTopVertice   (vertexData, x, y, z);
+#define BACK_LEFT_BOTTOM   AddBackLeftBotVertice   (vertexData, x, y, z);
+#define BACK_RIGHT_TOP     AddBackRightTopVertice  (vertexData, x, y, z);
+#define BACK_RIGHT_BOTTOM  AddBackRightBotVertice  (vertexData, x, y, z);
 
-#define FRONT_LEFT_BOTTOM  vertexData.push_back(x);     \
-						   vertexData.push_back(y);     \
-						   vertexData.push_back(z);
+inline void AddVertices(std::vector<float>& vertexData, int x, int y, int z)
+{
+	vertexData.push_back(x);
+	vertexData.push_back(y);
+	vertexData.push_back(z);
+}
 
-#define FRONT_RIGHT_TOP    vertexData.push_back(x + 1); \
-                           vertexData.push_back(y);     \
-                           vertexData.push_back(z + 1);
+inline void AddFrontLeftTopVertice(std::vector<float>& vertexData, int x, int y, int z) {
+	AddVertices(vertexData, x, y, z + 1);
+}
+inline void AddFrontLeftBotVertice(std::vector<float>& vertexData, int x, int y, int z) {
+	AddVertices(vertexData, x, y, z);
+}
+inline void AddFrontRightTopVertice(std::vector<float>& vertexData, int x, int y, int z) {
+	AddVertices(vertexData, x + 1, y, z + 1);
+}
+inline void AddFrontRightBotVertice(std::vector<float>& vertexData, int x, int y, int z) {
+	AddVertices(vertexData, x + 1, y, z);
+}
+inline void AddBackLeftTopVertice(std::vector<float>& vertexData, int x, int y, int z) {
+	AddVertices(vertexData, x, y + 1, z + 1);
+}
+inline void AddBackLeftBotVertice(std::vector<float>& vertexData, int x, int y, int z) {
+	AddVertices(vertexData, x, y + 1, z);
+}
+inline void AddBackRightTopVertice(std::vector<float>& vertexData, int x, int y, int z) {
+	AddVertices(vertexData, x + 1, y + 1, z + 1);
+}
+inline void AddBackRightBotVertice(std::vector<float>& vertexData, int x, int y, int z) {
+	AddVertices(vertexData, x + 1, y + 1, z);
+}
 
-#define FRONT_RIGHT_BOTTOM vertexData.push_back(x + 1); \
-                           vertexData.push_back(y);     \
-                           vertexData.push_back(z);
-
-#define BACK_LEFT_TOP      vertexData.push_back(x);     \
-                           vertexData.push_back(y + 1); \
-                           vertexData.push_back(z + 1);
-
-#define BACK_LEFT_BOTTOM   vertexData.push_back(x);     \
-                           vertexData.push_back(y + 1); \
-                           vertexData.push_back(z);
-
-#define BACK_RIGHT_TOP     vertexData.push_back(x + 1); \
-                           vertexData.push_back(y + 1); \
-                           vertexData.push_back(z + 1);
-
-#define BACK_RIGHT_BOTTOM  vertexData.push_back(x + 1); \
-                           vertexData.push_back(y + 1); \
-                           vertexData.push_back(z);
-void AddIndices(unsigned int vertexCount, std::vector<GLuint>& indiceData)
+inline void AddIndices(unsigned int vertexCount, std::vector<GLuint>& indiceData)
 {
 	//triangle one
 	indiceData.push_back(vertexCount - 4);
@@ -53,6 +65,69 @@ void AddIndices(unsigned int vertexCount, std::vector<GLuint>& indiceData)
 	indiceData.push_back(vertexCount - 1);
 }
 
+inline float TextureCoordForBlock(short blockId, BlockSides side, byte texCoordIndex) //TODO: change texCoordIndex to an enum(?)
+{
+	assert(texCoordIndex > -1 && texCoordIndex < 4);
+	if(texCoordIndex == 0 || texCoordIndex == 1)
+	{
+		return BlockInfo::texCoordArray[(blockId * 6 * 4) + static_cast<byte>(side) * 4 + texCoordIndex];
+	}
+	return BlockInfo::texCoordArray[(blockId * 6 * 4) + static_cast<byte>(side) * 4 + texCoordIndex] + TextureCoordForBlock(blockId, side, texCoordIndex - 2);
+}
+
+inline void AddBlockSide(int x, int y, int z, BlockSides side, std::vector<float>& vertexArray, std::vector<GLuint>& indiceArray, short blockId)
+{
+	switch (side)
+	{
+		case BlockSides::Top:   AddBackLeftTopVertice  (vertexArray, x, y, z); break;
+		case BlockSides::Down:  AddFrontLeftBotVertice (vertexArray, x, y, z); break;
+		case BlockSides::Left:  AddBackRightTopVertice (vertexArray, x, y, z); break;
+		case BlockSides::Right: AddFrontLeftTopVertice (vertexArray, x, y, z); break;
+		case BlockSides::Front: AddFrontRightTopVertice(vertexArray, x, y, z); break;
+		case BlockSides::Back:  AddBackLeftTopVertice  (vertexArray, x, y, z); break;
+	}
+	vertexArray.push_back(TextureCoordForBlock(blockId, side, 0));
+	vertexArray.push_back(TextureCoordForBlock(blockId, side, 1));
+	
+	switch (side)
+	{
+		case BlockSides::Top:   AddBackRightTopVertice (vertexArray, x, y, z); break;
+		case BlockSides::Down:  AddFrontRightBotVertice(vertexArray, x, y, z); break;
+		case BlockSides::Left:  AddBackLeftTopVertice  (vertexArray, x, y, z); break;
+		case BlockSides::Right: AddFrontRightTopVertice(vertexArray, x, y, z); break;
+		case BlockSides::Front: AddBackRightTopVertice (vertexArray, x, y, z); break;
+		case BlockSides::Back:  AddFrontLeftTopVertice (vertexArray, x, y, z); break;
+	}
+	vertexArray.push_back(TextureCoordForBlock(blockId, side, 2));
+	vertexArray.push_back(TextureCoordForBlock(blockId, side, 1));
+	
+	switch (side)
+	{
+		case BlockSides::Top:   AddFrontRightTopVertice(vertexArray, x, y, z); break;
+		case BlockSides::Down:  AddBackRightBotVertice (vertexArray, x, y, z); break;
+		case BlockSides::Left:  AddBackLeftBotVertice  (vertexArray, x, y, z); break;
+		case BlockSides::Right: AddFrontRightBotVertice(vertexArray, x, y, z); break;
+		case BlockSides::Front: AddBackRightBotVertice (vertexArray, x, y, z); break;
+		case BlockSides::Back:  AddFrontLeftBotVertice (vertexArray, x, y, z); break;
+	}
+	vertexArray.push_back(TextureCoordForBlock(blockId, side, 2));
+	vertexArray.push_back(TextureCoordForBlock(blockId, side, 3));
+	
+	switch (side)
+	{
+		case BlockSides::Top:   AddFrontLeftTopVertice (vertexArray, x, y, z); break;
+		case BlockSides::Down:  AddBackLeftBotVertice  (vertexArray, x, y, z); break;
+		case BlockSides::Left:  AddBackRightBotVertice (vertexArray, x, y, z); break;
+		case BlockSides::Right: AddFrontLeftBotVertice (vertexArray, x, y, z); break;
+		case BlockSides::Front: AddFrontRightBotVertice(vertexArray, x, y, z); break;
+		case BlockSides::Back:  AddBackLeftBotVertice  (vertexArray, x, y, z); break;
+	}
+	vertexArray.push_back(TextureCoordForBlock(blockId, side, 0));
+	vertexArray.push_back(TextureCoordForBlock(blockId, side, 3));
+	unsigned int vertexCount = vertexArray.size() / 5;
+	AddIndices(vertexCount, indiceArray);
+}
+
 void Chunk::RebuildVBOEBO()
 {
 	
@@ -60,6 +135,11 @@ void Chunk::RebuildVBOEBO()
 	vertexData.reserve(50000);
 	auto indiceData = std::vector<GLuint>();
 	indiceData.reserve(10000);
+	
+	auto alphaVertexData = std::vector<float>();
+	alphaVertexData.reserve(5000);
+	auto alphaIndiceData = std::vector<GLuint>();
+	alphaIndiceData.reserve(1000);
 
 	for(int x = 0; x < 16; x++)
 	{
@@ -73,75 +153,75 @@ void Chunk::RebuildVBOEBO()
 				unsigned short thisBlockId = blockData[INDEX_OF_BLOCK(x, y, z)];
 
 				//booleans for storing what sides of the block will be rendered
-				bool north = false, east = false, south = false, west = false, top = false, bottom = false;
-				//south side of block
+				bool front = false, right = false, back = false, left = false, top = false, down = false;
+				//back side of block
 				if(x != 0)
 				{
 					unsigned short southBlockType = blockData[INDEX_OF_BLOCK(x - 1, y, z)];
 					if(BlockInfo::GetHasAlpha(thisBlockId))
 					{
-						south = thisBlockId != southBlockType || BlockInfo::GetHasCustomCollision(thisBlockId);
+						back = thisBlockId != southBlockType || BlockInfo::GetHasCustomCollision(thisBlockId);
 					}
 					else
 					{
 						if(southBlockType == 0 || BlockInfo::GetHasAlpha(southBlockType))
 						{
-							south = true;
+							back = true;
 						}
 					}
 				} // TODO: else check other chunks
-				else { south = true; }
-				//north side of block
+				else { back = true; }
+				//front side of block
 				if(x != 15)
 				{
 					unsigned short northBlockType = blockData[INDEX_OF_BLOCK(x + 1, y, z)];
 					if(BlockInfo::GetHasAlpha(thisBlockId))
 					{
-						north = thisBlockId != northBlockType || BlockInfo::GetHasCustomCollision(thisBlockId);
+						front = thisBlockId != northBlockType || BlockInfo::GetHasCustomCollision(thisBlockId);
 					}
 					else
 					{
 						if(northBlockType == 0 || BlockInfo::GetHasAlpha(northBlockType))
 						{
-							north = true;
+							front = true;
 						}
 					}
 				}
-				else { north = true; }
-				//west side of block
+				else { front = true; }
+				//left side of block
 				if(y != 15)
 				{
 					unsigned short westBlockType = blockData[INDEX_OF_BLOCK(x, y + 1, z)];
 					if(BlockInfo::GetHasAlpha(thisBlockId))
 					{
-						west = thisBlockId != westBlockType || BlockInfo::GetHasCustomCollision(thisBlockId);
+						left = thisBlockId != westBlockType || BlockInfo::GetHasCustomCollision(thisBlockId);
 					}
 					else
 					{
 						if(westBlockType == 0 || BlockInfo::GetHasAlpha(westBlockType))
 						{
-							west = true;
+							left = true;
 						}
 					}
 				}
-				else { west = true; }
-				//east side of block
+				else { left = true; }
+				//right side of block
 				if(y != 0)
 				{
 					unsigned short eastBlockType = blockData[INDEX_OF_BLOCK(x, y - 1, z)];
 					if(BlockInfo::GetHasAlpha(thisBlockId))
 					{
-						east = thisBlockId != eastBlockType || BlockInfo::GetHasCustomCollision(thisBlockId);
+						right = thisBlockId != eastBlockType || BlockInfo::GetHasCustomCollision(thisBlockId);
 					}
 					else
 					{
 						if(eastBlockType == 0 || BlockInfo::GetHasAlpha(eastBlockType))
 						{
-							east = true;
+							right = true;
 						}
 					}
 				}
-				else { east = true; }
+				else { right = true; }
 				//top side of block
 				if(z != 255)
 				{
@@ -159,153 +239,88 @@ void Chunk::RebuildVBOEBO()
 					}
 				}
 				else { top = true; }
-				//bottom side of block
+				//down side of block
 				if(z != 0)
 				{
 					unsigned short botBlockType = blockData[INDEX_OF_BLOCK(x, y, z - 1)];
 					if(BlockInfo::GetHasAlpha(thisBlockId))
 					{
-						bottom = thisBlockId != botBlockType || BlockInfo::GetHasCustomCollision(thisBlockId);
+						down = thisBlockId != botBlockType || BlockInfo::GetHasCustomCollision(thisBlockId);
 					}
 					else
 					{
 						if(botBlockType == 0 || BlockInfo::GetHasAlpha(botBlockType))
 						{
-							bottom = true;
+							down = true;
 						}
 					}
 				}
-				else {bottom = true;}
-
-				float* thisBlock = BlockInfo::texCoordArray + thisBlockId * 6 * 4;
-
-				if(south) // back
+				else {down = true;}
+				
+				if(BlockInfo::GetHasAlpha(thisBlockId))
 				{
-					BACK_LEFT_TOP;
-					vertexData.push_back(thisBlock[0 + 5 * 4]);
-					vertexData.push_back(thisBlock[1 + 5 * 4]);
-					FRONT_LEFT_TOP;
-					vertexData.push_back(thisBlock[2 + 5 * 4] + thisBlock[0 + 5 * 4]);
-					vertexData.push_back(thisBlock[1 + 5 * 4]);
-					FRONT_LEFT_BOTTOM;
-					vertexData.push_back(thisBlock[2 + 5 * 4] + thisBlock[0 + 5 * 4]);
-					vertexData.push_back(thisBlock[3 + 5 * 4] + thisBlock[1 + 5 * 4]);
-					BACK_LEFT_BOTTOM;
-					vertexData.push_back(thisBlock[0 + 5 * 4]);
-					vertexData.push_back(thisBlock[3 + 5 * 4] + thisBlock[1 + 5 * 4]);
-					unsigned int vertexCount = vertexData.size() / 5;
-					AddIndices(vertexCount, indiceData);
+					if(back)  { AddBlockSide(x, y, z, BlockSides::Back,  alphaVertexData, alphaIndiceData, thisBlockId); }
+					if(front) { AddBlockSide(x, y, z, BlockSides::Front, alphaVertexData, alphaIndiceData, thisBlockId); }
+					if(right) { AddBlockSide(x, y, z, BlockSides::Right, alphaVertexData, alphaIndiceData, thisBlockId); }
+					if(left)  { AddBlockSide(x, y, z, BlockSides::Left,  alphaVertexData, alphaIndiceData, thisBlockId); }
+					if(top)   { AddBlockSide(x, y, z, BlockSides::Top,   alphaVertexData, alphaIndiceData, thisBlockId); }
+					if(down)  { AddBlockSide(x, y, z, BlockSides::Down,  alphaVertexData, alphaIndiceData, thisBlockId); }
 				}
-
-				if(north) // front
+				else
 				{
-					FRONT_RIGHT_TOP;
-					vertexData.push_back(thisBlock[0 + 4 * 4]);
-					vertexData.push_back(thisBlock[1 + 4 * 4]);
-					BACK_RIGHT_TOP
-					vertexData.push_back(thisBlock[2 + 4 * 4] + thisBlock[0 + 4 * 4]);
-					vertexData.push_back(thisBlock[1 + 4 * 4]);
-					BACK_RIGHT_BOTTOM;
-					vertexData.push_back(thisBlock[2 + 4 * 4] + thisBlock[0 + 4 * 4]);
-					vertexData.push_back(thisBlock[3 + 4 * 4] + thisBlock[1 + 4 * 4]);
-					FRONT_RIGHT_BOTTOM;
-					vertexData.push_back(thisBlock[0 + 4 * 4]);
-					vertexData.push_back(thisBlock[3 + 4 * 4] + thisBlock[1 + 4 * 4]);
-					unsigned int vertexCount = vertexData.size() / 5;
-					AddIndices(vertexCount, indiceData);
-				}
-
-				if(east) // right
-				{
-					FRONT_LEFT_TOP;
-					vertexData.push_back(thisBlock[0 + 3 * 4]);
-					vertexData.push_back(thisBlock[1 + 3 * 4]);
-					FRONT_RIGHT_TOP;
-					vertexData.push_back(thisBlock[2 + 3 * 4] + thisBlock[0 + 3 * 4]);
-					vertexData.push_back(thisBlock[1 + 3 * 4]);
-					FRONT_RIGHT_BOTTOM;
-					vertexData.push_back(thisBlock[2 + 3 * 4] + thisBlock[0 + 3 * 4]);
-					vertexData.push_back(thisBlock[3 + 3 * 4] + thisBlock[1 + 3 * 4]);
-					FRONT_LEFT_BOTTOM;
-					vertexData.push_back(thisBlock[0 + 3 * 4]);
-					vertexData.push_back(thisBlock[3 + 3 * 4] + thisBlock[1 + 3 * 4]);
-					unsigned int vertexCount = vertexData.size() / 5;
-					AddIndices(vertexCount, indiceData);
-				}
-
-				if(west) // left
-				{
-					BACK_RIGHT_TOP;
-					vertexData.push_back(thisBlock[0 + 2 * 4]);
-					vertexData.push_back(thisBlock[1 + 2 * 4]);
-					BACK_LEFT_TOP;
-					vertexData.push_back(thisBlock[2 + 2 * 4] + thisBlock[0 + 2 * 4]);
-					vertexData.push_back(thisBlock[1 + 2 * 4]);
-					BACK_LEFT_BOTTOM;
-					vertexData.push_back(thisBlock[2 + 2 * 4] + thisBlock[0 + 2 * 4]);
-					vertexData.push_back(thisBlock[3 + 2 * 4] + thisBlock[1 + 2 * 4]);
-					BACK_RIGHT_BOTTOM;
-					vertexData.push_back(thisBlock[0 + 2 * 4]);
-					vertexData.push_back(thisBlock[3 + 2 * 4] + thisBlock[1 + 2 * 4]);
-					unsigned int vertexCount = vertexData.size() / 5;
-					AddIndices(vertexCount, indiceData);
-				}
-
-				if(top)
-				{
-					BACK_LEFT_TOP;
-					vertexData.push_back(thisBlock[0]);
-					vertexData.push_back(thisBlock[1]);
-					BACK_RIGHT_TOP;
-					vertexData.push_back(thisBlock[2] + thisBlock[0]);
-					vertexData.push_back(thisBlock[1]);
-					FRONT_RIGHT_TOP;
-					vertexData.push_back(thisBlock[2] + thisBlock[0]);
-					vertexData.push_back(thisBlock[3] + thisBlock[1]);
-					FRONT_LEFT_TOP;
-					vertexData.push_back(thisBlock[0]);
-					vertexData.push_back(thisBlock[3] + thisBlock[1]);
-					unsigned int vertexCount = vertexData.size() / 5;
-					AddIndices(vertexCount, indiceData);
-				}
-
-				if(bottom) // down
-				{
-					FRONT_LEFT_BOTTOM;
-					vertexData.push_back(thisBlock[0 + 1 * 4]);
-					vertexData.push_back(thisBlock[1 + 1 * 4]);
-					FRONT_RIGHT_BOTTOM;
-					vertexData.push_back(thisBlock[2 + 1 * 4] + thisBlock[0 + 1 * 4]);
-					vertexData.push_back(thisBlock[1 + 1 * 4]);
-					BACK_RIGHT_BOTTOM;
-					vertexData.push_back(thisBlock[2 + 1 * 4] + thisBlock[0 + 1 * 4]);
-					vertexData.push_back(thisBlock[3 + 1 * 4] + thisBlock[1 + 1 * 4]);
-					BACK_LEFT_BOTTOM;
-					vertexData.push_back(thisBlock[0 + 1 * 4]);
-					vertexData.push_back(thisBlock[3 + 1 * 4] + thisBlock[1 + 1 * 4]);
-					unsigned int vertexCount = vertexData.size() / 5;
-					AddIndices(vertexCount, indiceData);
+					if(back)  { AddBlockSide(x, y, z, BlockSides::Back,  vertexData, indiceData, thisBlockId); }
+					if(front) { AddBlockSide(x, y, z, BlockSides::Front, vertexData, indiceData, thisBlockId); }
+					if(right) { AddBlockSide(x, y, z, BlockSides::Right, vertexData, indiceData, thisBlockId); }
+					if(left)  { AddBlockSide(x, y, z, BlockSides::Left,  vertexData, indiceData, thisBlockId); }
+					if(top)   { AddBlockSide(x, y, z, BlockSides::Top,   vertexData, indiceData, thisBlockId); }
+					if(down)  { AddBlockSide(x, y, z, BlockSides::Down,  vertexData, indiceData, thisBlockId); }	
 				}
 			}
 		}
 	}
 
+	//fill buffers
+	glBindVertexArray(vaoHandle);
+	
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(float), &vertexData[0], GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indiceData.size() * sizeof(GLuint), &indiceData[0], GL_STATIC_DRAW);
+	
+	{
+		//attribute locations
+		GLint posAttrib = glGetAttribLocation(ChunkHandler::shaderProgramHandle, "position");
+		glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
+		glEnableVertexAttribArray(posAttrib);
 
-	//attribute locations
-	GLint posAttrib = glGetAttribLocation(ChunkHandler::shaderProgramHandle, "position");
-	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
-	glEnableVertexAttribArray(posAttrib);
+		GLint texAttrib = glGetAttribLocation(ChunkHandler::shaderProgramHandle, "texCoord");
+		glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(texAttrib);
+	}
+	
+	//and for things with alpha
+	glBindVertexArray(alphaVaoHandle);
+	
+	glBindBuffer(GL_ARRAY_BUFFER, alphaVbo);
+	glBufferData(GL_ARRAY_BUFFER, alphaVertexData.size() * sizeof(float), &alphaVertexData[0], GL_STATIC_DRAW);
 
-	GLint texAttrib = glGetAttribLocation(ChunkHandler::shaderProgramHandle, "texCoord");
-	glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(texAttrib);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, alphaEbo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, alphaIndiceData.size() * sizeof(GLuint), &alphaIndiceData[0], GL_STATIC_DRAW);
+	
+	{
+		//attribute locations
+		GLint posAttrib = glGetAttribLocation(ChunkHandler::shaderProgramHandle, "position");
+		glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
+		glEnableVertexAttribArray(posAttrib);
+
+		GLint texAttrib = glGetAttribLocation(ChunkHandler::shaderProgramHandle, "texCoord");
+		glVertexAttribPointer(texAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(texAttrib);
+	}
 
 	triangleCount = indiceData.size() / 3;
+	alphaTriangleCount = alphaIndiceData.size() / 3;
 
 	glBindVertexArray(0);
 }
@@ -313,10 +328,17 @@ void Chunk::RebuildVBOEBO()
 Chunk::Chunk()
 {
 	glGenVertexArrays(1, &vaoHandle);
+	glGenVertexArrays(1, &alphaVaoHandle);
+	
 	glBindVertexArray(vaoHandle);
 	
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &ebo);
+	
+	glBindVertexArray(alphaVaoHandle);
+	
+	glGenBuffers(1, &alphaVbo);
+	glGenBuffers(1, &alphaEbo);
 	
 	//RebuildVBOEBO();
 }
@@ -330,6 +352,8 @@ void Chunk::Render()
 {
 	glBindVertexArray(vaoHandle);
 	glDrawElements(GL_TRIANGLES, triangleCount * 3, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(alphaVaoHandle);
+	glDrawElements(GL_TRIANGLES, alphaTriangleCount * 3, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }
 
