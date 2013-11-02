@@ -20,8 +20,11 @@ public:
 	short chunkY;
 //private:
 	GLuint vbo, ebo;
+	GLuint alphaVbo, alphaEbo;
 	GLuint vaoHandle;
+	GLuint alphaVaoHandle;
 	int triangleCount;
+	int alphaTriangleCount;
 	unsigned short* blockData;
 	unsigned char* blockMeta;
 	unsigned char* blockBiomes;

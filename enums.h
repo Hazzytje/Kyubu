@@ -215,3 +215,10 @@ namespace Packets {
 		# and you start running around and doing shit!
 	*/
 }
+
+enum class BlockSides : byte
+{
+	Top, Down,
+	Left, Right,
+	Front, Back,
+};
