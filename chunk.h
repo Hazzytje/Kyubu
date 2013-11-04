@@ -2,7 +2,6 @@
 #define __CHUNK_H__
 #include <GL/glfw3.h>
 
-class ChunkHandler;
 #include "chunkHandler.h"
 
 class Chunk
