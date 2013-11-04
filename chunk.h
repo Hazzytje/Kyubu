@@ -14,6 +14,8 @@ public:
 	void Render();
 	
 	void RebuildVBOEBO();
+	
+	short SetBlockAt(unsigned char x, unsigned char y, unsigned char z, short blockId);
 
 	short chunkX;
 	short chunkY;

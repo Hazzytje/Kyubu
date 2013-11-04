@@ -339,8 +339,6 @@ Chunk::Chunk()
 	
 	glGenBuffers(1, &alphaVbo);
 	glGenBuffers(1, &alphaEbo);
-	
-	//RebuildVBOEBO();
 }
 
 Chunk::~Chunk()
@@ -360,4 +358,11 @@ void Chunk::Render()
 void Chunk::Update()
 {
 
+}
+
+short Chunk::SetBlockAt(byte x, byte y, byte z, short blockId)
+{
+	assert(x > -1 && x < 16);
+	assert(y > -1 && y < 16);
+	return blockData[INDEX_OF_BLOCK(x, y, z)] = blockId;
 }
