@@ -36,6 +36,8 @@ Player& Game::getPlayer()
 bool derp = false;
 void Game::Update()
 {
+	float oldPitch = localPlayer.camera.GetPitch();
+	float oldYaw = localPlayer.camera.GetYaw();
 	Vector3 oldPos = localPlayer.pos;
 	localPlayer.Update();
 	if(networkHandler.readyToWrite && loggedIn)
@@ -50,18 +52,23 @@ void Game::Update()
 			packetSender.Send();
 			derp = true;
 		}
-	
-		packetSender.WriteByte(Packets::EntityTeleport);
-		packetSender.WriteDouble(localPlayer.pos.x);
-		packetSender.WriteDouble(localPlayer.pos.y);
-		packetSender.WriteDouble(localPlayer.pos.z);
-		packetSender.Send();
+		if(oldPos != localPlayer.pos)
+		{
+			packetSender.WriteByte(Packets::EntityTeleport);
+			packetSender.WriteDouble(localPlayer.pos.x);
+			packetSender.WriteDouble(localPlayer.pos.y);
+			packetSender.WriteDouble(localPlayer.pos.z);
+			packetSender.Send();
+		}
 		
-		packetSender.WriteByte(Packets::EntityAngle);
-		packetSender.WriteDouble(localPlayer.camera.GetPitch());
-		packetSender.WriteDouble(localPlayer.camera.GetYaw());
-		packetSender.WriteDouble(0.0f);
-		packetSender.Send();
+		if(oldPitch != localPlayer.camera.GetPitch() || oldYaw != localPlayer.camera.GetYaw())
+		{
+			packetSender.WriteByte(Packets::EntityAngle);
+			packetSender.WriteDouble(localPlayer.camera.GetPitch());
+			packetSender.WriteDouble(localPlayer.camera.GetYaw());
+			packetSender.WriteDouble(0.0f);
+			packetSender.Send();
+		}
 		
 		if(glfwGetKey(window, GLFW_KEY_W))
 		{
