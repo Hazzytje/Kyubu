@@ -143,7 +143,7 @@ bool ChunkHandler::SetBlockAt(int x, int y, byte z, short blockId)
 	{
 		if(chunk->chunkX == neededChunkX && chunk->chunkY == neededChunkY)
 		{
-			return chunk->blockData[z * 256 + (y % 16) * 16 + (x % 16)] = blockId;
+			return (chunk->blockData[z * 256 + (y % 16) * 16 + (x % 16)] = blockId);
 		}
 	}
 	return 0;
@@ -161,7 +161,7 @@ ushort ChunkHandler::GetBlockAt(int x, int y, int z)
 	{
 		if(chunk->chunkX == neededChunkX && chunk->chunkY == neededChunkY)
 		{
-			return chunk->blockData[z * 256 + (y % 16) * 16 + (x % 16)];
+			return chunk->GetBlockAt(x % 16, y % 16, z);
 		}
 	}
 	return 0;

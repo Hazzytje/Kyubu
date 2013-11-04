@@ -366,3 +366,10 @@ short Chunk::SetBlockAt(byte x, byte y, byte z, short blockId)
 	assert(y > -1 && y < 16);
 	return blockData[INDEX_OF_BLOCK(x, y, z)] = blockId;
 }
+
+short Chunk::GetBlockAt(byte x, byte y, byte z)
+{
+	assert(x > -1 && x < 16);
+	assert(y > -1 && y < 16);
+	return blockData[INDEX_OF_BLOCK(x, y, z)];
+}
