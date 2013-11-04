@@ -156,7 +156,9 @@ namespace Packets {
 					 // when you get this packet, this means, you're entering a new world, so, delete all chunks, entities, players and stuff.
 					 // to know how much chunks you get sent, it's: (vision * 2 + 1) * (vision * 2 + 1)
 					 // as example: if vision is 2, you'll receive 25 chunks. at all times.
-
+		
+		//WorldTime, //double between 0 and 2. Values between 0.5 and 1.5 are day, 1.2 - 1.5 evening, 0.5 - 0.8 morning
+		
 		ChunkLoad, // X, Y, int zlib_buffer_len, byte[] zlib_buffer, array of {byte x, byte y, byte z, property_object}
 		           //the player can also request a chunk by sending x,y. You'll get kicked if you cannot see it tho.
 		ChunkUnload, // X, Y
