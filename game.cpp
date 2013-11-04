@@ -279,6 +279,20 @@ void Game::Update()
 			uLongf blockCoordOutsize = SHRT_MAX * 6 * 4 * sizeof(float);
 			
 			uncompress(reinterpret_cast<byte*>(BlockInfo::texCoordArray), &blockCoordOutsize, blockCoordCompressed, blockCoordZlibBufferSize);
+		} 
+		else if(packetType == Packets::ChatMessage)
+		{
+			p.ReadByte();
+			std::cout << p.ReadString() << "\n";
+		}
+		else if(packetType == Packets::BlockChange)
+		{
+			int x = p.ReadInt();
+			int y = p.ReadInt();
+			byte z = p.ReadByte();
+			short blockId = p.ReadShort();
+			chunkHandler.SetBlockAt(x, y, z, blockId);
+			//TODO: set redraw flag for chunk
 		}
 		else
 		{
