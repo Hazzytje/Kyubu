@@ -16,6 +16,7 @@ public:
 	void RebuildVBOEBO();
 	
 	short SetBlockAt(unsigned char x, unsigned char y, unsigned char z, short blockId);
+	short GetBlockAt(unsigned char x, unsigned char y, unsigned char z);
 
 	short chunkX;
 	short chunkY;
