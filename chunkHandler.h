@@ -8,6 +8,8 @@
 class Chunk;
 #include "chunk.h"
 
+typedef unsigned char byte;
+
 struct ChunkCache
 {
 	short x;
@@ -22,8 +24,12 @@ public:
     ~ChunkHandler();
 	void Update();
     void Render();
+    
+    bool SetBlockAt(int x, int y, byte z, short blockId);
+    
     ushort GetBlockAt(int x, int y, int z);
     bool IsChunkLoadedAt(short chunkX, short chunkY);
+    void RedrawChunk(short chunkX, short chunkY);
     
 	static GLuint shaderProgramHandle;
 	

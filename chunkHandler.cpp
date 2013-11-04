@@ -135,6 +135,20 @@ void ChunkHandler::Render()
     glUseProgram(0);
 }
 
+bool ChunkHandler::SetBlockAt(int x, int y, byte z, short blockId)
+{
+	int neededChunkX = x / 16;
+	int neededChunkY = y / 16;
+	for(auto chunk : ChunkList)
+	{
+		if(chunk->chunkX == neededChunkX && chunk->chunkY == neededChunkY)
+		{
+			return chunk->blockData[z * 256 + (y % 16) * 16 + (x % 16)] = blockId;
+		}
+	}
+	return 0;
+}
+
 ushort ChunkHandler::GetBlockAt(int x, int y, int z)
 {
 	if(z < 0 || z > 256)
