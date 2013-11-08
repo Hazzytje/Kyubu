@@ -2,8 +2,6 @@
 #define __MATRIX_H__
 #include "vector3.h"
 
-#define IDENTITY_MATRIX (Matrix(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0))
-
 class Matrix
 {
 public:
@@ -21,22 +19,21 @@ public:
 	Matrix();
 	Matrix(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24, float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44);
 	Matrix(float values);
+	
+	Matrix(const Matrix& other);
+	Matrix(Matrix&& other);
+	
+	Matrix& operator= (const Matrix& rhs);
 
 	void DebugPrint();
-
-	float* ToFloatArray();
 
 	Vector3 Translate(float x, float y, float z) const;
 	Vector3 Translate(const Vector3& input) const;
 
 	Matrix operator*(const Matrix& other) const;
-//private:
-	float* floatValueArrayPtr;
-
-	float m11, m12, m13, m14;
-	float m21, m22, m23, m24;
-	float m31, m32, m33, m34;
-	float m41, m42, m43, m44;
+	
+	
+	float* values;
 };
 
 #endif

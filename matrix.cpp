@@ -1,61 +1,75 @@
 #include "matrix.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <algorithm>
 #include <stdio.h>
 
 Matrix::Matrix()
 {
-	m11 = m12 = m13 = m14 = 0.0f;
-	m21 = m22 = m23 = m24 = 0.0f;
-	m31 = m32 = m33 = m34 = 0.0f;
-	m41 = m42 = m43 = m44 = 0.0f;
-	floatValueArrayPtr = nullptr;
-} 
+	values = new float[16]{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+}
 
 Matrix::~Matrix()
 {
-	delete[] floatValueArrayPtr;
+	delete[] values;
 }
 
-Matrix::Matrix(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24, float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44)
-	:m11(m11), m12(m12), m13(m13), m14(m14), m21(m21), m22(m22), m23(m23), m24(m24), m31(m31), m32(m32), m33(m33), m34(m34), m41(m41), m42(m42), m43(m43), m44(m44) 
+Matrix::Matrix(float m11, float m12, float m13, float m14, float m21, float m22, float m23, float m24, float m31, float m32, float m33, float m34, float m41, float m42, float m43, float m44)	
 {
-	floatValueArrayPtr = nullptr;
+	values = new float[16]{m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44};
 }
 
-Matrix::Matrix(float values)
-	:m11(values), m12(values), m13(values), m14(values), m21(values), m22(values), m23(values), m24(values), m31(values), m32(values), m33(values), m34(values), m41(values), m42(values), m43(values), m44(values) 
+Matrix::Matrix(float v)
 {
-	floatValueArrayPtr = nullptr;
+	values = new float[16]{v, v, v, v, v, v, v, v, v, v, v, v, v, v, v, v};
+}
+
+Matrix::Matrix(const Matrix& other)
+{
+	values = new float[16];
+	std::copy(values, &values[16], other.values);
+}
+
+Matrix::Matrix(Matrix&& other)
+{
+	values = other.values;
+	other.values = nullptr;
+}
+
+Matrix& Matrix::operator= (const Matrix& rhs)
+{
+	if (&rhs == this) { return *this; }
+	std::copy(values, &values[16], rhs.values);
+	return *this;
 }
 
 Matrix Matrix::CreateRotationX(float rotation)
 {
-	Matrix retVal = IDENTITY_MATRIX;
-	retVal.m22 = cos(rotation);
-	retVal.m23 = -sin(rotation);
-	retVal.m32 = sin(rotation);
-	retVal.m33 = cos(rotation);
+	Matrix retVal;
+	retVal.values[5] = cos(rotation);
+	retVal.values[6] = -sin(rotation);
+	retVal.values[9] = sin(rotation);
+	retVal.values[10] = cos(rotation);
 	return retVal;
 }
 
 Matrix Matrix::CreateRotationY(float rotation)
 {
-	Matrix retVal = IDENTITY_MATRIX;
-	retVal.m11 = cos(rotation);
-	retVal.m13 = sin(rotation);
-	retVal.m31 = -sin(rotation);
-	retVal.m33 = cos(rotation);
+	Matrix retVal;
+	retVal.values[0] = cos(rotation);
+	retVal.values[2] = sin(rotation);
+	retVal.values[8] = -sin(rotation);
+	retVal.values[10] = cos(rotation);
 	return retVal;
 }
 
 Matrix Matrix::CreateRotationZ(float rotation)
 {
-	Matrix retVal = IDENTITY_MATRIX;
-	retVal.m11 = cos(rotation);
-	retVal.m12 = -sin(rotation);
-	retVal.m21 = sin(rotation);
-	retVal.m22 = cos(rotation);
+	Matrix retVal;
+	retVal.values[0] = cos(rotation);
+	retVal.values[1] = -sin(rotation);
+	retVal.values[4] = sin(rotation);
+	retVal.values[5] = cos(rotation);
 	return retVal;
 }
 
@@ -66,19 +80,19 @@ Matrix Matrix::CreateScale(float scale)
 
 Matrix Matrix::CreateScale(float x, float y, float z)
 {
-	Matrix retVal = IDENTITY_MATRIX;
-	retVal.m11 = x;
-	retVal.m22 = y;
-	retVal.m33 = z;
+	Matrix retVal;
+	retVal.values[0] = x;
+	retVal.values[5] = y;
+	retVal.values[10] = z;
 	return retVal;
 }
 
 Matrix Matrix::CreateTranslation(float x, float y, float z)
 {
-	Matrix retVal = IDENTITY_MATRIX;
-	retVal.m14 = x;
-	retVal.m24 = y;
-	retVal.m34 = z;
+	Matrix retVal;
+	retVal.values[3] = x;
+	retVal.values[7] = y;
+	retVal.values[10] = z;
 	return retVal;
 }
 
@@ -118,11 +132,11 @@ Matrix Matrix::CreatePerspective(float fovy, float aspect, float zNear, float zF
 
 	Matrix retVal(0);
 
-	retVal.m11 = f / aspect;
-	retVal.m22 = f;
-	retVal.m33 = (zNear + zFar) * rangeInv;
-	retVal.m43 = zNear * zFar * rangeInv * 2.0f;
-	retVal.m34 = -1.0;
+	retVal.values[0] = f / aspect;
+	retVal.values[5] = f;
+	retVal.values[10] = (zNear + zFar) * rangeInv;
+	retVal.values[11] = -1.0;
+	retVal.values[14] = zNear * zFar * rangeInv * 2.0f;
 	
 	return retVal;
 }
@@ -130,9 +144,9 @@ Matrix Matrix::CreatePerspective(float fovy, float aspect, float zNear, float zF
 Vector3 Matrix::Translate(float x, float y, float z) const
 {
 	Vector3 retVal = Vector3();
-	retVal.x = m11 * x + m12 * y + m13 * z + m14;
-	retVal.y = m21 * x + m22 * y + m23 * z + m24;
-	retVal.z = m31 * x + m32 * y + m33 * z + m34;
+	retVal.x = values[0] * x + values[1] * y + values[2] * z + values[3];
+	retVal.y = values[4] * x + values[5] * y + values[6] * z + values[7];
+	retVal.z = values[8] * x + values[9] * y + values[10] * z + values[11];
 	return retVal;
 }
 
@@ -145,25 +159,25 @@ Matrix Matrix::operator*(const Matrix& other) const
 {
 	Matrix retVal;
 
-	retVal.m11 = m11 * other.m11 + m12 * other.m21 + m13 * other.m31 + m14 * other.m41;
-	retVal.m12 = m11 * other.m12 + m12 * other.m22 + m13 * other.m32 + m14 * other.m42;
-	retVal.m13 = m11 * other.m13 + m12 * other.m23 + m13 * other.m33 + m14 * other.m43;
-	retVal.m14 = m11 * other.m14 + m12 * other.m24 + m13 * other.m34 + m14 * other.m44;
+	retVal.values[0] = values[0] * other.values[0] + values[1] * other.values[4] + values[2] * other.values[8] + values[3] * other.values[12];
+	retVal.values[1] = values[0] * other.values[1] + values[1] * other.values[5] + values[2] * other.values[9] + values[3] * other.values[13];
+	retVal.values[2] = values[0] * other.values[2] + values[1] * other.values[6] + values[2] * other.values[10] + values[3] * other.values[14];
+	retVal.values[3] = values[0] * other.values[3] + values[1] * other.values[7] + values[2] * other.values[11] + values[3] * other.values[15];
 
-	retVal.m21 = m21 * other.m11 + m22 * other.m21 + m23 * other.m31 + m24 * other.m41;
-	retVal.m22 = m21 * other.m12 + m22 * other.m22 + m23 * other.m32 + m24 * other.m42;
-	retVal.m23 = m21 * other.m13 + m22 * other.m23 + m23 * other.m33 + m24 * other.m43;
-	retVal.m24 = m21 * other.m14 + m22 * other.m24 + m23 * other.m34 + m24 * other.m44;
+	retVal.values[4] = values[4] * other.values[0] + values[5] * other.values[4] + values[6] * other.values[8] + values[7] * other.values[12];
+	retVal.values[5] = values[4] * other.values[1] + values[5] * other.values[5] + values[6] * other.values[9] + values[7] * other.values[13];
+	retVal.values[6] = values[4] * other.values[2] + values[5] * other.values[6] + values[6] * other.values[10] + values[7] * other.values[14];
+	retVal.values[7] = values[4] * other.values[3] + values[5] * other.values[7] + values[6] * other.values[11] + values[7] * other.values[15];
 
-	retVal.m31 = m31 * other.m11 + m32 * other.m21 + m33 * other.m31 + m34 * other.m41;
-	retVal.m32 = m31 * other.m12 + m32 * other.m22 + m33 * other.m32 + m34 * other.m42;
-	retVal.m33 = m31 * other.m13 + m32 * other.m23 + m33 * other.m33 + m34 * other.m43;
-	retVal.m34 = m31 * other.m14 + m32 * other.m24 + m33 * other.m34 + m34 * other.m44;
+	retVal.values[8] = values[8] * other.values[0] + values[9] * other.values[4] + values[10] * other.values[8] + values[11] * other.values[12];
+	retVal.values[9] = values[8] * other.values[1] + values[9] * other.values[5] + values[10] * other.values[9] + values[11] * other.values[13];
+	retVal.values[10] = values[8] * other.values[2] + values[9] * other.values[6] + values[10] * other.values[10] + values[11] * other.values[14];
+	retVal.values[11] = values[8] * other.values[3] + values[9] * other.values[7] + values[10] * other.values[11] + values[11] * other.values[15];
 
-	retVal.m41 = m41 * other.m11 + m42 * other.m21 + m43 * other.m31 + m44 * other.m41;
-	retVal.m42 = m41 * other.m12 + m42 * other.m22 + m43 * other.m32 + m44 * other.m42;
-	retVal.m43 = m41 * other.m13 + m42 * other.m23 + m43 * other.m33 + m44 * other.m43;
-	retVal.m44 = m41 * other.m14 + m42 * other.m24 + m43 * other.m34 + m44 * other.m44;
+	retVal.values[12] = values[12] * other.values[0] + values[13] * other.values[4] + values[14] * other.values[8] + values[15] * other.values[12];
+	retVal.values[13] = values[12] * other.values[1] + values[13] * other.values[5] + values[14] * other.values[9] + values[15] * other.values[13];
+	retVal.values[14] = values[12] * other.values[2] + values[13] * other.values[6] + values[14] * other.values[10] + values[15] * other.values[14];
+	retVal.values[15] = values[12] * other.values[3] + values[13] * other.values[7] + values[14] * other.values[11] + values[15] * other.values[15];
 
 	return retVal;
 }
@@ -176,40 +190,9 @@ m11: %+f m12: %+f m13: %+f m14: %+f \n\
 m21: %+f m22: %+f m23: %+f m24: %+f \n\
 m31: %+f m32: %+f m33: %+f m34: %+f \n\
 m41: %+f m42: %+f m43: %+f m44: %+f \n",
-		 m11, m12, m13, m14,
-		 m21, m22, m23, m24,
-		 m31, m32, m33, m34,
-		 m41, m42, m43, m44
+		 values[0], values[1], values[2], values[3],
+		 values[4], values[5], values[6], values[7],
+		 values[8], values[9], values[10], values[11],
+		 values[12], values[13], values[14], values[15]
 	);	
-}
-
-float* Matrix::ToFloatArray()
-{
-	if(floatValueArrayPtr != nullptr)
-	{
-		delete[] floatValueArrayPtr;
-	}
-	floatValueArrayPtr = new float[16];
-
-	floatValueArrayPtr[0 + 0] = m11;
-	floatValueArrayPtr[0 + 1] = m12;
-	floatValueArrayPtr[0 + 2] = m13;
-	floatValueArrayPtr[0 + 3] = m14;
-	
-	floatValueArrayPtr[4 + 0] = m21;
-	floatValueArrayPtr[4 + 1] = m22;
-	floatValueArrayPtr[4 + 2] = m23;
-	floatValueArrayPtr[4 + 3] = m24;
-	
-	floatValueArrayPtr[8 + 0] = m31;
-	floatValueArrayPtr[8 + 1] = m32;
-	floatValueArrayPtr[8 + 2] = m33;
-	floatValueArrayPtr[8 + 3] = m34;
-	
-	floatValueArrayPtr[12 + 0] = m41;
-	floatValueArrayPtr[12 + 1] = m42;
-	floatValueArrayPtr[12 + 2] = m43;
-	floatValueArrayPtr[12 + 3] = m44;
-
-	return floatValueArrayPtr;
 }
