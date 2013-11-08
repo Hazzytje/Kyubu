@@ -53,7 +53,5 @@ void Camera::InsertViewMatrix(GLint location)
 
 //	lookAt.DebugPrint();
 
-	const float* valueArray = lookAt.ToFloatArray();
-	
-	glUniformMatrix4fv(location, 1, GL_FALSE, valueArray);
+	glUniformMatrix4fv(location, 1, GL_FALSE, lookAt.values);
 }

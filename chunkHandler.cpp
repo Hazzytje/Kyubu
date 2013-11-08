@@ -92,9 +92,7 @@ ChunkHandler::ChunkHandler()
     GLint projMatrixLocation = glGetUniformLocation(shaderProgramHandle, "proj");
     Matrix proj = Matrix::CreatePerspective(float(3.1415f * 0.5f), 1024.0f / 768.0f, 0.1f, 1000.0f);
 
-    const float* projMatrix = proj.ToFloatArray();
-
-    glUniformMatrix4fv(projMatrixLocation, 1, GL_FALSE, projMatrix);
+    glUniformMatrix4fv(projMatrixLocation, 1, GL_FALSE, proj.values);
     /*
     for(int x = 0; x < 1; x++)
     {
@@ -127,7 +125,7 @@ void ChunkHandler::Render()
 	{
 		Matrix modelMatrix = Matrix::CreateTranslation(chunk->chunkX * 16, chunk->chunkY * 16, 0);
 
-		glUniformMatrix4fv(modelMatrixLocation, 1, GL_TRUE, modelMatrix.ToFloatArray());
+		glUniformMatrix4fv(modelMatrixLocation, 1, GL_TRUE, modelMatrix.values);
 		chunk->Render();
 	}
     Globals::PrintAllGlErrors();
