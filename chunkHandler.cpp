@@ -159,7 +159,9 @@ ushort ChunkHandler::GetBlockAt(int x, int y, int z)
 	{
 		if(chunk->chunkX == neededChunkX && chunk->chunkY == neededChunkY)
 		{
-			return chunk->GetBlockAt(x % 16, y % 16, z);
+			byte inChunkX = x % 16;
+			byte inChunkY = y % 16;
+			return chunk->GetBlockAt(inChunkX, inChunkY, z);
 		}
 	}
 	return 0;
