@@ -92,7 +92,7 @@ Matrix Matrix::CreateTranslation(float x, float y, float z)
 	Matrix retVal;
 	retVal.values[3] = x;
 	retVal.values[7] = y;
-	retVal.values[10] = z;
+	retVal.values[11] = z;
 	return retVal;
 }
 
