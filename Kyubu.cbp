@@ -81,6 +81,8 @@
 		<Unit filename="propertypair.cpp" />
 		<Unit filename="propertypair.h" />
 		<Unit filename="terrain.bmp" />
+		<Unit filename="textrenderer.cpp" />
+		<Unit filename="textrenderer.h" />
 		<Unit filename="textureloader.cpp" />
 		<Unit filename="textureloader.h" />
 		<Unit filename="vector3.cpp" />
