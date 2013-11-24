@@ -4,6 +4,8 @@
 #include <string.h>
 #include <cstdio>
 
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include "matrix.h"
 #include "globals.h"
 #include "hgl.h"
@@ -90,7 +92,7 @@ ChunkHandler::ChunkHandler()
     modelMatrixLocation = glGetUniformLocation(shaderProgramHandle, "model");
 
     GLint projMatrixLocation = glGetUniformLocation(shaderProgramHandle, "proj");
-    Matrix proj = Matrix::CreatePerspective(float(3.1415f * 0.5f), 1024.0f / 768.0f, 0.1f, 1000.0f);
+    Matrix proj = Matrix::CreatePerspective(float(M_PI_2), 1024.0f / 768.0f, 0.1f, 1000.0f);
 
     glUniformMatrix4fv(projMatrixLocation, 1, GL_FALSE, proj.values);
     /*
