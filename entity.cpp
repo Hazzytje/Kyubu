@@ -77,10 +77,6 @@ void Entity::MoveZ(float distance)
 {
 	if (distance == 0) return;
 	bool direction = distance > 0;
-	
-	if (distance >= 0.20f){
-		printf("jumping or sumtin?\n");
-	}
 		
 	while (distance != 0)
 	{
