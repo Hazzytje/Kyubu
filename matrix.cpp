@@ -185,11 +185,10 @@ Matrix Matrix::operator*(const Matrix& other) const
 void Matrix::DebugPrint()
 {
 	printf("Matrix object at %p\n", this);
-	printf("\
-m11: %+f m12: %+f m13: %+f m14: %+f \n\
-m21: %+f m22: %+f m23: %+f m24: %+f \n\
-m31: %+f m32: %+f m33: %+f m34: %+f \n\
-m41: %+f m42: %+f m43: %+f m44: %+f \n",
+	printf("m11: %+f m12: %+f m13: %+f m14: %+f \n"
+		   "m21: %+f m22: %+f m23: %+f m24: %+f \n"
+	   	   "m31: %+f m32: %+f m33: %+f m34: %+f \n"
+		   "m41: %+f m42: %+f m43: %+f m44: %+f \n",
 		 values[0], values[1], values[2], values[3],
 		 values[4], values[5], values[6], values[7],
 		 values[8], values[9], values[10], values[11],
