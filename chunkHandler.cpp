@@ -23,7 +23,7 @@ std::mutex ChunkHandler::chunkCacheMutex;
 
 void ChunkHandler::Update()
 {
-	chunkCacheMutex.lock();
+	std::lock_guard<std::mutex> lock(chunkCacheMutex);
 	if(chunkCache.size() > 0)
 	{
 		printf("adding chunk from network \\o/\n");
@@ -54,7 +54,6 @@ void ChunkHandler::Update()
 		chunkCache.pop();
 		chunkCacheMeta.pop();
 	}
-	chunkCacheMutex.unlock();
 }
 
 ChunkHandler::ChunkHandler()
