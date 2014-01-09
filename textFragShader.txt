@@ -1,14 +1,11 @@
-#version 150
+#version 140
 out vec4 outColor;
 in vec2 Texcoord;
 
 uniform sampler2D tex;
 
 void main(){
-	vec4 tmpColor = texture(tex, Texcoord);
-	if(tmpColor.a == 0.0)
-	{
-		discard;
-	}
-	outColor = tmpColor;
+	float alpha = texture(tex, Texcoord).r;
+	
+	outColor = vec4(vec3(0.1, 0.1, 0.7), alpha);
 }
