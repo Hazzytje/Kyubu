@@ -14,7 +14,7 @@ GLuint hgl::shaders::CompileShader(const char* fileName, int shaderType)
 	filePointer = fopen(fileName, "r");
 
 	//TODO: move from assert to throw(?)
-	//assert(filePointer != NULL, "Error opening file");
+	assert(filePointer != nullptr, "Error opening file");
 
 	//Find file size
 	fseek(filePointer, 0L, SEEK_END);
