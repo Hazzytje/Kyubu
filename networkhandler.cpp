@@ -47,6 +47,11 @@ void HandleNetwork(NetworkHandler& hh)
         handler.packet = &p;
 		handler.readyToWrite = true;
 		
+		while(!Globals::gameInstance && !handler.endThread)
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(5));
+		}
+		
         while(!handler.endThread)
         {
         	Globals::getGameInstance().kakMutex.lock();
