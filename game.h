@@ -8,6 +8,7 @@
 #include "networkhandler.h"
 #include "player.h"
 #include "propertycollection.h"
+#include "textrenderer.h"
 
 class Game
 {
@@ -31,6 +32,8 @@ class Game
 		ChunkHandler chunkHandler;
 		NetworkHandler networkHandler;
 		Player localPlayer;
+		
+		TextRenderer testTextRenderer;
 		
 		bool loggedIn;
 	protected:

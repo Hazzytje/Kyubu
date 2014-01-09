@@ -61,6 +61,11 @@ void Player::Update()
 		this->vel.z = 0.25f;
 	}
 	
+	if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+	{
+		Globals::getGameInstance().testTextRenderer.AddText("Brom is net zo kak als Hally", 20, 20);
+	}
+	
 	double mouseX, mouseY;
 	glfwGetCursorPos(window, &mouseX, &mouseY);
 	double mouseDeltaX = mouseX - prevMouseX;

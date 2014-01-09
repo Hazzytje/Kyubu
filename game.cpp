@@ -314,4 +314,5 @@ void Game::Update()
 void Game::Draw()
 {
 	chunkHandler.Render();
+	testTextRenderer.Render();
 }

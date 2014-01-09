@@ -31,7 +31,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-std=c++11" />
-			<Add directory="/usr/local/include/bullet/" />
+			<Add directory="../../libs/freetype-gl/tmp" />
 		</Compiler>
 		<Linker>
 			<Add library="GL" />
@@ -39,6 +39,8 @@
 			<Add library="GLEW" />
 			<Add library="glfw" />
 			<Add library="z" />
+			<Add library="../../libs/freetype-gl/tmp/freetypegl.a" />
+			<Add library="freetype" />
 		</Linker>
 		<Unit filename="MercuryString.cpp" />
 		<Unit filename="MercuryString.h" />
@@ -64,6 +66,10 @@
 		<Unit filename="game.h" />
 		<Unit filename="globals.cpp" />
 		<Unit filename="globals.h" />
+		<Unit filename="guiBase.cpp" />
+		<Unit filename="guiBase.h" />
+		<Unit filename="guiLabel.cpp" />
+		<Unit filename="guiLabel.h" />
 		<Unit filename="hassert.h" />
 		<Unit filename="hgl.cpp" />
 		<Unit filename="hgl.h" />
@@ -81,6 +87,8 @@
 		<Unit filename="propertypair.cpp" />
 		<Unit filename="propertypair.h" />
 		<Unit filename="terrain.bmp" />
+		<Unit filename="textFragShader.txt" />
+		<Unit filename="textVertShader.txt" />
 		<Unit filename="textrenderer.cpp" />
 		<Unit filename="textrenderer.h" />
 		<Unit filename="textureloader.cpp" />
