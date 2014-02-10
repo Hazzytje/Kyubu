@@ -1,10 +1,8 @@
 #include "textrenderer.h"
 #include "hgl.h"
-#include "globals.h"
 
-#include "freetype-gl.h"
-#include "texture-font.h"
-#include "vertex-buffer.h"
+#include <freetype-gl.h>
+#include <texture-font.h>
 
 #include <iostream>
 
@@ -88,7 +86,7 @@ void TextRenderer::AddText(std::string text, int x, int y)
 	
 	wchar_t prevChar = 0;
 	
-	for (int i = 0; i < text.length(); i++)
+	for (unsigned int i = 0; i < text.length(); i++)
 	{
 		texture_glyph_t* glyph = texture_font_get_glyph(font, text[i]);
 		

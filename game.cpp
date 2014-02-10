@@ -33,7 +33,6 @@ Player& Game::getPlayer()
 	return localPlayer;
 }
 
-bool derp = false;
 void Game::Update()
 {
 	float oldPitch = localPlayer.camera.GetPitch();
@@ -45,13 +44,7 @@ void Game::Update()
 		kakMutex.lock();
 		
 		Packet& packetSender = *networkHandler.packet;
-	
-		if (!derp){
-			packetSender.WriteByte(Packets::ChatMessage);
-			packetSender.WriteString("Hurr");
-			packetSender.Send();
-			derp = true;
-		}
+		
 		if(oldPos != localPlayer.pos)
 		{
 			packetSender.WriteByte(Packets::EntityTeleport);
@@ -314,5 +307,5 @@ void Game::Update()
 void Game::Draw()
 {
 	chunkHandler.Render();
-	testTextRenderer.Render();
 }
+

@@ -5,9 +5,8 @@
 #include <vector>
 #include <GL/glew.h>
 
-#include "freetype-gl.h"
-#include "texture-font.h"
-#include "vertex-buffer.h"
+#include <freetype-gl.h>
+#include <texture-font.h>
 
 class TextRenderer
 {

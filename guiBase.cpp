@@ -1,11 +1,13 @@
-#include "guibase.h"
-
-GuiBase::GuiBase()
+#include "guiBase.h"
+namespace KyubuGui
 {
-	//ctor
-}
+	GuiBase::GuiBase()
+	{
+		//ctor
+	}
 
-GuiBase::~GuiBase()
-{
-	//dtor
+	GuiBase::~GuiBase()
+	{
+		//dtor
+	}
 }

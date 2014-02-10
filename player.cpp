@@ -6,7 +6,7 @@
 Player::Player()
 :playerId(0)
 {
-	bbox = BoundingBox(-0.3, -0.3, 0.0, 0.3, 0.3, 1.8);
+	Entity::bbox = BoundingBox(-0.3, -0.3, 0.0, 0.3, 0.3, 1.8);
 }
 
 Player::~Player()
@@ -59,11 +59,6 @@ void Player::Update()
 	if(glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
 		this->vel.z = 0.25f;
-	}
-	
-	if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
-	{
-		Globals::getGameInstance().testTextRenderer.AddText("Brom is net zo kak als Hally", 20, 20);
 	}
 	
 	double mouseX, mouseY;

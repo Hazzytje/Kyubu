@@ -33,8 +33,6 @@ class Game
 		NetworkHandler networkHandler;
 		Player localPlayer;
 		
-		TextRenderer testTextRenderer;
-		
 		bool loggedIn;
 	protected:
 	private:
