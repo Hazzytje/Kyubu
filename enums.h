@@ -90,14 +90,8 @@ namespace Packets {
 
 	// if PID is 255, then it's the server
 
-	// item is {short id, byte amount, byte meta, property_object}
-
-	// WindowType is an enum, {Inventory, Chest, CraftingGrid}
-	
-	// metadata for blocks is the following:
-	// bit 0 = redpower y/n
-	// bit 1-3 = direction of block
-	
+	// item is {short id, byte amount, byte meta}
+	// digstate is an byte enum {Start, Busy, Finish, Abort}
 
 	enum Packets {
 		ServerInfo, // string game version, string hostname, string description, byte curplayers, byte max players, arr_mods[string name, string version]
@@ -112,7 +106,7 @@ namespace Packets {
 		EntityCreate, // EID, string type, property_object
 		EntityRemove, // EID
         EntityProperty, // EID, property_object
-        EntityTeleport, // EID, x,y,z, client can send this whitout the EID
+        EntityTeleport, // EID, x,y,z, p,y,r, client can send this whitout the EID
 		
 		PlayerInventory, // byte slot, item
 		PlayerInventoryFull, // 62 times item
@@ -126,7 +120,7 @@ namespace Packets {
 							// 60 currently dragging with mouse
 							// 61 crafted slot
 
-		PlayerDig, // PID, x,y,z, byte side, client can send this whitout the PID
+		PlayerDig, // PID, x,y,z, byte side, digstate, client can send this whitout the PID
 		PlayerUse, // client only: EID
         PlayerKey, // PID, byte key [wasd], bool pressing [true/false], client can send this whitout the PID
         PlayerHurt, // client only send, EID
@@ -142,7 +136,7 @@ namespace Packets {
 
 		PlayerWindowClick,  // byte slotid, bool leftmouse, bool shift
 		PlayerCloseWindow,  // if this gets send, close the menu. you should also send this
-		PlayerOpenWindow,   // short block id, block xyz, byte side (0 is inventory)
+		PlayerOpenWindow,   // WindowType, block xyz, byte side
 							// when aimed at a crafting bench, you send this, the server will respond telling you the same thing, then open it
 							// else the server will kick your ass if you do any actions in the window.
 							// for the inventory, just send  0,0,0 as blockdata and 0 as side
@@ -156,48 +150,51 @@ namespace Packets {
 					 // when you get this packet, this means, you're entering a new world, so, delete all chunks, entities, players and stuff.
 					 // to know how much chunks you get sent, it's: (vision * 2 + 1) * (vision * 2 + 1)
 					 // as example: if vision is 2, you'll receive 25 chunks. at all times.
-		
-		//WorldTime, //double between 0 and 2. Values between 0.5 and 1.5 are day, 1.2 - 1.5 evening, 0.5 - 0.8 morning
-		
-		ChunkLoad, // X, Y, int zlib_buffer_len, byte[] zlib_buffer, array of {byte x, byte y, byte z, property_object}
-		           //the player can also request a chunk by sending x,y. You'll get kicked if you cannot see it tho.
+		WorldTime,	 // double between 0 and 2. values between 0.5 and 1.5 means it's considered day time, 1.2 - 1.5 is considered evening, 0.5 - 0.8 is considered morning
+
+		ChunkLoad, // X, Y, int zlib_buffer_len, byte[] zlib_buffer, int tiledatacount, perdata[byte x, byte y, byte z, property_object], the player can also request a chunk by sending x,y.
 		ChunkUnload, // X, Y
-		ChunkTileData, //block X, Y, Z, property_object
+		ChunkTileData, // block x,y,z property_object
 
         BlockMeta, // WX, WY, Z, byte meta
         BlockChange, // WX, WY, Z, ushort block
         BlockMultiChange, // start WX, start WY, start z, width, dept, height, per block[ushort block, byte meta]
 
         ServerData, 
-					// 2 ints, width/height of things per texture
-					// int count of view items in texture
+					// int count of view textures
+					// width and height size per texture, int, int (16x16, 32x32, etc)
 					// view texture {int w, int h, byte[] zlib_buffer}
 					// view texture coordiates byte[] zlib_buffer
-					// int count of blocks in texture
+					// int count of block textures
 					// block texture {int w, int h, byte[] zlib_buffer}
 					// block texture coordiates byte[] zlib_buffer
 					// block settings byte[] zlib_buffer
 					// block boxes byte[] zlib_buffer
-					// item recipe count int
+					// int count of item recipes
 					// item recipes byte[] zlib_buffer
 
-					// one setting is a short, with bit flags
+					// one setting is a int, with bit flags, 0 - 31
 					//{
 						// 0: contains alpha, for seperate draw calls
 						// 1: Ignore collisions
 						// 2: Useble block
 						// 3: can override, example: water to be ignored if you place a block, so we can "override" it
-						// 4: instant destroy
-						// 5: wont drop on destroy
+						// 4: instant DOOM DEATH AND DESTRUCTION HUE HUE HUE HUE
+						// 5: wont drop on DOOM DEATH AND DESTRUCTION HUE HUE HUE HUE
 						// 6: is sprite, sappling, tallgrass, sugercane, etc.
 						// 7: custom collision/render box
-						// 8: unused
+						// 8: has update function
 						// 9 - 13: light level
 						// 14 - 15: block destroy type, pickaxe 00, axe 01, shovel 10, sword 11
+
+						// 16 - 20: resistance
+						// 21 - 25: toughness
+						// 26 - 28: tier (used in items, example: wooden axe = 1, iron = 2, gold = 3, etc max 7)
+						// 29: is item (items cannot be placen on ground)
+
 					//}
 					
 					// one BLOCK texture coordinate is 6 times 4 floats, StartX, StartY, EndX, EndY
-					// in order: top down left right front back
 					// one VIEW texture coordinate is 2 times a short, X and Y.
 					// one block box is 6 floats, min[x,y,z], max[x,y,z]
 					// one recipe is: Short craftID, byte craftCount, 9 shorts ID's needed, 9 bytes counts needed.
