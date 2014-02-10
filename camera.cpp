@@ -6,6 +6,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+using Kyubu::Vector3;
+
 void Camera::UpdateLookat()
 {
 	lookx = x + sin(pitch) * cos(yaw);

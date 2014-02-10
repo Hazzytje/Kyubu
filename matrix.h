@@ -2,6 +2,8 @@
 #define __MATRIX_H__
 #include "vector3.h"
 
+using Kyubu::Vector3;
+
 class Matrix
 {
 public:
