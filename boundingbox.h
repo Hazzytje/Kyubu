@@ -2,6 +2,8 @@
 #define __BOUNDINGBOX_H__
 #include "vector3.h"
 
+using Kyubu::Vector3;
+
 class BoundingBox
 {
 	public:
