@@ -39,7 +39,7 @@ void HandleNetwork(NetworkHandler& hh)
         printf("connection OK!\n");
  
         p.WriteByte(Packets::Login);
-        p.WriteString("0.0.2");
+        p.WriteString("0.0.3");
         p.WriteString("hazzytje");
         p.WriteInt(0);
         p.Send();
