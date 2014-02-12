@@ -10,9 +10,7 @@ void Entity::MoveX(float distance)
 	
 	Vector3 newpos = this->pos;
 	newpos.x += distance;
-	
-	bool direction = distance > 0;
-	
+
 	BoundingBox entbox(this->bbox);
 	entbox.Min += newpos;
 	entbox.Max += newpos;
@@ -45,9 +43,7 @@ void Entity::MoveY(float distance)
 	
 	Vector3 newpos = this->pos;
 	newpos.y += distance;
-	
-	bool direction = distance > 0;
-	
+
 	BoundingBox entbox(this->bbox);
 	entbox.Min += newpos;
 	entbox.Max += newpos;
