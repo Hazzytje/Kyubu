@@ -294,6 +294,11 @@ void Game::Update()
 			chunkHandler.SetBlockAt(x, y, z, blockId);
 			//TODO: set redraw flag for chunk
 		}
+		else if(packetType == Packets::WorldTime)
+		{
+			double time = p.ReadDouble();
+			//TODO: do something with the current game time
+		}
 		else
 		{
 			printf("Unknown packet: 0x%02X (%d)\n", packetType, packetType);
