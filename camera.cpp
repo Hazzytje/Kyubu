@@ -16,14 +16,10 @@ void Camera::UpdateLookat()
 }
 
 Camera::Camera()
+    :x(0), y(4), z(0), pitch(M_PI_2), yaw(M_PI_2 + M_PI)
 {
-	printf("initializing camera\n");
-	x = 0;
-	y = 4;
-	z = 0;
+    printf("initializing camera\n");
 
-	pitch = float(M_PI_2);
-	yaw = float(M_PI_2 + M_PI);
 	UpdateLookat();
 }
 

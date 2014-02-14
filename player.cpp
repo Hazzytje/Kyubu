@@ -4,7 +4,7 @@
 #include <math.h>
 
 Player::Player()
-:playerId(0)
+:playerId(0), prevMouseX(0), prevMouseY(0)
 {
 	Entity::bbox = BoundingBox(-0.3, -0.3, 0.0, 0.3, 0.3, 1.8);
 }
