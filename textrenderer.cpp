@@ -24,19 +24,6 @@ TextRenderer::TextRenderer()
 	
 	glLinkProgram(shaderProgram);
 
-	float testVertices[] = {
-		-0.5f,  0.5f, 0.0, 0.0, 0.0,
-		 0.5f,  0.5f, 0.0, 1.0, 0.0,
-		 0.5f, -0.5f, 0.0, 1.0, 1.0,
-		-0.5f, -0.5f, 0.0, 0.0, 1.0,
-	};
-	glBufferData(GL_ARRAY_BUFFER, sizeof(testVertices), &testVertices, GL_STATIC_DRAW);
-	GLuint testIndices[] = {
-		0, 1, 2,
-		0, 2, 3,
-	};
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(testIndices), &testIndices, GL_STATIC_DRAW);
-	
 	GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
 	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
 	glEnableVertexAttribArray(posAttrib);
