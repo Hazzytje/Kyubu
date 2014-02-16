@@ -19,7 +19,6 @@ Game::Game(GLFWwindow* window)
 
 Game::~Game()
 {
-	
 	while(incomingPacketBuffer.size() > 0)
 	{
 		std::cout << "Deleting pending packet with id: " << (unsigned int)incomingPacketBuffer.front().second[0] << ". \n";
