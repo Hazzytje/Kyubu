@@ -12,65 +12,23 @@ namespace KyubuGui
 
 	}
 
-	void GuiBase::Update()
-	{
+	void GuiBase::Update() {}
 
-	}
+	void GuiBase::OnLeftMousePress(int x, int y) {}
+	void GuiBase::OnRightMousePress(int x, int y) {}
+	void GuiBase::OnMiddleMousePress(int x, int y) {}
 
-	void GuiBase::OnLeftMousePress(int x, int y)
-	{
+	void GuiBase::OnLeftMouseRelease(int x, int y) {}
+	void GuiBase::OnRightMouseRelease(int x, int y) {}
+	void GuiBase::OnMiddleMouseRelease(int x, int y) {}
 
-	}
-	void GuiBase::OnRightMousePress(int x, int y)
-	{
+	void GuiBase::OnLeftMouseClick(int x, int y) {}
+	void GuiBase::OnRightMouseClick(int x, int y) {}
+	void GuiBase::OnMiddleMouseClick(int x, int y) {}
 
-	}
-	void GuiBase::OnMiddleMousePress(int x, int y)
-	{
+	void GuiBase::OnScrollUp() {}
+	void GuiBase::OnScrollDown() {}
 
-	}
-
-	void GuiBase::OnLeftMouseRelease(int x, int y)
-	{
-
-	}
-	void GuiBase::OnRightMouseRelease(int x, int y)
-	{
-
-	}
-	void GuiBase::OnMiddleMouseRelease(int x, int y)
-	{
-
-	}
-
-	void GuiBase::OnLeftMouseClick(int x, int y)
-	{
-
-	}
-	void GuiBase::OnRightMouseClick(int x, int y)
-	{
-
-	}
-	void GuiBase::OnMiddleMouseClick(int x, int y)
-	{
-
-	}
-
-	void GuiBase::OnScrollUp()
-	{
-
-	}
-	void GuiBase::OnScrollDown()
-	{
-
-	}
-
-	void GuiBase::OnKeyDown()
-	{
-
-	}
-	void GuiBase::OnKeyUp()
-	{
-
-	}
+	void GuiBase::OnKeyDown() {}
+	void GuiBase::OnKeyUp() {}
 }
