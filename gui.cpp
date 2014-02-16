@@ -39,7 +39,7 @@ namespace KyubuGui
 	{
 		for (auto guiObj : GetInstance().guiObjects)
 		{
-			guiObj.Update();
+			guiObj->Update();
 		}
 	}
 
@@ -47,7 +47,7 @@ namespace KyubuGui
 	{
 		for (auto guiObj : GetInstance().guiObjects)
 		{
-			guiObj.Render();
+			guiObj->Render();
 		}
 	}
 }
