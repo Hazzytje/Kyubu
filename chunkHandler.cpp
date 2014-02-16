@@ -26,8 +26,6 @@ void ChunkHandler::Update()
 	std::lock_guard<std::mutex> lock(chunkCacheMutex);
 	if(chunkCache.size() > 0)
 	{
-		printf("adding chunk from network \\o/\n");
-		
 		Chunk* newChunk = new Chunk();
 		
 		unsigned char* zlibBuffer = chunkCache.front();
