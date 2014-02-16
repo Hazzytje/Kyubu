@@ -19,6 +19,7 @@ namespace KyubuGui
 	protected:
 	private:
 		std::string str;
+		TextRenderer textRenderer;
 	};
 }
 #endif

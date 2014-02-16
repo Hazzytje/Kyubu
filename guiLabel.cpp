@@ -5,7 +5,7 @@ namespace KyubuGui
 	GuiLabel::GuiLabel(const std::string& str)
 	:str(str)
 	{
-		//textRenderer.AddText(str, GuiBase::X(), GuiBase::Y());
+		textRenderer.AddText(str, GuiBase::X(), GuiBase::Y());
 	}
 	
 	GuiLabel::GuiLabel()
@@ -21,7 +21,7 @@ namespace KyubuGui
 	
 	void GuiLabel::Render()
 	{
-		
+		textRenderer.Render();
 	}
 	
 	void GuiLabel::setText(const std::string& newStr)

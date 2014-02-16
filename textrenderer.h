@@ -8,6 +8,8 @@
 #include <freetype-gl.h>
 #include <texture-font.h>
 
+#include "font.h"
+
 class TextRenderer
 {
 	public:
@@ -25,10 +27,9 @@ class TextRenderer
 		std::vector<float> vertices;
 		std::vector<GLuint> indices;
 		
-		texture_atlas_t* atlas;
-		texture_font_t* font;
-		
 		int elementCount;
+
+		static Font& GetFont();
 };
 
 #endif

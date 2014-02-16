@@ -10,11 +10,12 @@
 #include "enums.h"
 #include "globals.h"
 #include "propertycollection.h"
+#include "gui.h"
 
 Game::Game(GLFWwindow* window)
 :window(window), loggedIn(false)
 {
-	
+	KyubuGui::Gui::GetInstance(); //use singleton once to construct it
 }
 
 Game::~Game()
@@ -34,6 +35,8 @@ Player& Game::getPlayer()
 
 void Game::Update()
 {
+	KyubuGui::Gui::Update();
+
 	float oldPitch = localPlayer.camera.GetPitch();
 	float oldYaw = localPlayer.camera.GetYaw();
 	Vector3 oldPos = localPlayer.pos;
@@ -311,5 +314,6 @@ void Game::Update()
 void Game::Draw()
 {
 	chunkHandler.Render();
+	KyubuGui::Gui::Render();
 }
 

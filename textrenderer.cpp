@@ -1,18 +1,20 @@
 #include "textrenderer.h"
 #include "hgl.h"
 
-#include <freetype-gl.h>
-#include <texture-font.h>
-
+#include "globals.h"
 #include <iostream>
 
 TextRenderer::TextRenderer()
-{
+{	
+	std::cout << "textrenderer constructor\n" << std::flush;
+	Globals::PrintAllGlErrors();
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &ebo);
-	
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
 	shaderProgram = glCreateProgram();
 	GLuint vertShader = hgl::shaders::CompileShader("textVertShader.txt", GL_VERTEX_SHADER);
 	GLuint fragShader = hgl::shaders::CompileShader("textFragShader.txt", GL_FRAGMENT_SHADER);
@@ -21,24 +23,30 @@ TextRenderer::TextRenderer()
 	glBindFragDataLocation(shaderProgram, 0, "outColor");
 	
 	glLinkProgram(shaderProgram);
+	glUseProgram(shaderProgram);
+
+	LELERRORS
 
 	GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
 	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
 	glEnableVertexAttribArray(posAttrib);
-	
+
+	LELERRORS
+
 	GLint texCoordAttrib = glGetAttribLocation(shaderProgram, "texCoord");
 	glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(texCoordAttrib);
-	
+
+	LELERRORS
+
 	glUniform1i(glGetUniformLocation(shaderProgram, "tex"), 0);
 
-	atlas = texture_atlas_new(512, 512, 1);
-	font = texture_font_new_from_file( atlas, 16 , "/usr/share/xbmc/media/Fonts/arial.ttf");
+	LELERRORS
 
-	texture_font_load_glyphs( font, L" !\"#$%&'()*+,-./0123456789:;<=>?"
-									L"@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_"
-									L"`abcdefghijklmnopqrstuvwxyz{|}~" );
 	glBindVertexArray(0);
+
+	LELERRORS
+
 }
 
 TextRenderer::~TextRenderer()
@@ -53,9 +61,9 @@ void TextRenderer::Render()
 {
 	glUseProgram(shaderProgram);
 	glBindVertexArray(vao);
-	
+
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, atlas->id);
+	glBindTexture(GL_TEXTURE_2D, GetFont().atlas->id);
 	glDrawElements(GL_TRIANGLES, elementCount, GL_UNSIGNED_INT, 0);
 	
 	glBindVertexArray(0);
@@ -73,7 +81,7 @@ void TextRenderer::AddText(std::string text, int x, int y)
 	
 	for (unsigned int i = 0; i < text.length(); i++)
 	{
-		texture_glyph_t* glyph = texture_font_get_glyph(font, text[i]);
+		texture_glyph_t* glyph = texture_font_get_glyph(GetFont().font, text[i]);
 		
 		if(prevChar != 0)
 		{
@@ -112,4 +120,10 @@ void TextRenderer::AddText(std::string text, int x, int y)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
 	
 	glBindVertexArray(0);
+}
+
+Font& TextRenderer::GetFont()
+{
+	static Font actualFont(16, "/usr/share/xbmc/media/Fonts/arial.ttf");;
+	return actualFont;
 }
