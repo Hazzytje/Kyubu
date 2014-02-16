@@ -12,8 +12,6 @@ TextRenderer::TextRenderer()
 	glBindVertexArray(vao);
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &ebo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	
 	shaderProgram = glCreateProgram();
 	GLuint vertShader = hgl::shaders::CompileShader("textVertShader.txt", GL_VERTEX_SHADER);
