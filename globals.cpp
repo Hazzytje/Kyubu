@@ -1,6 +1,6 @@
 #include <GL/glew.h>
 #include <GL/glfw3.h>
-#include <stdio.h>
+#include <iostream>
 
 #include "globals.h"
 
@@ -11,7 +11,7 @@ namespace Globals
 		GLenum error = glGetError();
 		while(error != GL_NO_ERROR)
 		{
-			printf("glError: %x\n", error);
+			std::cout << "glError: " << std::hex << error << "\n" << std::flush;
 			error = glGetError();
 		}
 	}

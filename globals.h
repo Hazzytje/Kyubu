@@ -3,6 +3,11 @@
 
 #include "camera.h"
 #include "game.h"
+
+#include <iostream>
+
+#define LELERRORS std::cout << "file: " << __FILE__ << "line: " << __LINE__; Globals::PrintAllGlErrors(); std::cout << "...\n" << std::flush;
+
 namespace Globals
 {
 	extern Game* gameInstance;
