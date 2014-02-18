@@ -11,7 +11,7 @@ namespace Globals
 		GLenum error = glGetError();
 		while(error != GL_NO_ERROR)
 		{
-			std::cout << "glError: " << std::hex << error << "\n" << std::flush;
+			std::cout << "glError: " << std::hex << error << "\n" << std::dec << std::flush;
 			error = glGetError();
 		}
 	}
