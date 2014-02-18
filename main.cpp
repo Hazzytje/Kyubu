@@ -40,7 +40,10 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
+	//glfwSetInputMode(window, GLFW_CURSOR_MODE, GLFW_CURSOR_CAPTURED);
+
 	glfwMakeContextCurrent(window);
+	glViewport(0, 0, 1024, 768);
 
 	glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
