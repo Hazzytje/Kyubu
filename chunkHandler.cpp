@@ -127,7 +127,6 @@ void ChunkHandler::Render()
 		glUniformMatrix4fv(modelMatrixLocation, 1, GL_TRUE, modelMatrix.values);
 		chunk->Render();
 	}
-    Globals::PrintAllGlErrors();
     glBindVertexArray(0);
     glUseProgram(0);
 }
