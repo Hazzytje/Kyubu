@@ -54,6 +54,8 @@ GLuint hgl::shaders::CompileShader(const char* fileName, int shaderType)
 		delete[] log;
 	}
 
+	fclose(filePointer);
+
 	delete[] fileData;
 	return handle;
 }
