@@ -51,3 +51,5 @@ gui.h
 gui.cpp
 font.h
 font.cpp
+glwrap.h
+glwrap.cpp

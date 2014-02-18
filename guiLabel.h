@@ -15,6 +15,7 @@ namespace KyubuGui
 		void setText(const std::string& str);
 		std::string getText();
 		virtual void Render() override;
+		virtual void SetPos(int newX, int newY) override;
 		virtual ~GuiLabel();
 	protected:
 	private:

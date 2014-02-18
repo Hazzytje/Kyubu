@@ -1,5 +1,6 @@
 #include "guiLabel.h"
 #include <mutex>
+#include "globals.h"
 namespace KyubuGui
 {
 	GuiLabel::GuiLabel(const std::string& str)
@@ -22,6 +23,17 @@ namespace KyubuGui
 	void GuiLabel::Render()
 	{
 		textRenderer.Render();
+	}
+
+	void GuiLabel::SetPos(int newX, int newY)
+	{
+		LELERRORS
+		GuiBase::SetPos(newX, newY);
+		LELERRORS
+		textRenderer.Clear();
+		LELERRORS
+		textRenderer.AddText(str, GuiBase::X(), GuiBase::Y());
+		LELERRORS
 	}
 	
 	void GuiLabel::setText(const std::string& newStr)

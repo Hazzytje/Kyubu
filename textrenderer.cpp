@@ -7,59 +7,60 @@
 TextRenderer::TextRenderer()
 {	
 	std::cout << "textrenderer constructor\n" << std::flush;
-	Globals::PrintAllGlErrors();
+
+	LELERRORS
+
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &ebo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-
-	shaderProgram = glCreateProgram();
-	GLuint vertShader = hgl::shaders::CompileShader("textVertShader.txt", GL_VERTEX_SHADER);
-	GLuint fragShader = hgl::shaders::CompileShader("textFragShader.txt", GL_FRAGMENT_SHADER);
-	glAttachShader(shaderProgram, vertShader);
-	glAttachShader(shaderProgram, fragShader);
-	glBindFragDataLocation(shaderProgram, 0, "outColor");
-	
-	glLinkProgram(shaderProgram);
-	glUseProgram(shaderProgram);
+	glUseProgram(GetProgram().glProgram);
 
 	LELERRORS
 
-	GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
+	GLint posAttrib = GetProgram().GetAttribLocation("position");
 	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
 	glEnableVertexAttribArray(posAttrib);
 
 	LELERRORS
 
-	GLint texCoordAttrib = glGetAttribLocation(shaderProgram, "texCoord");
+	GLint texCoordAttrib = GetProgram().GetAttribLocation("texCoord");
 	glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(texCoordAttrib);
 
 	LELERRORS
 
-	glUniform1i(glGetUniformLocation(shaderProgram, "tex"), 0);
+	glUniform1i(glGetUniformLocation(GetProgram().glProgram, "tex"), 0);
 
 	LELERRORS
 
 	glBindVertexArray(0);
 
 	LELERRORS
-
 }
 
 TextRenderer::~TextRenderer()
 {
+	LELERRORS
 	glDeleteBuffers(1, &vbo);
 	glDeleteBuffers(1, &ebo);
 	glDeleteVertexArrays(1, &vao);
-	glDeleteProgram(shaderProgram);
+	LELERRORS
+}
+
+void TextRenderer::Clear()
+{
+	vertices.clear();
+	indices.clear();
+	elementCount = 0;
 }
 
 void TextRenderer::Render()
 {
-	glUseProgram(shaderProgram);
+	LELERRORS
+	GetProgram().Use();
 	glBindVertexArray(vao);
 
 	glActiveTexture(GL_TEXTURE0);
@@ -68,10 +69,12 @@ void TextRenderer::Render()
 	
 	glBindVertexArray(0);
 	glUseProgram(0);
+	LELERRORS
 }
 
 void TextRenderer::AddText(std::string text, int x, int y)
 {
+	LELERRORS
 	glBindVertexArray(vao);
 	
 	float penX = x;
@@ -115,15 +118,33 @@ void TextRenderer::AddText(std::string text, int x, int y)
 	elementCount = indices.size();
 	
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
-	
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_DYNAMIC_DRAW);
+
 	glBindVertexArray(0);
+	LELERRORS
 }
 
 Font& TextRenderer::GetFont()
 {
 	static Font actualFont(16, "/usr/share/xbmc/media/Fonts/arial.ttf");;
 	return actualFont;
+}
+
+GlWrap::GlProgram& TextRenderer::GetProgram()
+{
+	LELERRORS
+	static GlWrap::GlProgram actualProgram;
+	static bool initialized = false;
+	if(!initialized)
+	{
+		actualProgram.AttachShader(hgl::shaders::CompileShader("textVertShader.txt", GL_VERTEX_SHADER));
+		actualProgram.AttachShader(hgl::shaders::CompileShader("textFragShader.txt", GL_FRAGMENT_SHADER));
+		actualProgram.BindFragDataLocation(0, "outColor");
+		actualProgram.Link();
+		initialized = true;
+	}
+	LELERRORS
+	return actualProgram;
 }
