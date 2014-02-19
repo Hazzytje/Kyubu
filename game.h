@@ -23,6 +23,7 @@ class Game
 		
 		std::map<int, PropertyCollection*> entityPropertyList;
 		
+		void LoadContent();
 		void Update();
 		void Draw();
 		

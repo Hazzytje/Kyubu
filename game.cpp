@@ -28,6 +28,11 @@ Game::~Game()
 	}
 }
 
+void Game::LoadContent()
+{
+
+}
+
 Player& Game::getPlayer()
 {
 	return localPlayer;
