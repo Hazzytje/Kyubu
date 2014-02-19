@@ -5,49 +5,33 @@
 #include <iostream>
 
 TextRenderer::TextRenderer()
-{	
-	std::cout << "textrenderer constructor\n" << std::flush;
-
-	LELERRORS
-
+{
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 	glGenBuffers(1, &vbo);
 	glGenBuffers(1, &ebo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glUseProgram(GetProgram().glProgram);
-
-	LELERRORS
+	GetProgram().Use();
 
 	GLint posAttrib = GetProgram().GetAttribLocation("position");
 	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
 	glEnableVertexAttribArray(posAttrib);
 
-	LELERRORS
-
 	GLint texCoordAttrib = GetProgram().GetAttribLocation("texCoord");
 	glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(texCoordAttrib);
 
-	LELERRORS
-
 	glUniform1i(glGetUniformLocation(GetProgram().glProgram, "tex"), 0);
 
-	LELERRORS
-
 	glBindVertexArray(0);
-
-	LELERRORS
 }
 
 TextRenderer::~TextRenderer()
 {
-	LELERRORS
 	glDeleteBuffers(1, &vbo);
 	glDeleteBuffers(1, &ebo);
 	glDeleteVertexArrays(1, &vao);
-	LELERRORS
 }
 
 void TextRenderer::Clear()
@@ -59,7 +43,6 @@ void TextRenderer::Clear()
 
 void TextRenderer::Render()
 {
-	LELERRORS
 	GetProgram().Use();
 	glBindVertexArray(vao);
 
@@ -69,12 +52,10 @@ void TextRenderer::Render()
 	
 	glBindVertexArray(0);
 	glUseProgram(0);
-	LELERRORS
 }
 
 void TextRenderer::AddText(std::string text, int x, int y)
 {
-	LELERRORS
 	glBindVertexArray(vao);
 	
 	float penX = x;
@@ -123,7 +104,6 @@ void TextRenderer::AddText(std::string text, int x, int y)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_DYNAMIC_DRAW);
 
 	glBindVertexArray(0);
-	LELERRORS
 }
 
 Font& TextRenderer::GetFont()
@@ -134,7 +114,6 @@ Font& TextRenderer::GetFont()
 
 GlWrap::GlProgram& TextRenderer::GetProgram()
 {
-	LELERRORS
 	static GlWrap::GlProgram actualProgram;
 	static bool initialized = false;
 	if(!initialized)
@@ -145,6 +124,5 @@ GlWrap::GlProgram& TextRenderer::GetProgram()
 		actualProgram.Link();
 		initialized = true;
 	}
-	LELERRORS
 	return actualProgram;
 }
