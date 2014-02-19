@@ -53,3 +53,5 @@ font.h
 font.cpp
 glwrap.h
 glwrap.cpp
+content.h
+content.cpp
